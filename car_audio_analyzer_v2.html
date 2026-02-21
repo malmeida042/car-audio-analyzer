@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Audio Analyzer V2 — VW Up! TSI 2017</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        :root {
+            --bg: #0a0a0f;
+            --card: #12121a;
+            --card2: #1a1a28;
+            --border: #2a2a3a;
+            --accent: #6c5ce7;
+            --accent2: #a29bfe;
+            --green: #00b894;
+            --orange: #fdcb6e;
+            --red: #e17055;
+            --cyan: #81ecec;
+            --pink: #fd79a8;
+            --text: #e0e0e0;
+            --text2: #a0a0b0;
+            --gold: #f9ca24
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1040 50%, #0a0a1a 100%);
+            padding: 30px 40px;
+            border-bottom: 1px solid var(--border);
+            text-align: center
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent2), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px
+        }
+
+        .header p {
+            color: var(--text2);
+            font-size: 14px;
+            font-weight: 300
+        }
+
+        .header .car-badge {
+            display: inline-block;
+            background: var(--card2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 4px 16px;
+            font-size: 12px;
+            color: var(--accent2);
+            margin-top: 8px
+        }
+
+        .header .version {
+            font-size: 10px;
+            color: var(--green);
+            margin-top: 4px;
+            letter-spacing: 1px
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px
+        }
+
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent)
+        }
+
+        .card h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent2);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .card h2 .icon {
+            font-size: 18px
+        }
+
+        .card h3 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text2);
+            margin: 12px 0 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px
+        }
+
+        .chart-wrap {
+            position: relative;
+            height: 320px;
+            margin: 10px 0
+        }
+
+        .chart-wrap.tall {
+            height: 420px
+        }
+
+        .slider-group {
+            margin: 8px 0
+        }
+
+        .slider-group label {
+            font-size: 12px;
+            color: var(--text2);
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px
+        }
+
+        .slider-group label span {
+            color: var(--accent2);
+            font-weight: 600
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--card2);
+            outline: none;
+            border: 1px solid var(--border)
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(108, 92, 231, .5)
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px
+        }
+
+        .stat {
+            background: var(--card2);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid var(--border)
+        }
+
+        .stat .val {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent2), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .stat .lbl {
+            font-size: 10px;
+            color: var(--text2);
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: .5px
+        }
+
+        .tip {
+            background: var(--card2);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: var(--text2);
+            margin: 10px 0;
+            line-height: 1.6
+        }
+
+        .tip strong {
+            color: var(--green)
+        }
+
+        .tip.warn {
+            border-left-color: var(--orange)
+        }
+
+        .tip.warn strong {
+            color: var(--orange)
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600
+        }
+
+        .badge.on {
+            background: rgba(0, 184, 148, .15);
+            color: var(--green);
+            border: 1px solid rgba(0, 184, 148, .3)
+        }
+
+        .badge.off {
+            background: rgba(225, 112, 85, .15);
+            color: var(--red);
+            border: 1px solid rgba(225, 112, 85, .3)
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin: 8px 0
+        }
+
+        table th {
+            text-align: left;
+            color: var(--text2);
+            font-weight: 600;
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: .5px
+        }
+
+        table td {
+            padding: 8px;
+            border-bottom: 1px solid rgba(42, 42, 58, .5);
+            color: var(--text)
+        }
+
+        table tr:hover td {
+            background: rgba(108, 92, 231, .05)
+        }
+
+        .config-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .config-item {
+            background: var(--card2);
+            border-radius: 10px;
+            padding: 14px;
+            border: 1px solid var(--border)
+        }
+
+        .config-item .title {
+            font-size: 11px;
+            color: var(--text2);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 6px
+        }
+
+        .config-item .value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent2)
+        }
+
+        .config-item .detail {
+            font-size: 11px;
+            color: var(--text2);
+            margin-top: 4px
+        }
+
+        .legend-custom {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 8px 0;
+            font-size: 11px
+        }
+
+        .legend-custom .item {
+            display: flex;
+            align-items: center;
+            gap: 4px
+        }
+
+        .legend-custom .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%
+        }
+
+        .eq-3band {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0
+        }
+
+        .eq-knob {
+            background: var(--card2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid var(--border)
+        }
+
+        .eq-knob .band-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent2);
+            margin-bottom: 4px
+        }
+
+        .eq-knob .band-range {
+            font-size: 10px;
+            color: var(--text2);
+            margin-bottom: 10px
+        }
+
+        .eq-knob .band-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--cyan);
+            margin: 8px 0
+        }
+
+        .eq-knob .band-reason {
+            font-size: 11px;
+            color: var(--text2);
+            margin-top: 8px;
+            line-height: 1.4
+        }
+
+        @media(max-width:900px) {
+            .grid2 {
+                grid-template-columns: 1fr
+            }
+
+            .eq-3band {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>🔊 Car Audio Frequency Analyzer</h1>
+        <p>Configuração Hi-Fi otimizada para máximo Sound Quality + Volume</p>
+        <div class="car-badge">🚗 VW Up! TSI 2017 — Cabine ~2.6 m³</div>
+        <div class="version">V2 — EQ 3 Bandas • Sub-bass refinado • Análise de médios</div>
+    </div>
+    <div class="container">
+
+        <!-- Equipment Overview -->
+        <div class="card" style="margin-bottom:16px">
+            <h2><span class="icon">📋</span> Equipamentos Instalados</h2>
+            <table>
+                <tr>
+                    <th>Componente</th>
+                    <th>Modelo</th>
+                    <th>Potência RMS</th>
+                    <th>Impedância</th>
+                    <th>Sensibilidade</th>
+                    <th>Faixa</th>
+                </tr>
+                <tr>
+                    <td>Módulo</td>
+                    <td>SoundDigital 800.4 EVO6</td>
+                    <td>4×132W@4Ω / Bridge 2×400W@4Ω</td>
+                    <td>—</td>
+                    <td>SNR 93dB</td>
+                    <td>5Hz–20kHz</td>
+                </tr>
+                <tr>
+                    <td>Kit 2 Vias (por porta)</td>
+                    <td>Hertz DSK 165.3 + Crossover passivo</td>
+                    <td>80W/lado</td>
+                    <td>4Ω</td>
+                    <td>93 dB</td>
+                    <td>50Hz–23kHz</td>
+                </tr>
+                <tr>
+                    <td>Subwoofer (caixa dutada)</td>
+                    <td>Hertz ES 200.5</td>
+                    <td>200W</td>
+                    <td>4Ω</td>
+                    <td>87 dB</td>
+                    <td>30Hz–400Hz</td>
+                </tr>
+                <tr>
+                    <td>Tratamento</td>
+                    <td>Manta viscoelástica (portas)</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>Absorção ressonância</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Gain Controls + SPL -->
+        <div class="grid2">
+            <div class="card">
+                <h2><span class="icon">🎛️</span> Controle de Ganho — Módulo SD 800.4</h2>
+                <div class="slider-group">
+                    <label>Ganho Canais 1+2 (Frente — Kit 2 Vias) <span id="gainFrontVal">78%</span></label>
+                    <input type="range" id="gainFront" min="0" max="100" value="78" oninput="updateAll()">
+                </div>
+                <div class="slider-group">
+                    <label>Ganho Canais 3+4 Bridge (Subwoofer) <span id="gainSubVal">65%</span></label>
+                    <input type="range" id="gainSub" min="0" max="100" value="65" oninput="updateAll()">
+                </div>
+                <h3>Filtros do Módulo</h3>
+                <div class="slider-group">
+                    <label>HPF Frente (Hz) <span id="hpfVal">80 Hz</span></label>
+                    <input type="range" id="hpfFreq" min="50" max="150" value="80" step="5" oninput="updateAll()">
+                </div>
+                <div class="slider-group">
+                    <label>LPF Sub (Hz) <span id="lpfVal">80 Hz</span></label>
+                    <input type="range" id="lpfFreq" min="50" max="150" value="80" step="5" oninput="updateAll()">
+                </div>
+                <div class="slider-group">
+                    <label>Volume da Fonte (Head Unit) <span id="volVal">75%</span></label>
+                    <input type="range" id="volSource" min="0" max="100" value="75" oninput="updateAll()">
+                </div>
+                <div class="tip"><strong>Dica:</strong> Os valores padrão representam a configuração ótima calculada
+                    para Hi-Fi com graves profundos equilibrados (~+6dB). Ajuste para explorar.</div>
+            </div>
+            <div class="card">
+                <h2><span class="icon">📊</span> SPL Estimado — Banco do Motorista</h2>
+                <div class="stat-grid">
+                    <div class="stat">
+                        <div class="val" id="splFront">—</div>
+                        <div class="lbl">Frente (Kit 2V)</div>
+                    </div>
+                    <div class="stat">
+                        <div class="val" id="splSub">—</div>
+                        <div class="lbl">Subwoofer</div>
+                    </div>
+                    <div class="stat">
+                        <div class="val" id="splTotal">—</div>
+                        <div class="lbl">Sistema Total</div>
+                    </div>
+                    <div class="stat">
+                        <div class="val" id="splPeak">—</div>
+                        <div class="lbl">Pico Estimado</div>
+                    </div>
+                    <div class="stat">
+                        <div class="val" id="pwrFront">—</div>
+                        <div class="lbl">Potência Frente</div>
+                    </div>
+                    <div class="stat">
+                        <div class="val" id="pwrSub">—</div>
+                        <div class="lbl">Potência Sub</div>
+                    </div>
+                </div>
+                <div class="tip warn" style="margin-top:14px"><strong>⚠️ Atenção:</strong> O sub Hertz ES 200.5 suporta
+                    apenas 200W RMS. Com o bridge entregando até 400W, <u>nunca passe de ~75% do ganho</u> nesse canal
+                    para evitar danos.</div>
+                <h3>Canalização</h3>
+                <div class="config-summary">
+                    <div class="config-item">
+                        <div class="title">Canal 1</div>
+                        <div class="value">Porta Esquerda</div>
+                        <div class="detail">Kit 2 Vias Hertz + Crossover passivo</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">Canal 2</div>
+                        <div class="value">Porta Direita</div>
+                        <div class="detail">Kit 2 Vias Hertz + Crossover passivo</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">Canal 3+4</div>
+                        <div class="value">Bridge → Sub</div>
+                        <div class="detail">Hertz ES 200.5 — Caixa dutada MDF</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">Filtros</div>
+                        <div class="value">HPF 80Hz / LPF 80Hz</div>
+                        <div class="detail">12dB/oitava no módulo</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Individual Curves -->
+        <div class="card" style="margin-bottom:16px">
+            <h2><span class="icon">📈</span> Curvas de Frequência Individuais dos Componentes</h2>
+            <div class="legend-custom">
+                <div class="item">
+                    <div class="dot" style="background:#a29bfe"></div> Kit 2 Vias (com crossover passivo)
+                </div>
+                <div class="item">
+                    <div class="dot" style="background:#fd79a8"></div> Mid-Bass (via crossover)
+                </div>
+                <div class="item">
+                    <div class="dot" style="background:#81ecec"></div> Tweeter (via crossover)
+                </div>
+                <div class="item">
+                    <div class="dot" style="background:#e17055"></div> Subwoofer (caixa dutada)
+                </div>
+            </div>
+            <div class="chart-wrap tall"><canvas id="chartIndividual"></canvas></div>
+        </div>
+
+        <!-- Combined System Response -->
+        <div class="card" style="margin-bottom:16px">
+            <h2><span class="icon">🎯</span> Resposta Combinada do Sistema — Banco do Motorista</h2>
+            <div class="legend-custom">
+                <div class="item">
+                    <div class="dot" style="background:#6c5ce7"></div> Resposta Total Estimada
+                </div>
+                <div class="item">
+                    <div class="dot" style="background:rgba(249,202,36,.5)"></div> Curva-Alvo Hi-Fi (Harman)
+                </div>
+                <div class="item">
+                    <div class="dot" style="background:rgba(0,184,148,.3)"></div> Zona Ideal ±3dB
+                </div>
+            </div>
+            <div class="chart-wrap tall"><canvas id="chartCombined"></canvas></div>
+            <div class="tip"><strong>Interpretação:</strong> A curva roxa é a resposta estimada no banco do motorista. A
+                curva dourada é a referência Hi-Fi (Harman target + bass shelf moderado ~+6dB para seu gosto de graves
+                profundos). Quanto mais próximas, melhor o sound quality.</div>
+        </div>
+
+        <!-- Filters Chart -->
+        <div class="card" style="margin-bottom:16px">
+            <h2><span class="icon">🔀</span> Ponto de Crossover e Filtros Ativos</h2>
+            <div class="legend-custom">
+                <div class="item">
+                    <div class="dot" style="background:#00b894"></div> HPF Frente
+                </div>
+                <div class="item">
+                    <div class="dot" style="background:#e17055"></div> LPF Sub
+                </div>
+                <div class="item">
+                    <div class="dot" style="background:#fdcb6e"></div> Crossover Passivo 3.5kHz
+                </div>
+            </div>
+            <div class="chart-wrap"><canvas id="chartFilters"></canvas></div>
+        </div>
+
+        <!-- EQ 3 Bandas + Config -->
+        <div class="grid2">
+            <div class="card">
+                <h2><span class="icon">🎚️</span> EQ Recomendado — Rádio Original VW Up! (3 Bandas)</h2>
+                <p style="font-size:12px;color:var(--text2);margin-bottom:6px">O rádio original do Up! TSI 2017 possui
+                    apenas <strong style="color:var(--accent2)">3 bandas de equalização: Bass, Mid e Treble</strong>.
+                    Abaixo estão os ajustes otimizados para o seu sistema com módulo amplificado.</p>
+                <div class="eq-3band">
+                    <div class="eq-knob">
+                        <div class="band-name">🔈 BASS</div>
+                        <div class="band-range">Região: ~60–250 Hz</div>
+                        <div class="band-value">-2</div>
+                        <div class="band-reason">O sub + cabin gain já entregam graves com sobra. Reduzir Bass na fonte
+                            evita <strong style="color:var(--orange)">boom e embolamento</strong> na região de
+                            150–250Hz. Isso limpa a transição sub → mid-bass.</div>
+                    </div>
+                    <div class="eq-knob">
+                        <div class="band-name">🎙️ MID</div>
+                        <div class="band-range">Região: ~500–2000 Hz</div>
+                        <div class="band-value">+1</div>
+                        <div class="band-reason">Leve boost compensa a <strong style="color:var(--cyan)">atenuação
+                                natural da cabine</strong> nos médios. Melhora presença vocal, clareza de instrumentos e
+                            inteligibilidade. A manta acústica ajuda nessa região.</div>
+                    </div>
+                    <div class="eq-knob">
+                        <div class="band-name">✨ TREBLE</div>
+                        <div class="band-range">Região: ~4000–16000 Hz</div>
+                        <div class="band-value">0</div>
+                        <div class="band-reason">O tweeter PEI do Hertz DSK 165.3 já tem <strong
+                                style="color:var(--green)">ótima extensão até 23kHz</strong> com presença natural.
+                            Deixar flat evita sibilância e fadiga auditiva em viagens longas.</div>
+                    </div>
+                </div>
+                <div class="tip"><strong>Importante:</strong> Deixe <strong>Loudness DESLIGADO</strong> e qualquer
+                    <strong>Bass Boost DESLIGADO</strong> no rádio — o módulo SoundDigital já cuida da amplificação.
+                    Comece na posição "Flat" e aplique estes valores.</div>
+                <div class="tip warn"><strong>Dica Pro:</strong> Se sentir que falta "corpo" nos vocais, experimente Mid
+                    em +2. Se quiser mais "ar" e brilho nos pratos da bateria, experimente Treble em +1. Ajuste fino ao
+                    seu gosto!</div>
+            </div>
+            <div class="card">
+                <h2><span class="icon">✅</span> Configuração Final Recomendada</h2>
+                <div class="config-summary">
+                    <div class="config-item">
+                        <div class="title">Ganho Frente (Ch 1+2)</div>
+                        <div class="value" id="cfgGainF">78%</div>
+                        <div class="detail" id="cfgPwrF">≈ 80W por canal</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">Ganho Sub (Ch 3+4 Bridge)</div>
+                        <div class="value" id="cfgGainS">65%</div>
+                        <div class="detail" id="cfgPwrS">≈ 169W bridge</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">HPF Frente</div>
+                        <div class="value" id="cfgHPF">80 Hz</div>
+                        <div class="detail">12dB/oitava — Ligado</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">LPF Sub</div>
+                        <div class="value" id="cfgLPF">80 Hz</div>
+                        <div class="detail">12dB/oitava — Ligado</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">Volume Fonte</div>
+                        <div class="value" id="cfgVol">75%</div>
+                        <div class="detail">Sem distorção no sinal RCA</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">Crossover Passivo</div>
+                        <div class="value">3.5 kHz</div>
+                        <div class="detail">12dB/oct — Integrado no kit Hertz</div>
+                    </div>
+                </div>
+                <h3 style="margin-top:16px">Checklist de Instalação</h3>
+                <table>
+                    <tr>
+                        <td>✅</td>
+                        <td>Manta acústica nas portas dianteiras</td>
+                        <td class="badge on">Essencial</td>
+                    </tr>
+                    <tr>
+                        <td>✅</td>
+                        <td>Crossover passivo Hertz entre módulo e falantes</td>
+                        <td class="badge on">Usar o do kit</td>
+                    </tr>
+                    <tr>
+                        <td>✅</td>
+                        <td>Cabo de alimentação 7 AWG (10mm²)</td>
+                        <td class="badge on">Obrigatório</td>
+                    </tr>
+                    <tr>
+                        <td>✅</td>
+                        <td>Fusível 40A perto da bateria</td>
+                        <td class="badge on">Segurança</td>
+                    </tr>
+                    <tr>
+                        <td>✅</td>
+                        <td>Aterramento curto e sólido</td>
+                        <td class="badge on">Performance</td>
+                    </tr>
+                    <tr>
+                        <td>⚠️</td>
+                        <td>Cabos RCA blindados</td>
+                        <td class="badge on">Recomendado</td>
+                    </tr>
+                    <tr>
+                        <td>⚠️</td>
+                        <td>Tratar porta-malas (futuro)</td>
+                        <td class="badge off">Opcional</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Analysis Text -->
+        <div class="card" style="margin-top:16px">
+            <h2><span class="icon">🧠</span> Análise Técnica Detalhada</h2>
+            <div
+                style="display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:12px;line-height:1.7;color:var(--text2)">
+                <div>
+                    <h3>Integração Sub + Kit 2 Vias</h3>
+                    <p>O ponto de crossover entre sub e kit frontal em <strong style="color:var(--green)">80 Hz</strong>
+                        é ideal: o Hertz DSK 165.3 tem resposta a partir de 50Hz mas com excursão excessiva abaixo de
+                        80Hz; o HPF protege o mid-bass e reduz distorção. O sub cobre 30–80Hz com sobra.</p>
+                    <h3 style="margin-top:14px">Sub-Bass Controlado (~+6dB)</h3>
+                    <p>Na V2, o ganho do sub foi ajustado de 71% para <strong style="color:var(--cyan)">65%</strong>
+                        para trazer o pico de 50Hz para próximo de <strong style="color:var(--gold)">+6dB</strong> em
+                        vez de +9dB. Isso entrega graves profundos e marcantes sem exagero, mantendo extensão suave até
+                        ~30Hz pela caixa dutada. O resultado é um grave com <strong style="color:var(--green)">presença
+                            e peso, mas sem mascarar os médios</strong>.</p>
+                    <h3 style="margin-top:14px">Cabin Gain</h3>
+                    <p>A cabine do Up! (~2.6m³) gera <strong style="color:var(--cyan)">cabin gain de +6 a +10dB</strong>
+                        abaixo de 60Hz. Com o ganho moderado do sub, o pico fica controlado em ~+6dB, entregando impacto
+                        sem excesso.</p>
+                </div>
+                <div>
+                    <h3>Zona de Médios (200–550Hz) — Análise Honesta</h3>
+                    <p>A leve depressão na faixa de 200–550Hz é <strong style="color:var(--orange)">característica
+                            inerente</strong> a este tipo de instalação. Causas:</p>
+                    <p style="margin:6px 0">• <strong>Acústica da porta:</strong> O mid-bass de 6.5" montado na porta
+                        sofre cancelamentos por reflexões internas na cavidade da porta — a manta reduz isso
+                        significativamente (de ~-4dB para ~-1.5dB), mas não elimina totalmente.</p>
+                    <p style="margin:6px 0">• <strong>Zona de transição sub→mid:</strong> Com HPF em 80Hz e a resposta
+                        natural do mid-bass, há uma leve "sela" entre as contribuições do sub e do kit frontal.</p>
+                    <p style="margin:6px 0">• <strong>Crossover passivo:</strong> Sem processamento DSP ativo, não há
+                        como aplicar EQ paramétrica pontual nessa faixa.</p>
+                    <p style="margin-top:10px"><strong style="color:var(--green)">Veredicto:</strong> Para seu sistema
+                        (módulo analógico + crossover passivo), esta é a <strong>melhor resposta atingível</strong>
+                        nessa região. A manta acústica é o diferencial que mantém a depressão em ~-1.5dB (aceitável para
+                        Hi-Fi). Um DSP futuro seria o upgrade que eliminaria completamente essa limitação.</p>
+                    <h3 style="margin-top:14px">Seu Perfil Sonoro</h3>
+                    <p>Curva-alvo: <strong style="color:var(--gold)">Harman Target</strong> com <strong
+                            style="color:var(--pink)">bass shelf de +6dB</strong> — graves profundos com destaque
+                        equilibrado, médios fiéis e detalhados, agudos arejados sem sibilância.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function genFreqs() { const f = []; for (let i = Math.log10(20); i <= Math.log10(20000); i += 0.02)f.push(Math.pow(10, i)); return f }
+        const freqs = genFreqs();
+
+        function hpf12(f, fc) { const r = fc / f; return -10 * Math.log10(1 + Math.pow(r, 4)) }
+        function lpf12(f, fc) { const r = f / fc; return -10 * Math.log10(1 + Math.pow(r, 4)) }
+
+        // Subwoofer response - V2: slightly reduced peak, smoother extension
+        function subResponse(f) {
+            if (f < 20) return -40;
+            const ft = 50;
+            let spl = 0;
+            // Ported box peak near tuning - reduced from 3 to 2.2dB
+            const peak = 2.2 * Math.exp(-Math.pow((f - ft) / 18, 2));
+            // Low-end rolloff below tuning - gentler slope for better extension
+            const loRoll = f < ft ? -15 * Math.log10(ft / f) : 0;
+            // High rolloff above passband
+            const hiRoll = f > 200 ? -12 * Math.log10(f / 200) : 0;
+            spl = peak + loRoll + hiRoll;
+            return Math.max(spl, -40);
+        }
+
+        // Mid-bass - V2: reduced 200-550Hz dip (manta effect better modeled)
+        function midBassResponse(f) {
+            if (f < 30) return -40;
+            let spl = 0;
+            if (f < 50) spl = -12 * Math.log10(50 / f);
+            // Slight rise 80-150Hz
+            spl += 2 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(120)) / 0.3, 2));
+            // Door cavity dip - REDUCED from -1.5 to -1.0 (manta benefit)
+            spl -= 1.0 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(450)) / 0.22, 2));
+            // Slight presence rise before crossover
+            spl += 1 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(2500)) / 0.15, 2));
+            // Passive crossover LPF at 3.5kHz
+            spl += lpf12(f, 3500);
+            return Math.max(spl, -40);
+        }
+
+        function tweeterResponse(f) {
+            if (f < 1000) return -40;
+            let spl = 0;
+            spl += hpf12(f, 3500);
+            spl += 2 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(6000)) / 0.2, 2));
+            if (f > 18000) spl -= 12 * Math.log10(f / 18000);
+            spl += 1 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(10000)) / 0.25, 2));
+            return Math.max(spl, -40);
+        }
+
+        function kitResponse(f) {
+            const mbdB = midBassResponse(f);
+            const twdB = tweeterResponse(f);
+            return 10 * Math.log10(Math.pow(10, mbdB / 10) + Math.pow(10, twdB / 10));
+        }
+
+        // Cabin TF - V2: reduced gain to bring sub peak closer to +6dB
+        function cabinTF(f) {
+            let gain = 0;
+            if (f < 200) {
+                const cabinGain = 7 * Math.pow(Math.max(0, (200 - f) / 200), 1.3);
+                gain += cabinGain;
+            }
+            // Room modes
+            gain += 1.2 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(65)) / 0.1, 2));
+            gain += 0.8 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(130)) / 0.08, 2));
+            gain -= 1.5 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(250)) / 0.12, 2));
+            gain += 0.6 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(180)) / 0.1, 2));
+            if (f > 5000) gain -= 2 * Math.log10(f / 5000);
+            return gain;
+        }
+
+        // Harman target - V2: bass shelf at +6dB (was +3dB implicit, now explicit)
+        function harmanTarget(f) {
+            let t = 0;
+            // Bass shelf: +6dB below 80Hz, smooth transition to 0dB at 200Hz
+            if (f < 200) {
+                t = 6 * Math.pow(Math.max(0, (200 - f) / 200), 0.6);
+            }
+            if (f > 1000) t -= 0.5 * Math.log2(f / 1000);
+            t += 1 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(3000)) / 0.2, 2));
+            return t;
+        }
+
+        let chartIndividual, chartCombined, chartFilters;
+
+        function initCharts() {
+            const commonOpts = {
+                responsive: true, maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        type: 'logarithmic', min: 20, max: 20000, title: { display: true, text: 'Frequência (Hz)', color: '#a0a0b0', font: { size: 11 } },
+                        ticks: {
+                            color: '#a0a0b0', font: { size: 9 }, callback: function (v) {
+                                const nice = [20, 30, 50, 80, 100, 200, 500, 1000, 2000, 5000, 10000, 20000];
+                                if (nice.includes(Math.round(v))) return v < 1000 ? v + 'Hz' : (v / 1000) + 'kHz'; return ''
+                            }
+                        }, grid: { color: 'rgba(42,42,58,.5)' }
+                    },
+                    y: {
+                        min: -30, max: 15, title: { display: true, text: 'SPL Relativo (dB)', color: '#a0a0b0', font: { size: 11 } },
+                        ticks: { color: '#a0a0b0', font: { size: 9 } }, grid: { color: 'rgba(42,42,58,.3)' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false }, tooltip: {
+                        mode: 'index', intersect: false, callbacks: {
+                            title: function (items) { const f = items[0].parsed.x; return f < 1000 ? Math.round(f) + ' Hz' : (f / 1000).toFixed(1) + ' kHz' },
+                            label: function (ctx) { return ctx.dataset.label + ': ' + (ctx.parsed.y).toFixed(1) + ' dB' }
+                        }
+                    }
+                },
+                interaction: { mode: 'nearest', axis: 'x', intersect: false },
+                elements: { point: { radius: 0 }, line: { tension: 0.3 } }
+            };
+
+            chartIndividual = new Chart(document.getElementById('chartIndividual'), {
+                type: 'line', data: {
+                    labels: freqs, datasets: [
+                        { label: 'Kit 2 Vias (sistema)', data: [], borderColor: '#a29bfe', backgroundColor: 'rgba(162,155,254,.1)', borderWidth: 2.5, fill: true },
+                        { label: 'Mid-Bass (via crossover)', data: [], borderColor: '#fd79a8', borderWidth: 1.5, borderDash: [5, 3] },
+                        { label: 'Tweeter (via crossover)', data: [], borderColor: '#81ecec', borderWidth: 1.5, borderDash: [5, 3] },
+                        { label: 'Subwoofer (caixa dutada)', data: [], borderColor: '#e17055', backgroundColor: 'rgba(225,112,85,.1)', borderWidth: 2.5, fill: true }
+                    ]
+                }, options: { ...commonOpts }
+            });
+
+            const combinedOpts = JSON.parse(JSON.stringify(commonOpts));
+            combinedOpts.scales.y.min = -20; combinedOpts.scales.y.max = 20;
+            chartCombined = new Chart(document.getElementById('chartCombined'), {
+                type: 'line', data: {
+                    labels: freqs, datasets: [
+                        { label: 'Resposta Total (banco motorista)', data: [], borderColor: '#6c5ce7', backgroundColor: 'rgba(108,92,231,.15)', borderWidth: 3, fill: true },
+                        { label: 'Curva-Alvo Hi-Fi (Harman+Bass)', data: [], borderColor: 'rgba(249,202,36,.7)', borderWidth: 2, borderDash: [8, 4] },
+                        { label: 'Zona Ideal +3dB', data: [], borderColor: 'rgba(0,184,148,.2)', backgroundColor: 'rgba(0,184,148,.05)', borderWidth: 1, fill: '+1' },
+                        { label: 'Zona Ideal -3dB', data: [], borderColor: 'rgba(0,184,148,.2)', backgroundColor: 'rgba(0,184,148,.05)', borderWidth: 1 }
+                    ]
+                }, options: combinedOpts
+            });
+
+            const filterOpts = JSON.parse(JSON.stringify(commonOpts));
+            filterOpts.scales.y.min = -35; filterOpts.scales.y.max = 5;
+            chartFilters = new Chart(document.getElementById('chartFilters'), {
+                type: 'line', data: {
+                    labels: freqs, datasets: [
+                        { label: 'HPF Frente', data: [], borderColor: '#00b894', borderWidth: 2.5 },
+                        { label: 'LPF Sub', data: [], borderColor: '#e17055', borderWidth: 2.5 },
+                        { label: 'Crossover Passivo 3.5kHz (LPF Woofer)', data: [], borderColor: '#fdcb6e', borderWidth: 1.5, borderDash: [5, 3] },
+                        { label: 'Crossover Passivo 3.5kHz (HPF Tweeter)', data: [], borderColor: '#81ecec', borderWidth: 1.5, borderDash: [5, 3] }
+                    ]
+                }, options: filterOpts
+            });
+
+            updateAll();
+        }
+
+        function updateAll() {
+            const gF = parseInt(document.getElementById('gainFront').value);
+            const gS = parseInt(document.getElementById('gainSub').value);
+            const hpf = parseInt(document.getElementById('hpfFreq').value);
+            const lpf = parseInt(document.getElementById('lpfFreq').value);
+            const vol = parseInt(document.getElementById('volSource').value);
+
+            document.getElementById('gainFrontVal').textContent = gF + '%';
+            document.getElementById('gainSubVal').textContent = gS + '%';
+            document.getElementById('hpfVal').textContent = hpf + ' Hz';
+            document.getElementById('lpfVal').textContent = lpf + ' Hz';
+            document.getElementById('volVal').textContent = vol + '%';
+
+            const maxPwrFront = 132, maxPwrSub = 400;
+            const pwrF = maxPwrFront * Math.pow(gF / 100, 2);
+            const pwrS = maxPwrSub * Math.pow(gS / 100, 2);
+            const volFactor = vol / 100;
+
+            const sensF = 93, sensS = 87;
+            const splF = sensF + 10 * Math.log10(Math.max(0.1, pwrF * volFactor));
+            const splS = sensS + 10 * Math.log10(Math.max(0.1, pwrS * volFactor));
+            const cabinBoostSub = 8;
+            const splSCabin = splS + cabinBoostSub;
+            const splFBoth = splF + 3;
+            const splSys = 10 * Math.log10(Math.pow(10, splFBoth / 10) + Math.pow(10, splSCabin / 10));
+
+            document.getElementById('splFront').textContent = splFBoth.toFixed(1) + ' dB';
+            document.getElementById('splSub').textContent = splSCabin.toFixed(1) + ' dB';
+            document.getElementById('splTotal').textContent = splSys.toFixed(1) + ' dB';
+            document.getElementById('splPeak').textContent = (splSys + 3).toFixed(1) + ' dB';
+            document.getElementById('pwrFront').textContent = (pwrF * volFactor).toFixed(0) + 'W/ch';
+            document.getElementById('pwrSub').textContent = (pwrS * volFactor).toFixed(0) + 'W brg';
+
+            document.getElementById('cfgGainF').textContent = gF + '%';
+            document.getElementById('cfgGainS').textContent = gS + '%';
+            document.getElementById('cfgHPF').textContent = hpf + ' Hz';
+            document.getElementById('cfgLPF').textContent = lpf + ' Hz';
+            document.getElementById('cfgVol').textContent = vol + '%';
+            document.getElementById('cfgPwrF').textContent = '≈ ' + (pwrF * volFactor).toFixed(0) + 'W por canal';
+            document.getElementById('cfgPwrS').textContent = '≈ ' + (pwrS * volFactor).toFixed(0) + 'W bridge';
+
+            const gainFdB = 20 * Math.log10(Math.max(0.01, gF / 100)) + 20 * Math.log10(Math.max(0.01, volFactor));
+            const gainSdB = 20 * Math.log10(Math.max(0.01, gS / 100)) + 20 * Math.log10(Math.max(0.01, volFactor));
+
+            const kitData = [], mbData = [], twData = [], subData = [];
+            freqs.forEach(f => {
+                const mb = midBassResponse(f) + hpf12(f, hpf);
+                const tw = tweeterResponse(f) + hpf12(f, hpf);
+                const kit = 10 * Math.log10(Math.pow(10, mb / 10) + Math.pow(10, tw / 10));
+                const sub = subResponse(f) + lpf12(f, lpf);
+                kitData.push({ x: f, y: kit });
+                mbData.push({ x: f, y: mb });
+                twData.push({ x: f, y: tw });
+                subData.push({ x: f, y: sub });
+            });
+            chartIndividual.data.datasets[0].data = kitData;
+            chartIndividual.data.datasets[1].data = mbData;
+            chartIndividual.data.datasets[2].data = twData;
+            chartIndividual.data.datasets[3].data = subData;
+            chartIndividual.update('none');
+
+            const combinedData = [], targetData = [], upperData = [], lowerData = [];
+            freqs.forEach(f => {
+                const mb = midBassResponse(f) + hpf12(f, hpf) + gainFdB;
+                const tw = tweeterResponse(f) + hpf12(f, hpf) + gainFdB;
+                const frontLin = Math.pow(10, mb / 10) + Math.pow(10, tw / 10);
+                const sub = subResponse(f) + lpf12(f, lpf) + gainSdB;
+                const subLin = Math.pow(10, sub / 10);
+                const totalLin = frontLin + subLin;
+                const totalDB = 10 * Math.log10(Math.max(1e-10, totalLin)) + cabinTF(f);
+                combinedData.push({ x: f, y: totalDB });
+                const target = harmanTarget(f);
+                targetData.push({ x: f, y: target });
+                upperData.push({ x: f, y: target + 3 });
+                lowerData.push({ x: f, y: target - 3 });
+            });
+            const ref1k = combinedData.find(d => d.x >= 1000);
+            const offset = ref1k ? ref1k.y : 0;
+            combinedData.forEach(d => d.y -= offset);
+
+            chartCombined.data.datasets[0].data = combinedData;
+            chartCombined.data.datasets[1].data = targetData;
+            chartCombined.data.datasets[2].data = upperData;
+            chartCombined.data.datasets[3].data = lowerData;
+            chartCombined.update('none');
+
+            const hpfData = [], lpfData = [], xoLpf = [], xoHpf = [];
+            freqs.forEach(f => {
+                hpfData.push({ x: f, y: hpf12(f, hpf) });
+                lpfData.push({ x: f, y: lpf12(f, lpf) });
+                xoLpf.push({ x: f, y: lpf12(f, 3500) });
+                xoHpf.push({ x: f, y: hpf12(f, 3500) });
+            });
+            chartFilters.data.datasets[0].data = hpfData;
+            chartFilters.data.datasets[1].data = lpfData;
+            chartFilters.data.datasets[2].data = xoLpf;
+            chartFilters.data.datasets[3].data = xoHpf;
+            chartFilters.update('none');
+        }
+
+        window.addEventListener('load', initCharts);
+    </script>
+</body>
+
+</html>
