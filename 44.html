@@ -390,12 +390,12 @@
         }
 
         .preset-btn {
-            padding: 8px 14px;
+            padding: 8px 16px;
             border-radius: 10px;
             border: 1px solid var(--border);
             background: var(--card2);
             color: var(--text2);
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all .2s;
@@ -451,7 +451,7 @@
         <h1>🔊 Car Audio Frequency Analyzer</h1>
         <p>Configuração Hi-Fi otimizada com presets de ganho + mapeamento do visor</p>
         <div class="car-badge">🚗 VW Up! TSI 2017 — Cabine ~2.6 m³</div>
-        <div class="version">V4.1 — 5 Presets Calibrados (razão 78:65) • Visor 0-30 • RCA 5V • Decomposição</div>
+        <div class="version">V4.1 — Presets Calibrados (razão 78:65) • Visor 0-30 • RCA 5V • Decomposição</div>
     </div>
     <div class="container">
 
@@ -514,7 +514,7 @@
         <div class="grid2">
             <div class="card">
                 <h2><span class="icon">🎛️</span> Controle de Ganho — Módulo SD 800.4</h2>
-                <!-- V4: 5 Preset Tabs -->
+                <!-- V4: Preset Tabs -->
                 <div class="preset-tabs">
                     <button class="preset-btn" onclick="setPreset('max')" id="presetMax"><span
                             class="emoji">🔥</span>Máximo c/ Qualidade</button>
@@ -524,8 +524,6 @@
                             class="emoji">🎵</span>Média</button>
                     <button class="preset-btn" onclick="setPreset('natural')" id="presetNatural"><span
                             class="emoji">🌿</span>Volume Natural</button>
-                    <button class="preset-btn" onclick="setPreset('baixo')" id="presetBaixo"><span
-                            class="emoji">🔈</span>Volume Baixo</button>
                 </div>
                 <div id="presetDesc"
                     style="font-size:11px;color:var(--text2);margin-bottom:10px;padding:6px 10px;background:var(--card2);border-radius:6px;border-left:3px solid var(--accent)">
@@ -555,8 +553,8 @@
                     </label>
                     <input type="range" id="volSource" min="0" max="30" value="20" oninput="updateAll()">
                 </div>
-                <div class="tip"><strong>Curva calibrada:</strong> Todos os 5 presets mantêm a mesma razão front/sub
-                    (78:65),
+                <div class="tip"><strong>Curva calibrada:</strong> Todos os presets mantêm a mesma razão front/sub
+                    (78:65 = 0.833),
                     garantindo a mesma personalidade sonora em qualquer nível de volume.</div>
             </div>
             <div class="card">
@@ -702,10 +700,9 @@
         <div class="grid2">
             <div class="card">
                 <h2><span class="icon">🎚️</span> EQ Recomendado — Rádio Original VW Up! (3 Bandas)</h2>
-                <p style="font-size:12px;color:var(--text2);margin-bottom:6px">Ajuste para preservar a curva modelada em
-                    todos os 5 presets.
-                    <strong style="color:var(--accent2)">Bass, Mid e Treble</strong> do rádio original.
-                </p>
+                <p style="font-size:12px;color:var(--text2);margin-bottom:6px">O rádio original do Up! TSI 2017 possui
+                    apenas <strong style="color:var(--accent2)">3 bandas de equalização: Bass, Mid e Treble</strong>.
+                    Ajuste otimizado para preservar a curva modelada.</p>
                 <div class="eq-3band">
                     <div class="eq-knob">
                         <div class="band-name">🔈 BASS</div>
@@ -733,8 +730,8 @@
                 </div>
                 <div class="tip"><strong>Importante:</strong> Deixe <strong>Loudness e Bass Boost DESLIGADOS</strong> no
                     rádio.
-                    Para Volume Natural e Volume Baixo, experimente <strong style="color:var(--orange)">Bass +1</strong>
-                    se sentir
+                    Para o preset Volume Natural, experimente <strong style="color:var(--orange)">Bass +1</strong> se
+                    sentir
                     falta de corpo em volumes baixos (compensação Fletcher-Munson).</div>
             </div>
             <div class="card">
@@ -827,7 +824,7 @@
                     <p>O ponto de crossover em <strong style="color:var(--green)">80 Hz</strong> é ideal: HPF protege o
                         mid-bass e reduz distorção. Sub cobre 30–80Hz com sobra.</p>
                     <h3 style="margin-top:14px">Razão de Ganho Calibrada (78:65)</h3>
-                    <p>Todos os 5 presets mantêm a razão <strong style="color:var(--gold)">Sub = Front × 0.833</strong>.
+                    <p>Todos os presets mantêm a razão <strong style="color:var(--gold)">Sub = Front × 0.833</strong>.
                         Isso preserva o equilíbrio entre grave/médio/agudo — a curva fica idêntica, apenas o volume
                         muda.</p>
                     <h3 style="margin-top:14px">Cabin Gain</h3>
@@ -878,16 +875,16 @@
         function genFreqs() { const f = []; for (let i = Math.log10(20); i <= Math.log10(20000); i += 0.02)f.push(Math.pow(10, i)); return f }
         const freqs = genFreqs();
 
+        // RCA Converter: 5V output (vs typical 2V)
         const vRCA = 5.0, vRef = 2.0;
-        const rcaBoostDB = 20 * Math.log10(vRCA / vRef);
+        const rcaBoostDB = 20 * Math.log10(vRCA / vRef); // ~+7.96 dB
 
-        // V4.1: 5 Presets calibrados — MESMA RAZÃO front/sub (78:65 ≈ 0.833) em todos
+        // V4.1: Presets calibrados — MESMA RAZÃO front/sub (78:65 = 0.833)
         const presets = {
-            max: { gF: 78, gS: 65, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Performance máxima — Curva de referência. ~126dB máx.' },
+            max: { gF: 78, gS: 65, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Performance máxima — Curva de referência. ~126dB máx. Razão 78:65.' },
             potente: { gF: 40, gS: 33, emoji: '💪', name: 'Potente', desc: '💪 Ganho moderado — Mesma curva do Máximo, volume de estrada. ~121dB máx.' },
             media: { gF: 30, gS: 25, emoji: '🎵', name: 'Média', desc: '🎵 Confortável — Mesma curva, dia a dia tranquilo. ~119dB máx.' },
-            natural: { gF: 15, gS: 13, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Volume original amplificado — Mesma curva, ~113dB máx.' },
-            baixo: { gF: 7, gS: 6, emoji: '🔈', name: 'Volume Baixo', desc: '🔈 Volume baixo Hi-Fi — Mesma curva, som ambiente refinado. ~106dB máx.' }
+            natural: { gF: 15, gS: 13, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Volume original amplificado — Mesma curva, ~113dB máx. EQ Bass +1 opcional.' }
         };
         let activePreset = 'potente';
 
@@ -903,6 +900,7 @@
             updateAll();
         }
 
+        // V4: VW Up! TSI display number → power factor mapping
         function displayToPower(d) {
             const pts = [[0, 0], [5, 0.03], [10, 0.09], [15, 0.22], [20, 0.50], [25, 0.77], [27, 0.80], [30, 1.00]];
             if (d <= 0) return 0.0001;
@@ -1124,6 +1122,7 @@
             const gainFdB = 20 * Math.log10(Math.max(0.01, gF / 100)) + 20 * Math.log10(Math.max(0.01, Math.sqrt(volFactor))) + rcaBoostDB;
             const gainSdB = 20 * Math.log10(Math.max(0.01, gS / 100)) + 20 * Math.log10(Math.max(0.01, Math.sqrt(volFactor))) + rcaBoostDB;
 
+            // Individual curves (raw, no gain)
             const kitData = [], mbData = [], twData = [], subData = [];
             freqs.forEach(f => {
                 const mb = midBassResponse(f) + hpf12(f, hpf);
@@ -1138,6 +1137,7 @@
             chartIndividual.data.datasets[3].data = subData;
             chartIndividual.update('none');
 
+            // Combined + decomposition
             const combinedData = [], targetData = [], upperData = [], lowerData = [];
             const decompSubData = [], decompMbData = [], decompTwData = [];
             freqs.forEach(f => {
@@ -1175,6 +1175,7 @@
             chartDecomp.data.datasets[4].data = targetData;
             chartDecomp.update('none');
 
+            // Filters
             const hpfData = [], lpfData = [], xoLpf = [], xoHpf = [];
             freqs.forEach(f => {
                 hpfData.push({ x: f, y: hpf12(f, hpf) });
