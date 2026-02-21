@@ -3,13 +3,11 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="format-detection" content="telephone=no">
-    <title>🔊 Car Audio Analyzer V4 — Up! TSI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Car Audio V4 — Mobile</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -32,48 +30,39 @@
             --pink: #fd79a8;
             --text: #e0e0e0;
             --text2: #a0a0b0;
-            --gold: #f9ca24;
-            --safe-b: env(safe-area-inset-bottom, 0px)
+            --gold: #f9ca24
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+            font-family: 'Inter', sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
-            min-height: 100dvh;
             overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
-            padding-bottom: var(--safe-b)
+            -webkit-overflow-scrolling: touch
         }
 
         .header {
             background: linear-gradient(135deg, #0a0a1a 0%, #1a1040 50%, #0a0a1a 100%);
-            padding: 20px 16px 16px;
-            padding-top: max(20px, env(safe-area-inset-top));
-            text-align: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            padding: 16px;
             border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px)
+            text-align: center
         }
 
         .header h1 {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
             background: linear-gradient(135deg, var(--accent2), var(--cyan));
             -webkit-background-clip: text;
             background-clip: text;
-            -webkit-text-fill-color: transparent
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 4px
         }
 
         .header p {
             color: var(--text2);
             font-size: 11px;
-            font-weight: 300;
-            margin-top: 2px
+            font-weight: 300
         }
 
         .header .car-badge {
@@ -81,7 +70,7 @@
             background: var(--card2);
             border: 1px solid var(--border);
             border-radius: 16px;
-            padding: 3px 12px;
+            padding: 2px 12px;
             font-size: 10px;
             color: var(--accent2);
             margin-top: 6px
@@ -95,7 +84,7 @@
         }
 
         .container {
-            padding: 12px;
+            padding: 10px;
             max-width: 600px;
             margin: 0 auto
         }
@@ -103,9 +92,9 @@
         .card {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
             position: relative;
             overflow: hidden
         }
@@ -121,13 +110,17 @@
         }
 
         .card h2 {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--accent2);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 6px
+        }
+
+        .card h2 .icon {
+            font-size: 14px
         }
 
         .card h3 {
@@ -136,36 +129,34 @@
             color: var(--text2);
             margin: 10px 0 6px;
             text-transform: uppercase;
-            letter-spacing: 1px
+            letter-spacing: .5px
         }
 
         .chart-wrap {
             position: relative;
-            height: 260px;
-            margin: 8px -4px;
-            touch-action: pan-y
+            height: 220px;
+            margin: 8px 0
         }
 
         .chart-wrap.tall {
-            height: 300px
+            height: 260px
         }
 
         .slider-group {
-            margin: 12px 0
+            margin: 6px 0
         }
 
         .slider-group label {
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text2);
             display: flex;
             justify-content: space-between;
-            margin-bottom: 6px
+            margin-bottom: 3px
         }
 
         .slider-group label span {
             color: var(--accent2);
-            font-weight: 700;
-            font-size: 13px
+            font-weight: 600
         }
 
         input[type=range] {
@@ -177,29 +168,29 @@
             background: var(--card2);
             outline: none;
             border: 1px solid var(--border);
-            touch-action: none
+            touch-action: manipulation
         }
 
         input[type=range]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             background: var(--accent);
             cursor: pointer;
-            box-shadow: 0 0 12px rgba(108, 92, 231, .6), 0 2px 8px rgba(0, 0, 0, .4)
+            box-shadow: 0 0 10px rgba(108, 92, 231, .5)
         }
 
         .stat-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px
+            gap: 6px
         }
 
         .stat {
             background: var(--card2);
-            border-radius: 12px;
-            padding: 10px 6px;
+            border-radius: 8px;
+            padding: 8px;
             text-align: center;
             border: 1px solid var(--border)
         }
@@ -224,12 +215,12 @@
         .tip {
             background: var(--card2);
             border-left: 3px solid var(--accent);
-            border-radius: 0 10px 10px 0;
-            padding: 10px 12px;
-            font-size: 11px;
+            border-radius: 0 6px 6px 0;
+            padding: 8px 10px;
+            font-size: 10px;
             color: var(--text2);
-            margin: 10px 0;
-            line-height: 1.6
+            margin: 8px 0;
+            line-height: 1.5
         }
 
         .tip strong {
@@ -248,7 +239,7 @@
             display: inline-block;
             padding: 2px 8px;
             border-radius: 10px;
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 600
         }
 
@@ -258,16 +249,10 @@
             border: 1px solid rgba(0, 184, 148, .3)
         }
 
-        .badge.off {
-            background: rgba(225, 112, 85, .15);
-            color: var(--red);
-            border: 1px solid rgba(225, 112, 85, .3)
-        }
-
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 11px;
+            font-size: 10px;
             margin: 6px 0
         }
 
@@ -275,16 +260,16 @@
             text-align: left;
             color: var(--text2);
             font-weight: 600;
-            padding: 6px;
+            padding: 6px 4px;
             border-bottom: 1px solid var(--border);
             text-transform: uppercase;
-            font-size: 9px;
-            letter-spacing: .5px
+            font-size: 8px;
+            letter-spacing: .3px
         }
 
         table td {
-            padding: 6px;
-            border-bottom: 1px solid rgba(42, 42, 58, .4);
+            padding: 6px 4px;
+            border-bottom: 1px solid rgba(42, 42, 58, .5);
             color: var(--text)
         }
 
@@ -296,7 +281,7 @@
 
         .config-item {
             background: var(--card2);
-            border-radius: 10px;
+            border-radius: 8px;
             padding: 10px;
             border: 1px solid var(--border)
         }
@@ -305,7 +290,7 @@
             font-size: 9px;
             color: var(--text2);
             text-transform: uppercase;
-            letter-spacing: .5px;
+            letter-spacing: .3px;
             margin-bottom: 4px
         }
 
@@ -318,7 +303,7 @@
         .config-item .detail {
             font-size: 9px;
             color: var(--text2);
-            margin-top: 2px
+            margin-top: 3px
         }
 
         .legend-custom {
@@ -326,7 +311,7 @@
             flex-wrap: wrap;
             gap: 8px;
             margin: 6px 0;
-            font-size: 10px
+            font-size: 9px
         }
 
         .legend-custom .item {
@@ -338,27 +323,26 @@
         .legend-custom .dot {
             width: 8px;
             height: 8px;
-            border-radius: 50%;
-            flex-shrink: 0
+            border-radius: 50%
         }
 
         .eq-3band {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            margin: 12px 0
+            gap: 8px;
+            margin: 10px 0
         }
 
         .eq-knob {
             background: var(--card2);
-            border-radius: 12px;
-            padding: 12px 8px;
+            border-radius: 10px;
+            padding: 10px;
             text-align: center;
             border: 1px solid var(--border)
         }
 
         .eq-knob .band-name {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--accent2);
             margin-bottom: 2px
@@ -371,7 +355,7 @@
         }
 
         .eq-knob .band-value {
-            font-size: 28px;
+            font-size: 20px;
             font-weight: 800;
             color: var(--cyan);
             margin: 4px 0
@@ -381,96 +365,30 @@
             font-size: 9px;
             color: var(--text2);
             margin-top: 6px;
-            line-height: 1.4
+            line-height: 1.3
         }
 
-        .section-toggle {
-            width: 100%;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 14px 16px;
-            color: var(--accent2);
-            font-size: 14px;
-            font-weight: 700;
-            text-align: left;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            position: relative;
-            overflow: hidden;
-            font-family: inherit
-        }
-
-        .section-toggle::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent)
-        }
-
-        .section-toggle .arrow {
-            transition: transform .3s;
-            font-size: 12px
-        }
-
-        .section-toggle.open .arrow {
-            transform: rotate(180deg)
-        }
-
-        .section-content {
-            display: none;
-            animation: slideDown .3s ease
-        }
-
-        .section-content.open {
-            display: block
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-8px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-
-        .analysis-col {
-            font-size: 11px;
-            line-height: 1.6;
-            color: var(--text2);
-            margin-bottom: 12px
-        }
-
-        /* V4 Preset Tabs */
+        /* V4 Preset Tabs — 2x2 grid for mobile */
         .preset-tabs {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 6px;
-            margin-bottom: 12px
+            margin-bottom: 10px
         }
 
         .preset-btn {
-            padding: 10px 8px;
-            border-radius: 10px;
+            padding: 8px 6px;
+            border-radius: 8px;
             border: 1px solid var(--border);
             background: var(--card2);
             color: var(--text2);
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             cursor: pointer;
             transition: all .2s;
-            font-family: inherit;
-            text-align: center
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            touch-action: manipulation
         }
 
         .preset-btn:hover,
@@ -483,22 +401,66 @@
             background: rgba(108, 92, 231, .2);
             border-color: var(--accent);
             color: var(--accent2);
-            box-shadow: 0 0 12px rgba(108, 92, 231, .3)
+            box-shadow: 0 0 8px rgba(108, 92, 231, .3)
+        }
+
+        .preset-btn .emoji {
+            margin-right: 2px
         }
 
         .visor-display {
             display: inline-flex;
             align-items: center;
+            gap: 4px;
             background: var(--card2);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 2px 10px;
-            font-size: 18px;
+            border-radius: 6px;
+            padding: 3px 10px;
+            font-size: 16px;
             font-weight: 800;
             color: var(--green);
             font-family: 'Courier New', monospace;
-            min-width: 44px;
+            min-width: 50px;
             justify-content: center
+        }
+
+        /* Collapsible sections */
+        .section-toggle {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            color: var(--accent2);
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px
+        }
+
+        .section-toggle::after {
+            content: '▼';
+            font-size: 10px;
+            transition: transform .2s;
+            margin-left: auto
+        }
+
+        .section-toggle.open::after {
+            transform: rotate(180deg)
+        }
+
+        .section-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .3s ease
+        }
+
+        .section-content.open {
+            max-height: 4000px
         }
     </style>
 </head>
@@ -506,55 +468,56 @@
 <body>
     <div class="header">
         <h1>🔊 Car Audio Analyzer</h1>
-        <p>Hi-Fi — Presets de Ganho + Visor</p>
-        <div class="car-badge">🚗 VW Up! TSI 2017 — ~2.6 m³</div>
-        <div class="version">V4 — Presets • Visor 0-30 • RCA 5V • Decomposição</div>
+        <p>Presets calibrados + Visor 0-30 + RCA 5V</p>
+        <div class="car-badge">🚗 VW Up! TSI 2017</div>
+        <div class="version">V4.1 — Razão 78:65 calibrada em todos os presets</div>
     </div>
     <div class="container">
 
-        <!-- Gain Controls with Presets -->
+        <!-- Controls -->
         <div class="card">
-            <h2>🎛️ Ganho — SD 800.4</h2>
-            <!-- V4: Preset Tabs -->
+            <h2><span class="icon">🎛️</span> Controle de Ganho</h2>
             <div class="preset-tabs">
-                <button class="preset-btn" onclick="setPreset('max')" id="presetMax">🔥 Máximo c/ Qualidade</button>
-                <button class="preset-btn active" onclick="setPreset('potente')" id="presetPotente">💪 Potente</button>
-                <button class="preset-btn" onclick="setPreset('media')" id="presetMedia">🎵 Média</button>
-                <button class="preset-btn" onclick="setPreset('natural')" id="presetNatural">🌿 Volume Natural</button>
+                <button class="preset-btn" onclick="setPreset('max')" id="presetMax"><span
+                        class="emoji">🔥</span>Máximo</button>
+                <button class="preset-btn active" onclick="setPreset('potente')" id="presetPotente"><span
+                        class="emoji">💪</span>Potente</button>
+                <button class="preset-btn" onclick="setPreset('media')" id="presetMedia"><span
+                        class="emoji">🎵</span>Média</button>
+                <button class="preset-btn" onclick="setPreset('natural')" id="presetNatural"><span
+                        class="emoji">🌿</span>Natural</button>
             </div>
             <div id="presetDesc"
-                style="font-size:10px;color:var(--text2);margin-bottom:10px;padding:6px 10px;background:var(--card2);border-radius:6px;border-left:3px solid var(--accent)">
-                💪 Ganho moderado — Versátil, empolgado.
+                style="font-size:9px;color:var(--text2);margin-bottom:8px;padding:5px 8px;background:var(--card2);border-radius:5px;border-left:2px solid var(--accent)">
+                💪 Mesma curva do Máximo, volume de estrada. ~121dB máx.
             </div>
             <div class="slider-group">
-                <label>Canais 1+2 (Kit 2 Vias) <span id="gainFrontVal">40%</span></label>
-                <input type="range" id="gainFront" min="0" max="100" value="40">
+                <label>Ganho Frente (Kit 2V) <span id="gainFrontVal">40%</span></label>
+                <input type="range" id="gainFront" min="0" max="100" value="40" oninput="updateAll()">
             </div>
             <div class="slider-group">
-                <label>Canais 3+4 Bridge (Sub) <span id="gainSubVal">30%</span></label>
-                <input type="range" id="gainSub" min="0" max="100" value="30">
+                <label>Ganho Sub (Bridge) <span id="gainSubVal">33%</span></label>
+                <input type="range" id="gainSub" min="0" max="100" value="33" oninput="updateAll()">
             </div>
-            <h3>Filtros</h3>
             <div class="slider-group">
                 <label>HPF Frente <span id="hpfVal">80 Hz</span></label>
-                <input type="range" id="hpfFreq" min="50" max="150" value="80" step="5">
+                <input type="range" id="hpfFreq" min="50" max="150" value="80" step="5" oninput="updateAll()">
             </div>
             <div class="slider-group">
                 <label>LPF Sub <span id="lpfVal">80 Hz</span></label>
-                <input type="range" id="lpfFreq" min="50" max="150" value="80" step="5">
+                <input type="range" id="lpfFreq" min="50" max="150" value="80" step="5" oninput="updateAll()">
             </div>
-            <!-- V4: Visor slider 0-30 -->
             <div class="slider-group">
-                <label>🔊 Volume do Visor
+                <label>🔊 Visor Up! TSI
                     <span><span class="visor-display" id="visorDisplay">20</span></span>
                 </label>
-                <input type="range" id="volSource" min="0" max="30" value="20">
+                <input type="range" id="volSource" min="0" max="30" value="20" oninput="updateAll()">
             </div>
         </div>
 
-        <!-- SPL -->
+        <!-- SPL Stats -->
         <div class="card">
-            <h2>📊 SPL — Banco do Motorista</h2>
+            <h2><span class="icon">📊</span> SPL Estimado</h2>
             <div class="stat-grid">
                 <div class="stat">
                     <div class="val" id="splFront">—</div>
@@ -566,7 +529,7 @@
                 </div>
                 <div class="stat">
                     <div class="val" id="splTotal">—</div>
-                    <div class="lbl">Total</div>
+                    <div class="lbl">Sistema</div>
                 </div>
                 <div class="stat">
                     <div class="val" id="splPeak">—</div>
@@ -581,50 +544,60 @@
                     <div class="lbl">W Sub</div>
                 </div>
             </div>
+            <div class="tip warn" style="margin-top:8px"><strong>⚠️</strong> Sub 200W RMS max. Nunca passe de ~75% do
+                ganho sub.</div>
         </div>
 
         <!-- Individual Curves -->
         <div class="card">
-            <h2>📈 Curvas Individuais</h2>
-            <div class="legend-custom">
-                <div class="item">
-                    <div class="dot" style="background:#a29bfe"></div> Kit 2V
+            <button class="section-toggle" onclick="toggleSection(this,'secIndiv')"><span class="icon">📈</span> Curvas
+                Individuais</button>
+            <div class="section-content" id="secIndiv">
+                <div class="legend-custom">
+                    <div class="item">
+                        <div class="dot" style="background:#a29bfe"></div> Kit 2V
+                    </div>
+                    <div class="item">
+                        <div class="dot" style="background:#fd79a8"></div> Mid
+                    </div>
+                    <div class="item">
+                        <div class="dot" style="background:#81ecec"></div> Tw
+                    </div>
+                    <div class="item">
+                        <div class="dot" style="background:#e17055"></div> Sub
+                    </div>
                 </div>
-                <div class="item">
-                    <div class="dot" style="background:#fd79a8"></div> Mid
-                </div>
-                <div class="item">
-                    <div class="dot" style="background:#81ecec"></div> Tw
-                </div>
-                <div class="item">
-                    <div class="dot" style="background:#e17055"></div> Sub
-                </div>
+                <div class="chart-wrap tall"><canvas id="chartIndividual"></canvas></div>
             </div>
-            <div class="chart-wrap tall"><canvas id="chartIndividual"></canvas></div>
         </div>
 
         <!-- Combined -->
         <div class="card">
-            <h2>🎯 Resposta Combinada</h2>
-            <div class="legend-custom">
-                <div class="item">
-                    <div class="dot" style="background:#6c5ce7"></div> Total
+            <button class="section-toggle open" onclick="toggleSection(this,'secCombined')"><span class="icon">🎯</span>
+                Resposta Combinada</button>
+            <div class="section-content open" id="secCombined">
+                <div class="legend-custom">
+                    <div class="item">
+                        <div class="dot" style="background:#6c5ce7"></div> Total
+                    </div>
+                    <div class="item">
+                        <div class="dot" style="background:rgba(249,202,36,.5)"></div> Harman
+                    </div>
+                    <div class="item">
+                        <div class="dot" style="background:rgba(0,184,148,.3)"></div> ±3dB
+                    </div>
                 </div>
-                <div class="item">
-                    <div class="dot" style="background:rgba(249,202,36,.6)"></div> Hi-Fi Alvo
-                </div>
-                <div class="item">
-                    <div class="dot" style="background:rgba(0,184,148,.4)"></div> ±3dB
-                </div>
+                <div class="chart-wrap tall"><canvas id="chartCombined"></canvas></div>
+                <div class="tip"><strong>Curva calibrada:</strong> Todos os presets mantêm a mesma forma — só muda o
+                    volume.</div>
             </div>
-            <div class="chart-wrap tall"><canvas id="chartCombined"></canvas></div>
         </div>
 
         <!-- Decomposition -->
-        <button class="section-toggle" onclick="toggleSection(this,'decompContent')">🔬 Decomposição por Driver <span
-                class="arrow">▼</span></button>
-        <div id="decompContent" class="section-content open">
-            <div class="card">
+        <div class="card">
+            <button class="section-toggle" onclick="toggleSection(this,'secDecomp')"><span class="icon">🔬</span>
+                Decomposição por Driver</button>
+            <div class="section-content" id="secDecomp">
                 <div class="legend-custom">
                     <div class="item">
                         <div class="dot" style="background:#6c5ce7"></div> Total
@@ -638,19 +611,16 @@
                     <div class="item">
                         <div class="dot" style="background:#81ecec"></div> Tw
                     </div>
-                    <div class="item">
-                        <div class="dot" style="background:rgba(249,202,36,.5)"></div> Alvo
-                    </div>
                 </div>
                 <div class="chart-wrap tall"><canvas id="chartDecomp"></canvas></div>
             </div>
         </div>
 
         <!-- Filters -->
-        <button class="section-toggle" onclick="toggleSection(this,'filtersContent')">🔀 Filtros e Crossover <span
-                class="arrow">▼</span></button>
-        <div id="filtersContent" class="section-content">
-            <div class="card">
+        <div class="card">
+            <button class="section-toggle" onclick="toggleSection(this,'secFilters')"><span class="icon">🔀</span>
+                Filtros e Crossover</button>
+            <div class="section-content" id="secFilters">
                 <div class="legend-custom">
                     <div class="item">
                         <div class="dot" style="background:#00b894"></div> HPF
@@ -666,80 +636,100 @@
             </div>
         </div>
 
-        <!-- EQ 3 Band -->
+        <!-- EQ -->
         <div class="card">
-            <h2>🎚️ EQ — Rádio Original (3 Bandas)</h2>
-            <div class="eq-3band">
-                <div class="eq-knob">
-                    <div class="band-name">🔈 BASS</div>
-                    <div class="band-range">~60–250 Hz</div>
-                    <div class="band-value">-2</div>
-                    <div class="band-reason">Sub + cabin gain cobrem. Evita boom</div>
+            <button class="section-toggle" onclick="toggleSection(this,'secEQ')"><span class="icon">🎚️</span> EQ
+                Recomendado — Rádio VW Up!</button>
+            <div class="section-content" id="secEQ">
+                <p style="font-size:10px;color:var(--text2);margin-bottom:6px">Ajuste para preservar a curva modelada.
+                    Bass flat = curva correta.</p>
+                <div class="eq-3band">
+                    <div class="eq-knob">
+                        <div class="band-name">🔈 BASS</div>
+                        <div class="band-range">~60–250Hz</div>
+                        <div class="band-value">0</div>
+                        <div class="band-reason">Sub + cabin já produzem a <strong style="color:var(--green)">curva
+                                correta</strong></div>
+                    </div>
+                    <div class="eq-knob">
+                        <div class="band-name">🎙️ MID</div>
+                        <div class="band-range">~500–2kHz</div>
+                        <div class="band-value">+1</div>
+                        <div class="band-reason">Compensa <strong style="color:var(--cyan)">dip 200-500Hz</strong> na
+                            porta</div>
+                    </div>
+                    <div class="eq-knob">
+                        <div class="band-name">✨ TREBLE</div>
+                        <div class="band-range">~4k–16kHz</div>
+                        <div class="band-value">0</div>
+                        <div class="band-reason">Tweeter PEI <strong style="color:var(--green)">natural</strong></div>
+                    </div>
                 </div>
-                <div class="eq-knob">
-                    <div class="band-name">🎙️ MID</div>
-                    <div class="band-range">~500–2k Hz</div>
-                    <div class="band-value">+1</div>
-                    <div class="band-reason">Compensa atenuação da cabine</div>
-                </div>
-                <div class="eq-knob">
-                    <div class="band-name">✨ TREBLE</div>
-                    <div class="band-range">~4k–16k Hz</div>
-                    <div class="band-value">0</div>
-                    <div class="band-reason">Tweeter Hertz já tem extensão natural</div>
+                <div class="tip"><strong>Loudness e Bass Boost DESLIGADOS.</strong> Para o Volume Natural, experimente
+                    <strong style="color:var(--orange)">Bass +1</strong> se sentir falta de corpo.
                 </div>
             </div>
-            <div class="tip"><strong>Loudness e Bass Boost DESLIGADOS.</strong> O módulo cuida da amplificação.</div>
         </div>
 
         <!-- Config -->
         <div class="card">
-            <h2>✅ Config Final</h2>
-            <div class="config-summary">
-                <div class="config-item">
-                    <div class="title">Ganho Frente</div>
-                    <div class="value" id="cfgGainF">40%</div>
-                    <div class="detail" id="cfgPwrF">≈ 21W/ch</div>
-                </div>
-                <div class="config-item">
-                    <div class="title">Ganho Sub Bridge</div>
-                    <div class="value" id="cfgGainS">30%</div>
-                    <div class="detail" id="cfgPwrS">≈ 36W</div>
-                </div>
-                <div class="config-item">
-                    <div class="title">HPF Frente</div>
-                    <div class="value" id="cfgHPF">80 Hz</div>
-                    <div class="detail">12dB/oct — ON</div>
-                </div>
-                <div class="config-item">
-                    <div class="title">LPF Sub</div>
-                    <div class="value" id="cfgLPF">80 Hz</div>
-                    <div class="detail">12dB/oct — ON</div>
-                </div>
-                <div class="config-item">
-                    <div class="title">Volume Visor</div>
-                    <div class="value" id="cfgVol">20</div>
-                    <div class="detail">Número do visor</div>
-                </div>
-                <div class="config-item">
-                    <div class="title">Preset</div>
-                    <div class="value" id="cfgPreset">💪 Potente</div>
-                    <div class="detail">Versátil</div>
+            <button class="section-toggle" onclick="toggleSection(this,'secConfig')"><span class="icon">✅</span>
+                Configuração Final</button>
+            <div class="section-content" id="secConfig">
+                <div class="config-summary">
+                    <div class="config-item">
+                        <div class="title">Ganho Front</div>
+                        <div class="value" id="cfgGainF">40%</div>
+                        <div class="detail" id="cfgPwrF">≈ 21W/ch</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">Ganho Sub</div>
+                        <div class="value" id="cfgGainS">33%</div>
+                        <div class="detail" id="cfgPwrS">≈ 44W brg</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">HPF</div>
+                        <div class="value" id="cfgHPF">80Hz</div>
+                        <div class="detail">12dB/oct</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">LPF</div>
+                        <div class="value" id="cfgLPF">80Hz</div>
+                        <div class="detail">12dB/oct</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">Visor</div>
+                        <div class="value" id="cfgVol">20</div>
+                        <div class="detail">Volume mídia</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">Preset</div>
+                        <div class="value" id="cfgPreset">💪 Potente</div>
+                        <div class="detail">Razão 78:65</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">XO Passivo</div>
+                        <div class="value">3.5kHz</div>
+                        <div class="detail">Kit Hertz</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">RCA</div>
+                        <div class="value">5V RMS</div>
+                        <div class="detail">+8dB boost</div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <!-- Volume Sensation -->
-        <button class="section-toggle" onclick="toggleSection(this,'volContent')">🎧 SPL por Visor — 5V RCA <span
-                class="arrow">▼</span></button>
-        <div id="volContent" class="section-content">
-            <div class="card">
-                <p style="font-size:10px;color:var(--text2);margin-bottom:8px">RCA: <strong
-                        style="color:var(--cyan)">5V</strong> = <strong style="color:var(--green)">+8dB
-                        headroom</strong>. Visor 0-30, curva não-linear.</p>
+        <div class="card">
+            <button class="section-toggle" onclick="toggleSection(this,'secSensation')"><span class="icon">🎧</span> SPL
+                por Nível do Visor</button>
+            <div class="section-content" id="secSensation">
                 <table id="volSensationTable">
                     <tr>
                         <th>Visor</th>
+                        <th>Pot%</th>
                         <th>SPL</th>
                         <th>W Fr</th>
                         <th>W Sub</th>
@@ -749,123 +739,23 @@
             </div>
         </div>
 
-        <!-- Equipamentos -->
-        <button class="section-toggle" onclick="toggleSection(this,'equipContent')">📋 Equipamentos <span
-                class="arrow">▼</span></button>
-        <div id="equipContent" class="section-content">
-            <div class="card">
-                <table>
-                    <tr>
-                        <th>Item</th>
-                        <th>Modelo</th>
-                        <th>RMS</th>
-                    </tr>
-                    <tr>
-                        <td>Módulo</td>
-                        <td>SD 800.4 EVO6</td>
-                        <td>4×132W / 2×400W brg</td>
-                    </tr>
-                    <tr>
-                        <td>Kit 2V</td>
-                        <td>Hertz DSK 165.3</td>
-                        <td>80W/lado</td>
-                    </tr>
-                    <tr>
-                        <td>Sub</td>
-                        <td>Hertz ES 200.5</td>
-                        <td>200W</td>
-                    </tr>
-                    <tr>
-                        <td>Manta</td>
-                        <td>Viscoelástica</td>
-                        <td>Portas</td>
-                    </tr>
-                    <tr>
-                        <td>Conversor RCA</td>
-                        <td>Hi-Lo Converter</td>
-                        <td>5V RMS</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <!-- Checklist -->
-        <button class="section-toggle" onclick="toggleSection(this,'checkContent')">📝 Checklist Instalação <span
-                class="arrow">▼</span></button>
-        <div id="checkContent" class="section-content">
-            <div class="card">
-                <table>
-                    <tr>
-                        <td>✅</td>
-                        <td>Manta portas dianteiras</td>
-                        <td><span class="badge on">Essencial</span></td>
-                    </tr>
-                    <tr>
-                        <td>✅</td>
-                        <td>Crossover passivo Hertz</td>
-                        <td><span class="badge on">Do kit</span></td>
-                    </tr>
-                    <tr>
-                        <td>✅</td>
-                        <td>Cabo 7 AWG (10mm²)</td>
-                        <td><span class="badge on">Obrigatório</span></td>
-                    </tr>
-                    <tr>
-                        <td>✅</td>
-                        <td>Fusível 40A</td>
-                        <td><span class="badge on">Segurança</span></td>
-                    </tr>
-                    <tr>
-                        <td>✅</td>
-                        <td>Terra sólido</td>
-                        <td><span class="badge on">Performance</span></td>
-                    </tr>
-                    <tr>
-                        <td>⚠️</td>
-                        <td>RCA blindado</td>
-                        <td><span class="badge on">Recomendado</span></td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-
-        <!-- Analysis -->
-        <button class="section-toggle" onclick="toggleSection(this,'analysisContent')">🧠 Análise Técnica <span
-                class="arrow">▼</span></button>
-        <div id="analysisContent" class="section-content">
-            <div class="card">
-                <div class="analysis-col">
-                    <h3>Sub + Kit 2 Vias</h3>
-                    <p>Crossover em <strong style="color:var(--green)">80Hz</strong> é ideal. HPF protege mid-bass. Sub
-                        cobre 30–80Hz.</p>
-                    <h3>Sub-Bass (~+6dB)</h3>
-                    <p>Pico em ~+6dB. Grave profundo sem mascarar médios.</p>
-                    <h3>Médios (200–550Hz)</h3>
-                    <p>Depressão de ~-1.5dB é <strong style="color:var(--orange)">inerente</strong> a mid-bass 6.5" em
-                        porta. Manta reduz de -4dB para -1.5dB.</p>
-                </div>
-            </div>
-        </div>
-
-        <div style="text-align:center;padding:20px 0;font-size:9px;color:var(--border)">Car Audio Analyzer V4 Mobile —
-            VW Up! TSI 2017 — RCA 5V</div>
     </div>
 
     <script>
         function toggleSection(btn, id) { const c = document.getElementById(id); const open = c.classList.toggle('open'); btn.classList.toggle('open', open) }
 
-        function genFreqs() { const f = []; for (let i = Math.log10(20); i <= Math.log10(20000); i += 0.03)f.push(Math.pow(10, i)); return f }
+        function genFreqs() { const f = []; for (let i = Math.log10(20); i <= Math.log10(20000); i += 0.025) f.push(Math.pow(10, i)); return f }
         const freqs = genFreqs();
 
         const vRCA = 5.0, vRef = 2.0;
         const rcaBoostDB = 20 * Math.log10(vRCA / vRef);
 
-        // V4: Presets
+        // V4.1: Presets calibrados — MESMA RAZÃO (78:65 = 0.833) em todos
         const presets = {
-            max: { gF: 78, gS: 65, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Ganho alto — Performance máxima.' },
-            potente: { gF: 40, gS: 30, emoji: '💪', name: 'Potente', desc: '💪 Ganho moderado — Versátil, empolgado.' },
-            media: { gF: 30, gS: 20, emoji: '🎵', name: 'Média', desc: '🎵 Ganho conservador — Dia a dia confortável.' },
-            natural: { gF: 17, gS: 11, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Ganho mínimo — Máx ~113dB.' }
+            max: { gF: 78, gS: 65, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Curva de referência. ~126dB máx.' },
+            potente: { gF: 40, gS: 33, emoji: '💪', name: 'Potente', desc: '💪 Mesma curva do Máximo, volume de estrada. ~121dB máx.' },
+            media: { gF: 30, gS: 25, emoji: '🎵', name: 'Média', desc: '🎵 Mesma curva, dia a dia confortável. ~119dB máx.' },
+            natural: { gF: 15, gS: 13, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Mesma curva, ~113dB máx. Bass +1 se quiser mais corpo.' }
         };
         let activePreset = 'potente';
 
@@ -881,7 +771,6 @@
             updateAll();
         }
 
-        // V4: VW Up! TSI display → power mapping
         function displayToPower(d) {
             const pts = [[0, 0], [5, 0.03], [10, 0.09], [15, 0.22], [20, 0.50], [25, 0.77], [27, 0.80], [30, 1.00]];
             if (d <= 0) return 0.0001;
@@ -895,8 +784,8 @@
             return 1.0;
         }
 
-        function hpf12(f, fc) { return -10 * Math.log10(1 + Math.pow(fc / f, 4)) }
-        function lpf12(f, fc) { return -10 * Math.log10(1 + Math.pow(f / fc, 4)) }
+        function hpf12(f, fc) { const r = fc / f; return -10 * Math.log10(1 + Math.pow(r, 4)) }
+        function lpf12(f, fc) { const r = f / fc; return -10 * Math.log10(1 + Math.pow(r, 4)) }
 
         function subResponse(f) {
             if (f < 20) return -40;
@@ -928,14 +817,14 @@
         }
 
         function cabinTF(f) {
-            let g = 0;
-            if (f < 200) g += 7 * Math.pow(Math.max(0, (200 - f) / 200), 1.3);
-            g += 1.2 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(65)) / 0.1, 2));
-            g += 0.8 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(130)) / 0.08, 2));
-            g -= 1.5 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(250)) / 0.12, 2));
-            g += 0.6 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(180)) / 0.1, 2));
-            if (f > 5000) g -= 2 * Math.log10(f / 5000);
-            return g;
+            let gain = 0;
+            if (f < 200) gain += 7 * Math.pow(Math.max(0, (200 - f) / 200), 1.3);
+            gain += 1.2 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(65)) / 0.1, 2));
+            gain += 0.8 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(130)) / 0.08, 2));
+            gain -= 1.5 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(250)) / 0.12, 2));
+            gain += 0.6 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(180)) / 0.1, 2));
+            if (f > 5000) gain -= 2 * Math.log10(f / 5000);
+            return gain;
         }
 
         function harmanTarget(f) {
@@ -946,30 +835,30 @@
             return t;
         }
 
-        let cI, cC, cD, cF;
-        const mobileFont = { size: 8 }, mobileTitleFont = { size: 9 };
+        let chartIndividual, chartCombined, chartDecomp, chartFilters;
+        const mobileFont = { size: 8 };
 
         function initCharts() {
-            const base = {
-                responsive: true, maintainAspectRatio: false, animation: { duration: 0 },
+            const commonOpts = {
+                responsive: true, maintainAspectRatio: false,
                 scales: {
                     x: {
-                        type: 'logarithmic', min: 20, max: 20000, title: { display: true, text: 'Hz', color: '#a0a0b0', font: mobileTitleFont },
+                        type: 'logarithmic', min: 20, max: 20000, title: { display: true, text: 'Frequência (Hz)', color: '#a0a0b0', font: mobileFont },
                         ticks: {
-                            color: '#a0a0b0', font: mobileFont, maxTicksLimit: 8, callback: function (v) {
-                                const n = [20, 50, 100, 200, 500, 1000, 5000, 20000];
-                                if (n.includes(Math.round(v))) return v < 1000 ? v : (v / 1000) + 'k'; return ''
+                            color: '#a0a0b0', font: mobileFont, maxRotation: 0, callback: function (v) {
+                                const nice = [20, 50, 100, 200, 500, 1000, 5000, 20000];
+                                if (nice.includes(Math.round(v))) return v < 1000 ? v : (v / 1000) + 'k'; return ''
                             }
-                        }, grid: { color: 'rgba(42,42,58,.4)' }
+                        }, grid: { color: 'rgba(42,42,58,.5)' }
                     },
-                    y: { min: -30, max: 15, title: { display: false }, ticks: { color: '#a0a0b0', font: mobileFont, maxTicksLimit: 6 }, grid: { color: 'rgba(42,42,58,.2)' } }
+                    y: { min: -30, max: 15, title: { display: false }, ticks: { color: '#a0a0b0', font: mobileFont }, grid: { color: 'rgba(42,42,58,.3)' } }
                 },
                 plugins: {
                     legend: { display: false }, tooltip: {
-                        enabled: true, mode: 'nearest', intersect: false, titleFont: mobileFont, bodyFont: mobileFont,
+                        titleFont: mobileFont, bodyFont: mobileFont,
                         callbacks: {
-                            title: function (i) { const f = i[0].parsed.x; return f < 1000 ? Math.round(f) + 'Hz' : (f / 1000).toFixed(1) + 'kHz' },
-                            label: function (c) { return c.dataset.label + ': ' + c.parsed.y.toFixed(1) + 'dB' }
+                            title: function (items) { const f = items[0].parsed.x; return f < 1000 ? Math.round(f) + 'Hz' : (f / 1000).toFixed(1) + 'kHz' },
+                            label: function (ctx) { return ctx.dataset.label + ': ' + ctx.parsed.y.toFixed(1) + 'dB' }
                         }
                     }
                 },
@@ -977,94 +866,95 @@
                 elements: { point: { radius: 0 }, line: { tension: 0.3, borderWidth: 2 } }
             };
 
-            cI = new Chart(document.getElementById('chartIndividual'), {
+            chartIndividual = new Chart(document.getElementById('chartIndividual'), {
                 type: 'line', data: {
                     labels: freqs, datasets: [
-                        { label: 'Kit 2V', data: [], borderColor: '#a29bfe', backgroundColor: 'rgba(162,155,254,.08)', fill: true, borderWidth: 2.5 },
-                        { label: 'Mid', data: [], borderColor: '#fd79a8', borderWidth: 1.5, borderDash: [4, 3] },
-                        { label: 'Tw', data: [], borderColor: '#81ecec', borderWidth: 1.5, borderDash: [4, 3] },
-                        { label: 'Sub', data: [], borderColor: '#e17055', backgroundColor: 'rgba(225,112,85,.08)', fill: true, borderWidth: 2.5 }
+                        { label: 'Kit 2V', data: [], borderColor: '#a29bfe', backgroundColor: 'rgba(162,155,254,.1)', fill: true },
+                        { label: 'Mid', data: [], borderColor: '#fd79a8', borderDash: [4, 2], borderWidth: 1.5 },
+                        { label: 'Tw', data: [], borderColor: '#81ecec', borderDash: [4, 2], borderWidth: 1.5 },
+                        { label: 'Sub', data: [], borderColor: '#e17055', backgroundColor: 'rgba(225,112,85,.1)', fill: true }
                     ]
-                }, options: { ...base }
+                }, options: { ...commonOpts }
             });
 
-            const cOpts = JSON.parse(JSON.stringify(base));
+            const cOpts = JSON.parse(JSON.stringify(commonOpts));
             cOpts.scales.y.min = -20; cOpts.scales.y.max = 20;
-            cC = new Chart(document.getElementById('chartCombined'), {
+            chartCombined = new Chart(document.getElementById('chartCombined'), {
                 type: 'line', data: {
                     labels: freqs, datasets: [
-                        { label: 'Total', data: [], borderColor: '#6c5ce7', backgroundColor: 'rgba(108,92,231,.12)', borderWidth: 3, fill: true },
-                        { label: 'Hi-Fi Target', data: [], borderColor: 'rgba(249,202,36,.6)', borderWidth: 2, borderDash: [6, 4] },
-                        { label: '+3dB', data: [], borderColor: 'rgba(0,184,148,.15)', backgroundColor: 'rgba(0,184,148,.04)', borderWidth: 1, fill: '+1' },
-                        { label: '-3dB', data: [], borderColor: 'rgba(0,184,148,.15)', borderWidth: 1 }
+                        { label: 'Total', data: [], borderColor: '#6c5ce7', backgroundColor: 'rgba(108,92,231,.15)', borderWidth: 2.5, fill: true },
+                        { label: 'Harman', data: [], borderColor: 'rgba(249,202,36,.7)', borderWidth: 1.5, borderDash: [6, 3] },
+                        { label: '+3dB', data: [], borderColor: 'rgba(0,184,148,.2)', backgroundColor: 'rgba(0,184,148,.05)', borderWidth: 1, fill: '+1' },
+                        { label: '-3dB', data: [], borderColor: 'rgba(0,184,148,.2)', borderWidth: 1 }
                     ]
                 }, options: cOpts
             });
 
-            const dOpts = JSON.parse(JSON.stringify(base));
+            const dOpts = JSON.parse(JSON.stringify(commonOpts));
             dOpts.scales.y.min = -20; dOpts.scales.y.max = 20;
-            cD = new Chart(document.getElementById('chartDecomp'), {
+            chartDecomp = new Chart(document.getElementById('chartDecomp'), {
                 type: 'line', data: {
                     labels: freqs, datasets: [
-                        { label: 'Total', data: [], borderColor: '#6c5ce7', backgroundColor: 'rgba(108,92,231,.08)', borderWidth: 3, fill: true },
-                        { label: 'Sub', data: [], borderColor: '#e17055', borderWidth: 2, backgroundColor: 'rgba(225,112,85,.05)', fill: true },
-                        { label: 'Mid', data: [], borderColor: '#fd79a8', borderWidth: 2, backgroundColor: 'rgba(253,121,168,.05)', fill: true },
-                        { label: 'Tw', data: [], borderColor: '#81ecec', borderWidth: 2, backgroundColor: 'rgba(129,236,236,.05)', fill: true },
-                        { label: 'Alvo', data: [], borderColor: 'rgba(249,202,36,.5)', borderWidth: 2, borderDash: [6, 4] }
+                        { label: 'Total', data: [], borderColor: '#6c5ce7', backgroundColor: 'rgba(108,92,231,.10)', borderWidth: 2.5, fill: true },
+                        { label: 'Sub', data: [], borderColor: '#e17055', borderWidth: 1.5, backgroundColor: 'rgba(225,112,85,.06)', fill: true },
+                        { label: 'Mid', data: [], borderColor: '#fd79a8', borderWidth: 1.5, backgroundColor: 'rgba(253,121,168,.06)', fill: true },
+                        { label: 'Tw', data: [], borderColor: '#81ecec', borderWidth: 1.5, backgroundColor: 'rgba(129,236,236,.06)', fill: true },
+                        { label: 'Alvo', data: [], borderColor: 'rgba(249,202,36,.5)', borderWidth: 1.5, borderDash: [6, 3] }
                     ]
                 }, options: dOpts
             });
 
-            const fOpts = JSON.parse(JSON.stringify(base));
+            const fOpts = JSON.parse(JSON.stringify(commonOpts));
             fOpts.scales.y.min = -35; fOpts.scales.y.max = 5;
-            cF = new Chart(document.getElementById('chartFilters'), {
+            chartFilters = new Chart(document.getElementById('chartFilters'), {
                 type: 'line', data: {
                     labels: freqs, datasets: [
-                        { label: 'HPF', data: [], borderColor: '#00b894', borderWidth: 2.5 },
-                        { label: 'LPF', data: [], borderColor: '#e17055', borderWidth: 2.5 },
-                        { label: 'XO LP', data: [], borderColor: '#fdcb6e', borderWidth: 1.5, borderDash: [4, 3] },
-                        { label: 'XO HP', data: [], borderColor: '#81ecec', borderWidth: 1.5, borderDash: [4, 3] }
+                        { label: 'HPF', data: [], borderColor: '#00b894' },
+                        { label: 'LPF', data: [], borderColor: '#e17055' },
+                        { label: 'XO LP', data: [], borderColor: '#fdcb6e', borderWidth: 1.5, borderDash: [4, 2] },
+                        { label: 'XO HP', data: [], borderColor: '#81ecec', borderWidth: 1.5, borderDash: [4, 2] }
                     ]
                 }, options: fOpts
             });
             updateAll();
         }
 
-        function calcSPLat(gF, gS, vf) {
-            const pF = 132 * Math.pow(gF / 100, 2), pS = 400 * Math.pow(gS / 100, 2);
-            const sF = 93 + 10 * Math.log10(Math.max(.001, pF * vf)) + rcaBoostDB;
-            const sS = 87 + 10 * Math.log10(Math.max(.001, pS * vf)) + rcaBoostDB;
-            const sFB = sF + 3, sCab = sS + 8;
-            return { splSys: 10 * Math.log10(Math.pow(10, sFB / 10) + Math.pow(10, sCab / 10)), pwrF: pF * vf, pwrS: pS * vf };
+        function calcSPLat(gF, gS, volFactor) {
+            const pwrF = 132 * Math.pow(gF / 100, 2);
+            const pwrS = 400 * Math.pow(gS / 100, 2);
+            const splF = 93 + 10 * Math.log10(Math.max(0.001, pwrF * volFactor)) + rcaBoostDB;
+            const splS = 87 + 10 * Math.log10(Math.max(0.001, pwrS * volFactor)) + rcaBoostDB;
+            const sFB = splF + 3, sCab = splS + 8;
+            const sSys = 10 * Math.log10(Math.pow(10, sFB / 10) + Math.pow(10, sCab / 10));
+            return { splF: sFB, splS: sCab, splSys: sSys, pwrF: pwrF * volFactor, pwrS: pwrS * volFactor };
         }
 
-        function updateVolTable(gF, gS) {
-            const lvls = [
-                { d: 5, e: '🔈', desc: 'Fundo musical' },
-                { d: 10, e: '🔉', desc: 'Conversa c/ música' },
-                { d: 15, e: '🎵', desc: 'Volume de estrada' },
-                { d: 20, e: '🎯', desc: 'Dia a dia empolgado' },
-                { d: 25, e: '🔊', desc: 'Muito alto' },
-                { d: 27, e: '⚠️', desc: 'Limite limpo rádio' },
-                { d: 30, e: '🚫', desc: 'Máx — clipping!' }
+        function updateVolSensationTable(gF, gS) {
+            const levels = [
+                { d: 5, desc: 'Fundo leve' }, { d: 8, desc: 'Ambiente' },
+                { d: 10, desc: 'Conversa' }, { d: 12, desc: 'Cruising' },
+                { d: 15, desc: 'Estrada' }, { d: 18, desc: 'Animado' },
+                { d: 20, desc: 'Dia a dia' }, { d: 22, desc: 'Alto' },
+                { d: 25, desc: 'Performance' }, { d: 27, desc: 'Limite limpo' },
+                { d: 30, desc: 'Max — clip!' }
             ];
-            let h = '<tr><th>Visor</th><th>SPL</th><th>W Fr</th><th>W Sub</th><th>Sensação</th></tr>';
-            lvls.forEach(l => {
+            let html = '<tr><th>Visor</th><th>Pot</th><th>SPL</th><th>Fr</th><th>Sub</th><th>Nota</th></tr>';
+            levels.forEach(l => {
                 const pf = displayToPower(l.d);
                 const r = calcSPLat(gF, gS, pf);
-                const bg = l.d === 20 ? ' style="background:rgba(108,92,231,.1)"' : '';
-                h += `<tr${bg}><td>${l.e} ${l.d}</td><td>${r.splSys.toFixed(1)}</td><td>${r.pwrF.toFixed(1)}W</td><td>${r.pwrS.toFixed(1)}W</td><td style="font-size:9px">${l.desc}</td></tr>`;
+                const hl = l.d === 20 ? ' style="background:rgba(108,92,231,.1);font-weight:600"' : '';
+                html += `<tr${hl}><td>${l.d}</td><td>${(pf * 100).toFixed(0)}%</td><td>${r.splSys.toFixed(1)}</td><td>${r.pwrF.toFixed(0)}W</td><td>${r.pwrS.toFixed(0)}W</td><td>${l.desc}</td></tr>`;
             });
-            document.getElementById('volSensationTable').innerHTML = h;
+            document.getElementById('volSensationTable').innerHTML = html;
         }
 
         function updateAll() {
-            const gF = +document.getElementById('gainFront').value;
-            const gS = +document.getElementById('gainSub').value;
-            const hpf = +document.getElementById('hpfFreq').value;
-            const lpf = +document.getElementById('lpfFreq').value;
-            const visor = +document.getElementById('volSource').value;
-            const vf = displayToPower(visor);
+            const gF = parseInt(document.getElementById('gainFront').value);
+            const gS = parseInt(document.getElementById('gainSub').value);
+            const hpf = parseInt(document.getElementById('hpfFreq').value);
+            const lpf = parseInt(document.getElementById('lpfFreq').value);
+            const visor = parseInt(document.getElementById('volSource').value);
+            const volFactor = displayToPower(visor);
 
             document.getElementById('gainFrontVal').textContent = gF + '%';
             document.getElementById('gainSubVal').textContent = gS + '%';
@@ -1072,93 +962,99 @@
             document.getElementById('lpfVal').textContent = lpf + ' Hz';
             document.getElementById('visorDisplay').textContent = visor;
 
-            const pwrF = 132 * Math.pow(gF / 100, 2), pwrS = 400 * Math.pow(gS / 100, 2);
-            const splF = 93 + 10 * Math.log10(Math.max(.001, pwrF * vf)) + rcaBoostDB;
-            const splS = 87 + 10 * Math.log10(Math.max(.001, pwrS * vf)) + rcaBoostDB;
-            const sCab = splS + 8, sFB = splF + 3;
-            const sSys = 10 * Math.log10(Math.pow(10, sFB / 10) + Math.pow(10, sCab / 10));
+            const pwrF = 132 * Math.pow(gF / 100, 2);
+            const pwrS = 400 * Math.pow(gS / 100, 2);
 
-            document.getElementById('splFront').textContent = sFB.toFixed(1);
-            document.getElementById('splSub').textContent = sCab.toFixed(1);
-            document.getElementById('splTotal').textContent = sSys.toFixed(1);
-            document.getElementById('splPeak').textContent = (sSys + 3).toFixed(1);
-            document.getElementById('pwrFront').textContent = (pwrF * vf).toFixed(0) + 'W';
-            document.getElementById('pwrSub').textContent = (pwrS * vf).toFixed(0) + 'W';
+            const splF = 93 + 10 * Math.log10(Math.max(0.001, pwrF * volFactor)) + rcaBoostDB;
+            const splS = 87 + 10 * Math.log10(Math.max(0.001, pwrS * volFactor)) + rcaBoostDB;
+            const splSCabin = splS + 8;
+            const splFBoth = splF + 3;
+            const splSys = 10 * Math.log10(Math.pow(10, splFBoth / 10) + Math.pow(10, splSCabin / 10));
+
+            document.getElementById('splFront').textContent = splFBoth.toFixed(1) + ' dB';
+            document.getElementById('splSub').textContent = splSCabin.toFixed(1) + ' dB';
+            document.getElementById('splTotal').textContent = splSys.toFixed(1) + ' dB';
+            document.getElementById('splPeak').textContent = (splSys + 3).toFixed(1) + ' dB';
+            document.getElementById('pwrFront').textContent = (pwrF * volFactor).toFixed(0) + 'W';
+            document.getElementById('pwrSub').textContent = (pwrS * volFactor).toFixed(0) + 'W';
 
             document.getElementById('cfgGainF').textContent = gF + '%';
             document.getElementById('cfgGainS').textContent = gS + '%';
-            document.getElementById('cfgHPF').textContent = hpf + ' Hz';
-            document.getElementById('cfgLPF').textContent = lpf + ' Hz';
+            document.getElementById('cfgHPF').textContent = hpf + 'Hz';
+            document.getElementById('cfgLPF').textContent = lpf + 'Hz';
             document.getElementById('cfgVol').textContent = visor;
-            document.getElementById('cfgPwrF').textContent = '≈ ' + (pwrF * vf).toFixed(0) + 'W/ch';
-            document.getElementById('cfgPwrS').textContent = '≈ ' + (pwrS * vf).toFixed(0) + 'W brg';
+            document.getElementById('cfgPwrF').textContent = '≈ ' + (pwrF * volFactor).toFixed(0) + 'W/ch';
+            document.getElementById('cfgPwrS').textContent = '≈ ' + (pwrS * volFactor).toFixed(0) + 'W brg';
 
-            const gFdB = 20 * Math.log10(Math.max(.01, gF / 100)) + 20 * Math.log10(Math.max(.01, Math.sqrt(vf))) + rcaBoostDB;
-            const gSdB = 20 * Math.log10(Math.max(.01, gS / 100)) + 20 * Math.log10(Math.max(.01, Math.sqrt(vf))) + rcaBoostDB;
+            const gainFdB = 20 * Math.log10(Math.max(0.01, gF / 100)) + 20 * Math.log10(Math.max(0.01, Math.sqrt(volFactor))) + rcaBoostDB;
+            const gainSdB = 20 * Math.log10(Math.max(0.01, gS / 100)) + 20 * Math.log10(Math.max(0.01, Math.sqrt(volFactor))) + rcaBoostDB;
 
-            // Individual curves (raw)
-            const kD = [], mD = [], tD = [], sD = [];
+            const kitData = [], mbData = [], twData = [], subData = [];
             freqs.forEach(f => {
                 const mb = midBassResponse(f) + hpf12(f, hpf);
                 const tw = tweeterResponse(f) + hpf12(f, hpf);
-                kD.push({ x: f, y: 10 * Math.log10(Math.pow(10, mb / 10) + Math.pow(10, tw / 10)) });
-                mD.push({ x: f, y: mb }); tD.push({ x: f, y: tw });
-                sD.push({ x: f, y: subResponse(f) + lpf12(f, lpf) });
+                kitData.push({ x: f, y: 10 * Math.log10(Math.pow(10, mb / 10) + Math.pow(10, tw / 10)) });
+                mbData.push({ x: f, y: mb }); twData.push({ x: f, y: tw });
+                subData.push({ x: f, y: subResponse(f) + lpf12(f, lpf) });
             });
-            cI.data.datasets[0].data = kD; cI.data.datasets[1].data = mD;
-            cI.data.datasets[2].data = tD; cI.data.datasets[3].data = sD;
-            cI.update('none');
+            chartIndividual.data.datasets[0].data = kitData;
+            chartIndividual.data.datasets[1].data = mbData;
+            chartIndividual.data.datasets[2].data = twData;
+            chartIndividual.data.datasets[3].data = subData;
+            chartIndividual.update('none');
 
-            // Combined + decomposition
-            const coD = [], taD = [], uD = [], lD = [];
-            const dSub = [], dMb = [], dTw = [];
+            const combinedData = [], targetData = [], upperData = [], lowerData = [];
+            const decompSubData = [], decompMbData = [], decompTwData = [];
             freqs.forEach(f => {
-                const mb = midBassResponse(f) + hpf12(f, hpf) + gFdB;
-                const tw = tweeterResponse(f) + hpf12(f, hpf) + gFdB;
-                const sub = subResponse(f) + lpf12(f, lpf) + gSdB;
+                const mb = midBassResponse(f) + hpf12(f, hpf) + gainFdB;
+                const tw = tweeterResponse(f) + hpf12(f, hpf) + gainFdB;
+                const sub = subResponse(f) + lpf12(f, lpf) + gainSdB;
                 const cabin = cabinTF(f);
-                const tot = 10 * Math.log10(Math.max(1e-10, Math.pow(10, mb / 10) + Math.pow(10, tw / 10) + Math.pow(10, sub / 10))) + cabin;
-                coD.push({ x: f, y: tot });
-                dSub.push({ x: f, y: sub + cabin });
-                dMb.push({ x: f, y: mb + cabin });
-                dTw.push({ x: f, y: tw + cabin });
-                const t = harmanTarget(f);
-                taD.push({ x: f, y: t }); uD.push({ x: f, y: t + 3 }); lD.push({ x: f, y: t - 3 });
+                const totalDB = 10 * Math.log10(Math.max(1e-10, Math.pow(10, mb / 10) + Math.pow(10, tw / 10) + Math.pow(10, sub / 10))) + cabin;
+                combinedData.push({ x: f, y: totalDB });
+                decompSubData.push({ x: f, y: sub + cabin });
+                decompMbData.push({ x: f, y: mb + cabin });
+                decompTwData.push({ x: f, y: tw + cabin });
+                const target = harmanTarget(f);
+                targetData.push({ x: f, y: target });
+                upperData.push({ x: f, y: target + 3 });
+                lowerData.push({ x: f, y: target - 3 });
             });
-            const ref = coD.find(d => d.x >= 1000);
-            const off = ref ? ref.y : 0;
-            coD.forEach(d => d.y -= off);
-            dSub.forEach(d => d.y -= off);
-            dMb.forEach(d => d.y -= off);
-            dTw.forEach(d => d.y -= off);
+            const ref1k = combinedData.find(d => d.x >= 1000);
+            const offset = ref1k ? ref1k.y : 0;
+            combinedData.forEach(d => d.y -= offset);
+            decompSubData.forEach(d => d.y -= offset);
+            decompMbData.forEach(d => d.y -= offset);
+            decompTwData.forEach(d => d.y -= offset);
 
-            cC.data.datasets[0].data = coD; cC.data.datasets[1].data = taD;
-            cC.data.datasets[2].data = uD; cC.data.datasets[3].data = lD;
-            cC.update('none');
+            chartCombined.data.datasets[0].data = combinedData;
+            chartCombined.data.datasets[1].data = targetData;
+            chartCombined.data.datasets[2].data = upperData;
+            chartCombined.data.datasets[3].data = lowerData;
+            chartCombined.update('none');
 
-            cD.data.datasets[0].data = coD.map(d => ({ ...d }));
-            cD.data.datasets[1].data = dSub; cD.data.datasets[2].data = dMb;
-            cD.data.datasets[3].data = dTw; cD.data.datasets[4].data = taD;
-            cD.update('none');
+            chartDecomp.data.datasets[0].data = combinedData.map(d => ({ ...d }));
+            chartDecomp.data.datasets[1].data = decompSubData;
+            chartDecomp.data.datasets[2].data = decompMbData;
+            chartDecomp.data.datasets[3].data = decompTwData;
+            chartDecomp.data.datasets[4].data = targetData;
+            chartDecomp.update('none');
 
-            // Filters
-            const hD = [], lpD = [], xL = [], xH = [];
+            const hpfData = [], lpfData = [], xoLpf = [], xoHpf = [];
             freqs.forEach(f => {
-                hD.push({ x: f, y: hpf12(f, hpf) }); lpD.push({ x: f, y: lpf12(f, lpf) });
-                xL.push({ x: f, y: lpf12(f, 3500) }); xH.push({ x: f, y: hpf12(f, 3500) });
+                hpfData.push({ x: f, y: hpf12(f, hpf) });
+                lpfData.push({ x: f, y: lpf12(f, lpf) });
+                xoLpf.push({ x: f, y: lpf12(f, 3500) });
+                xoHpf.push({ x: f, y: hpf12(f, 3500) });
             });
-            cF.data.datasets[0].data = hD; cF.data.datasets[1].data = lpD;
-            cF.data.datasets[2].data = xL; cF.data.datasets[3].data = xH;
-            cF.update('none');
+            chartFilters.data.datasets[0].data = hpfData;
+            chartFilters.data.datasets[1].data = lpfData;
+            chartFilters.data.datasets[2].data = xoLpf;
+            chartFilters.data.datasets[3].data = xoHpf;
+            chartFilters.update('none');
 
-            updateVolTable(gF, gS);
+            updateVolSensationTable(gF, gS);
         }
-
-        // Touch-optimized
-        document.querySelectorAll('input[type=range]').forEach(el => {
-            el.addEventListener('input', updateAll);
-            el.addEventListener('touchstart', e => e.stopPropagation(), { passive: true });
-        });
 
         window.addEventListener('load', initCharts);
     </script>

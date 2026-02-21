@@ -451,7 +451,7 @@
         <h1>🔊 Car Audio Frequency Analyzer</h1>
         <p>Configuração Hi-Fi otimizada com presets de ganho + mapeamento do visor</p>
         <div class="car-badge">🚗 VW Up! TSI 2017 — Cabine ~2.6 m³</div>
-        <div class="version">V4.1 — Presets Calibrados (razão 78:65) • Visor 0-30 • RCA 5V • Decomposição</div>
+        <div class="version">V4 — Presets de Ganho • Visor 0-30 • Conversor RCA 5V • Decomposição por Driver</div>
     </div>
     <div class="container">
 
@@ -527,15 +527,15 @@
                 </div>
                 <div id="presetDesc"
                     style="font-size:11px;color:var(--text2);margin-bottom:10px;padding:6px 10px;background:var(--card2);border-radius:6px;border-left:3px solid var(--accent)">
-                    💪 Ganho moderado — Mesma curva do Máximo, volume de estrada. ~121dB máx.
+                    💪 Ganho moderado — Volume de estrada a empolgado. Boa versatilidade.
                 </div>
                 <div class="slider-group">
                     <label>Ganho Canais 1+2 (Frente — Kit 2 Vias) <span id="gainFrontVal">40%</span></label>
                     <input type="range" id="gainFront" min="0" max="100" value="40" oninput="updateAll()">
                 </div>
                 <div class="slider-group">
-                    <label>Ganho Canais 3+4 Bridge (Subwoofer) <span id="gainSubVal">33%</span></label>
-                    <input type="range" id="gainSub" min="0" max="100" value="33" oninput="updateAll()">
+                    <label>Ganho Canais 3+4 Bridge (Subwoofer) <span id="gainSubVal">30%</span></label>
+                    <input type="range" id="gainSub" min="0" max="100" value="30" oninput="updateAll()">
                 </div>
                 <h3>Filtros do Módulo</h3>
                 <div class="slider-group">
@@ -553,9 +553,9 @@
                     </label>
                     <input type="range" id="volSource" min="0" max="30" value="20" oninput="updateAll()">
                 </div>
-                <div class="tip"><strong>Curva calibrada:</strong> Todos os presets mantêm a mesma razão front/sub
-                    (78:65 = 0.833),
-                    garantindo a mesma personalidade sonora em qualquer nível de volume.</div>
+                <div class="tip"><strong>Dica:</strong> O slider de volume agora corresponde ao número mostrado no visor
+                    da mídia do seu Up! TSI (0 a 30). Selecione um preset acima para ajustar os ganhos ao seu estilo.
+                </div>
             </div>
             <div class="card">
                 <h2><span class="icon">📊</span> SPL Estimado — Banco do Motorista</h2>
@@ -650,8 +650,8 @@
             </div>
             <div class="chart-wrap tall"><canvas id="chartCombined"></canvas></div>
             <div class="tip"><strong>Interpretação:</strong> A curva roxa é a resposta estimada no banco do motorista. A
-                curva dourada é a referência Hi-Fi (Harman target + bass shelf moderado ~+6dB). Todos os presets
-                mantêm esta mesma forma — só muda o volume.</div>
+                curva dourada é a referência Hi-Fi (Harman target + bass shelf moderado ~+6dB). Quanto mais próximas,
+                melhor.</div>
         </div>
 
         <!-- Decomposition Chart -->
@@ -702,23 +702,22 @@
                 <h2><span class="icon">🎚️</span> EQ Recomendado — Rádio Original VW Up! (3 Bandas)</h2>
                 <p style="font-size:12px;color:var(--text2);margin-bottom:6px">O rádio original do Up! TSI 2017 possui
                     apenas <strong style="color:var(--accent2)">3 bandas de equalização: Bass, Mid e Treble</strong>.
-                    Ajuste otimizado para preservar a curva modelada.</p>
+                </p>
                 <div class="eq-3band">
                     <div class="eq-knob">
                         <div class="band-name">🔈 BASS</div>
                         <div class="band-range">Região: ~60–250 Hz</div>
-                        <div class="band-value">0</div>
-                        <div class="band-reason">Preservar a curva de grave modelada. Sub + cabin gain já produzem o
-                            <strong style="color:var(--green)">equilíbrio correto</strong> da curva desejada.
+                        <div class="band-value">-2</div>
+                        <div class="band-reason">O sub + cabin gain já entregam graves com sobra. Reduzir evita
+                            <strong style="color:var(--orange)">boom e embolamento</strong>.
                         </div>
                     </div>
                     <div class="eq-knob">
                         <div class="band-name">🎙️ MID</div>
                         <div class="band-range">Região: ~500–2000 Hz</div>
                         <div class="band-value">+1</div>
-                        <div class="band-reason">Compensa <strong style="color:var(--cyan)">dip inerente
-                                200-500Hz</strong>
-                            do mid-bass em porta. Mais presença e clareza.</div>
+                        <div class="band-reason">Leve boost compensa a <strong style="color:var(--cyan)">atenuação
+                                natural da cabine</strong> nos médios.</div>
                     </div>
                     <div class="eq-knob">
                         <div class="band-name">✨ TREBLE</div>
@@ -729,10 +728,7 @@
                     </div>
                 </div>
                 <div class="tip"><strong>Importante:</strong> Deixe <strong>Loudness e Bass Boost DESLIGADOS</strong> no
-                    rádio.
-                    Para o preset Volume Natural, experimente <strong style="color:var(--orange)">Bass +1</strong> se
-                    sentir
-                    falta de corpo em volumes baixos (compensação Fletcher-Munson).</div>
+                    rádio.</div>
             </div>
             <div class="card">
                 <h2><span class="icon">✅</span> Configuração Final Recomendada</h2>
@@ -744,8 +740,8 @@
                     </div>
                     <div class="config-item">
                         <div class="title">Ganho Sub (Ch 3+4 Bridge)</div>
-                        <div class="value" id="cfgGainS">33%</div>
-                        <div class="detail" id="cfgPwrS">≈ 44W bridge</div>
+                        <div class="value" id="cfgGainS">30%</div>
+                        <div class="detail" id="cfgPwrS">≈ 36W bridge</div>
                     </div>
                     <div class="config-item">
                         <div class="title">HPF Frente</div>
@@ -765,7 +761,7 @@
                     <div class="config-item">
                         <div class="title">Preset Ativo</div>
                         <div class="value" id="cfgPreset">💪 Potente</div>
-                        <div class="detail">Razão 78:65 preservada</div>
+                        <div class="detail">Ganho moderado, versátil</div>
                     </div>
                     <div class="config-item">
                         <div class="title">Crossover Passivo</div>
@@ -823,10 +819,9 @@
                     <h3>Integração Sub + Kit 2 Vias</h3>
                     <p>O ponto de crossover em <strong style="color:var(--green)">80 Hz</strong> é ideal: HPF protege o
                         mid-bass e reduz distorção. Sub cobre 30–80Hz com sobra.</p>
-                    <h3 style="margin-top:14px">Razão de Ganho Calibrada (78:65)</h3>
-                    <p>Todos os presets mantêm a razão <strong style="color:var(--gold)">Sub = Front × 0.833</strong>.
-                        Isso preserva o equilíbrio entre grave/médio/agudo — a curva fica idêntica, apenas o volume
-                        muda.</p>
+                    <h3 style="margin-top:14px">Sub-Bass Controlado (~+6dB)</h3>
+                    <p>Pico de 50Hz próximo de <strong style="color:var(--gold)">+6dB</strong>. Grave profundo e
+                        marcante sem mascarar os médios.</p>
                     <h3 style="margin-top:14px">Cabin Gain</h3>
                     <p>A cabine do Up! (~2.6m³) gera <strong style="color:var(--cyan)">cabin gain de +6 a +10dB</strong>
                         abaixo de 60Hz.</p>
@@ -835,21 +830,19 @@
                     <h3>Zona de Médios (200–550Hz)</h3>
                     <p>Leve depressão é <strong style="color:var(--orange)">característica inerente</strong> a mid-bass
                         6.5" em porta. A manta reduz de -4dB para -1.5dB.</p>
-                    <h3 style="margin-top:14px">EQ Bass = 0 (Flat)</h3>
-                    <p>O modelo prediz a resposta SEM EQ do rádio. <strong style="color:var(--green)">Bass flat</strong>
-                        preserva a curva modelada no mundo real. Reduzir o Bass tiraria grave que a curva desejada
-                        inclui.</p>
+                    <h3 style="margin-top:14px">Manta Acústica</h3>
+                    <p><strong style="color:var(--green)">Fundamental</strong> para médios limpos — elimina ressonâncias
+                        da porta metálica.</p>
                     <h3 style="margin-top:14px">Seu Perfil Sonoro</h3>
                     <p>Curva-alvo: <strong style="color:var(--gold)">Harman Target</strong> com <strong
-                            style="color:var(--pink)">bass shelf +3dB</strong> — grave presente, musical e empolgante
-                        sem mascarar detalhes.</p>
+                            style="color:var(--pink)">bass shelf +6dB</strong>.</p>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Volume Sensation -->
+    <!-- Volume Sensation Note -->
     <div class="container">
         <div class="card" style="margin-top:16px">
             <h2><span class="icon">🎧</span> SPL por Nível do Visor — VW Up! TSI + RCA 5V</h2>
@@ -879,12 +872,12 @@
         const vRCA = 5.0, vRef = 2.0;
         const rcaBoostDB = 20 * Math.log10(vRCA / vRef); // ~+7.96 dB
 
-        // V4.1: Presets calibrados — MESMA RAZÃO front/sub (78:65 = 0.833)
+        // V4: Preset definitions
         const presets = {
-            max: { gF: 78, gS: 65, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Performance máxima — Curva de referência. ~126dB máx. Razão 78:65.' },
-            potente: { gF: 40, gS: 33, emoji: '💪', name: 'Potente', desc: '💪 Ganho moderado — Mesma curva do Máximo, volume de estrada. ~121dB máx.' },
-            media: { gF: 30, gS: 25, emoji: '🎵', name: 'Média', desc: '🎵 Confortável — Mesma curva, dia a dia tranquilo. ~119dB máx.' },
-            natural: { gF: 15, gS: 13, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Volume original amplificado — Mesma curva, ~113dB máx. EQ Bass +1 opcional.' }
+            max: { gF: 78, gS: 65, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Ganho alto — Performance máxima com qualidade. SPL elevado em todos os níveis.' },
+            potente: { gF: 40, gS: 30, emoji: '💪', name: 'Potente', desc: '💪 Ganho moderado — Volume de estrada a empolgado. Boa versatilidade.' },
+            media: { gF: 30, gS: 20, emoji: '🎵', name: 'Média', desc: '🎵 Ganho conservador — Confortável no dia a dia. Mais headroom disponível.' },
+            natural: { gF: 17, gS: 11, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Ganho mínimo — Semelhante ao volume original amplificado. Máx ~113dB.' }
         };
         let activePreset = 'potente';
 
