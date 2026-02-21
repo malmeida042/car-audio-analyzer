@@ -8,7 +8,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="format-detection" content="telephone=no">
-    <title>🔊 Car Audio Analyzer — Up! TSI</title>
+    <title>🔊 Car Audio Analyzer V3 — Up! TSI</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <style>
         * {
@@ -544,6 +544,34 @@
             <div class="chart-wrap tall"><canvas id="chartCombined"></canvas></div>
         </div>
 
+        <!-- Decomposition -->
+        <button class="section-toggle" onclick="toggleSection(this,'decompContent')">🔬 Decomposição — Contribuição por
+            Driver <span class="arrow">▼</span></button>
+        <div id="decompContent" class="section-content open">
+            <div class="card">
+                <div class="legend-custom">
+                    <div class="item">
+                        <div class="dot" style="background:#6c5ce7"></div> Total
+                    </div>
+                    <div class="item">
+                        <div class="dot" style="background:#e17055"></div> Sub
+                    </div>
+                    <div class="item">
+                        <div class="dot" style="background:#fd79a8"></div> Mid
+                    </div>
+                    <div class="item">
+                        <div class="dot" style="background:#81ecec"></div> Tw
+                    </div>
+                    <div class="item">
+                        <div class="dot" style="background:rgba(249,202,36,.5)"></div> Alvo
+                    </div>
+                </div>
+                <div class="chart-wrap tall"><canvas id="chartDecomp"></canvas></div>
+                <div class="tip"><strong>Como ler:</strong> Cada curva mostra a contribuição do driver COM filtros,
+                    ganho e cabin gain. Onde se sobrepõem, ambos contribuem. A curva roxa é a soma acústica.</div>
+            </div>
+        </div>
+
         <!-- Filters -->
         <button class="section-toggle" onclick="toggleSection(this,'filtersContent')">🔀 Filtros e Crossover <span
                 class="arrow">▼</span></button>
@@ -620,9 +648,41 @@
                     <div class="detail">Sem clip</div>
                 </div>
                 <div class="config-item">
-                    <div class="title">XO Passivo</div>
-                    <div class="value">3.5 kHz</div>
-                    <div class="detail">Kit Hertz</div>
+                    <div class="title">RCA Converter</div>
+                    <div class="value">5V RMS</div>
+                    <div class="detail">+8dB headroom</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Volume Sensation -->
+        <button class="section-toggle" onclick="toggleSection(this,'volContent')">🎧 Sensação por Volume — 5V RCA <span
+                class="arrow">▼</span></button>
+        <div id="volContent" class="section-content">
+            <div class="card">
+                <p style="font-size:11px;color:var(--text2);margin-bottom:8px">Conversor RCA: <strong
+                        style="color:var(--cyan)">5V RMS</strong> = <strong style="color:var(--green)">+8dB
+                        headroom</strong> vs head unit padrão 2V.</p>
+                <table id="volSensationTable">
+                    <tr>
+                        <th>Vol</th>
+                        <th>SPL</th>
+                        <th>W Fr</th>
+                        <th>W Sub</th>
+                        <th>Sensação</th>
+                    </tr>
+                </table>
+                <div class="analysis-col" style="margin-top:10px">
+                    <h3>🔉 Abaixo de 75%</h3>
+                    <p>Sistema <strong style="color:var(--green)">totalmente linear</strong>. Sub suave, médios
+                        detalhados, agudos arejados. Ideal para conversas e viagens longas. Hi-Fi de sala.</p>
+                    <h3>🎯 75% — Sweet Spot</h3>
+                    <p><strong style="color:var(--gold)">Ponto ótimo</strong>. Bass shelf +6dB no peito. Médios firmes.
+                        Tweeters definidos. Máxima eficiência com amplo headroom (5V).</p>
+                    <h3>🔊 Acima de 75%</h3>
+                    <p>Graves <strong style="color:var(--orange)">viscerais</strong>. Sub perto do limite. Sinal limpo
+                        pelo 5V. Acima de 90%: monitorar temperatura. <strong style="color:var(--red)">Ganho sub
+                            ≤75%</strong>.</p>
                 </div>
             </div>
         </div>
@@ -657,6 +717,11 @@
                         <td>Manta</td>
                         <td>Viscoelástica</td>
                         <td>Portas</td>
+                    </tr>
+                    <tr>
+                        <td>Conversor RCA</td>
+                        <td>Hi-Lo Converter</td>
+                        <td>5V RMS</td>
                     </tr>
                 </table>
             </div>
@@ -725,7 +790,7 @@
         </div>
 
         <div style="text-align:center;padding:20px 0;font-size:9px;color:var(--border)">Car Audio Analyzer V3 Mobile —
-            VW Up! TSI 2017</div>
+            VW Up! TSI 2017 — RCA 5V</div>
     </div>
 
     <script>
@@ -733,6 +798,10 @@
 
         function genFreqs() { const f = []; for (let i = Math.log10(20); i <= Math.log10(20000); i += 0.03)f.push(Math.pow(10, i)); return f }
         const freqs = genFreqs();
+
+        // RCA Converter: 5V output (vs typical 2V)
+        const vRCA = 5.0, vRef = 2.0;
+        const rcaBoostDB = 20 * Math.log10(vRCA / vRef); // ~+7.96 dB
 
         function hpf12(f, fc) { return -10 * Math.log10(1 + Math.pow(fc / f, 4)) }
         function lpf12(f, fc) { return -10 * Math.log10(1 + Math.pow(f / fc, 4)) }
@@ -785,7 +854,7 @@
             return t;
         }
 
-        let cI, cC, cF;
+        let cI, cC, cD, cF;
         const mobileFont = { size: 8 };
         const mobileTitleFont = { size: 9 };
 
@@ -841,6 +910,21 @@
                 }, options: cOpts
             });
 
+            // Decomposition chart
+            const dOpts = JSON.parse(JSON.stringify(base));
+            dOpts.scales.y.min = -20; dOpts.scales.y.max = 20;
+            cD = new Chart(document.getElementById('chartDecomp'), {
+                type: 'line', data: {
+                    labels: freqs, datasets: [
+                        { label: 'Total', data: [], borderColor: '#6c5ce7', backgroundColor: 'rgba(108,92,231,.08)', borderWidth: 3, fill: true },
+                        { label: 'Sub', data: [], borderColor: '#e17055', borderWidth: 2, backgroundColor: 'rgba(225,112,85,.05)', fill: true },
+                        { label: 'Mid', data: [], borderColor: '#fd79a8', borderWidth: 2, backgroundColor: 'rgba(253,121,168,.05)', fill: true },
+                        { label: 'Tw', data: [], borderColor: '#81ecec', borderWidth: 2, backgroundColor: 'rgba(129,236,236,.05)', fill: true },
+                        { label: 'Alvo', data: [], borderColor: 'rgba(249,202,36,.5)', borderWidth: 2, borderDash: [6, 4] }
+                    ]
+                }, options: dOpts
+            });
+
             const fOpts = JSON.parse(JSON.stringify(base));
             fOpts.scales.y.min = -35; fOpts.scales.y.max = 5;
             cF = new Chart(document.getElementById('chartFilters'), {
@@ -854,6 +938,32 @@
                 }, options: fOpts
             });
             updateAll();
+        }
+
+        function calcSPLat(gF, gS, volPct) {
+            const vF = volPct / 100;
+            const pF = 132 * Math.pow(gF / 100, 2), pS = 400 * Math.pow(gS / 100, 2);
+            const sF = 93 + 10 * Math.log10(Math.max(.1, pF * vF)) + rcaBoostDB;
+            const sS = 87 + 10 * Math.log10(Math.max(.1, pS * vF)) + rcaBoostDB;
+            const sFB = sF + 3, sCab = sS + 8;
+            return { splSys: 10 * Math.log10(Math.pow(10, sFB / 10) + Math.pow(10, sCab / 10)), pwrF: pF * vF, pwrS: pS * vF };
+        }
+
+        function updateVolTable(gF, gS) {
+            const lvls = [
+                { v: 25, l: '🔈 25%', d: 'Ambiente suave' },
+                { v: 50, l: '🔉 50%', d: 'Casual, conforto' },
+                { v: 75, l: '🎯 75%', d: 'Sweet spot Hi-Fi' },
+                { v: 90, l: '🔊 90%', d: 'Alta performance' },
+                { v: 100, l: '🔊 100%', d: 'Máximo — monitorar' }
+            ];
+            let h = '<tr><th>Vol</th><th>SPL</th><th>W Fr</th><th>W Sub</th><th>Sensação</th></tr>';
+            lvls.forEach(l => {
+                const r = calcSPLat(gF, gS, l.v);
+                const bg = l.v === 75 ? ' style="background:rgba(108,92,231,.1)"' : '';
+                h += `<tr${bg}><td>${l.l}</td><td>${r.splSys.toFixed(1)}</td><td>${r.pwrF.toFixed(0)}W</td><td>${r.pwrS.toFixed(0)}W</td><td style="font-size:9px">${l.d}</td></tr>`;
+            });
+            document.getElementById('volSensationTable').innerHTML = h;
         }
 
         function updateAll() {
@@ -870,8 +980,8 @@
             document.getElementById('volVal').textContent = vol + '%';
 
             const pwrF = 132 * Math.pow(gF / 100, 2), pwrS = 400 * Math.pow(gS / 100, 2), vF = vol / 100;
-            const splF = 93 + 10 * Math.log10(Math.max(.1, pwrF * vF));
-            const splS = 87 + 10 * Math.log10(Math.max(.1, pwrS * vF));
+            const splF = 93 + 10 * Math.log10(Math.max(.1, pwrF * vF)) + rcaBoostDB;
+            const splS = 87 + 10 * Math.log10(Math.max(.1, pwrS * vF)) + rcaBoostDB;
             const sCab = splS + 8, sFB = splF + 3;
             const sSys = 10 * Math.log10(Math.pow(10, sFB / 10) + Math.pow(10, sCab / 10));
 
@@ -890,9 +1000,10 @@
             document.getElementById('cfgPwrF').textContent = '≈ ' + (pwrF * vF).toFixed(0) + 'W/ch';
             document.getElementById('cfgPwrS').textContent = '≈ ' + (pwrS * vF).toFixed(0) + 'W brg';
 
-            const gFdB = 20 * Math.log10(Math.max(.01, gF / 100)) + 20 * Math.log10(Math.max(.01, vF));
-            const gSdB = 20 * Math.log10(Math.max(.01, gS / 100)) + 20 * Math.log10(Math.max(.01, vF));
+            const gFdB = 20 * Math.log10(Math.max(.01, gF / 100)) + 20 * Math.log10(Math.max(.01, vF)) + rcaBoostDB;
+            const gSdB = 20 * Math.log10(Math.max(.01, gS / 100)) + 20 * Math.log10(Math.max(.01, vF)) + rcaBoostDB;
 
+            // Individual curves (raw)
             const kD = [], mD = [], tD = [], sD = [];
             freqs.forEach(f => {
                 const mb = midBassResponse(f) + hpf12(f, hpf);
@@ -905,23 +1016,42 @@
             cI.data.datasets[2].data = tD; cI.data.datasets[3].data = sD;
             cI.update('none');
 
+            // Combined + decomposition
             const coD = [], taD = [], uD = [], lD = [];
+            const dSub = [], dMb = [], dTw = [];
             freqs.forEach(f => {
                 const mb = midBassResponse(f) + hpf12(f, hpf) + gFdB;
                 const tw = tweeterResponse(f) + hpf12(f, hpf) + gFdB;
                 const sub = subResponse(f) + lpf12(f, lpf) + gSdB;
-                const tot = 10 * Math.log10(Math.max(1e-10, Math.pow(10, mb / 10) + Math.pow(10, tw / 10) + Math.pow(10, sub / 10))) + cabinTF(f);
+                const cabin = cabinTF(f);
+                const tot = 10 * Math.log10(Math.max(1e-10, Math.pow(10, mb / 10) + Math.pow(10, tw / 10) + Math.pow(10, sub / 10))) + cabin;
                 coD.push({ x: f, y: tot });
+                dSub.push({ x: f, y: sub + cabin });
+                dMb.push({ x: f, y: mb + cabin });
+                dTw.push({ x: f, y: tw + cabin });
                 const t = harmanTarget(f);
                 taD.push({ x: f, y: t }); uD.push({ x: f, y: t + 3 }); lD.push({ x: f, y: t - 3 });
             });
             const ref = coD.find(d => d.x >= 1000);
             const off = ref ? ref.y : 0;
             coD.forEach(d => d.y -= off);
+            dSub.forEach(d => d.y -= off);
+            dMb.forEach(d => d.y -= off);
+            dTw.forEach(d => d.y -= off);
+
             cC.data.datasets[0].data = coD; cC.data.datasets[1].data = taD;
             cC.data.datasets[2].data = uD; cC.data.datasets[3].data = lD;
             cC.update('none');
 
+            // Decomposition chart
+            cD.data.datasets[0].data = coD.map(d => ({ ...d }));
+            cD.data.datasets[1].data = dSub;
+            cD.data.datasets[2].data = dMb;
+            cD.data.datasets[3].data = dTw;
+            cD.data.datasets[4].data = taD;
+            cD.update('none');
+
+            // Filters
             const hD = [], lpD = [], xL = [], xH = [];
             freqs.forEach(f => {
                 hD.push({ x: f, y: hpf12(f, hpf) }); lpD.push({ x: f, y: lpf12(f, lpf) });
@@ -930,6 +1060,9 @@
             cF.data.datasets[0].data = hD; cF.data.datasets[1].data = lpD;
             cF.data.datasets[2].data = xL; cF.data.datasets[3].data = xH;
             cF.update('none');
+
+            // Volume table
+            updateVolTable(gF, gS);
         }
 
         // Touch-optimized event handling
