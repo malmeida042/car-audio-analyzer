@@ -451,7 +451,7 @@
         <h1>🔊 Car Audio Frequency Analyzer</h1>
         <p>Configuração Hi-Fi otimizada com presets de ganho + mapeamento do visor</p>
         <div class="car-badge">🚗 VW Up! TSI 2017 — Cabine ~2.6 m³</div>
-        <div class="version">V4.1 — 5 Presets Calibrados (razão 78:65) • Visor 0-30 • RCA 5V • Decomposição</div>
+        <div class="version">V4.2 — 5 Presets Calibrados (razão 78:65) • Visor 0-30 • Corzus 2.5V • Decomposição</div>
     </div>
     <div class="container">
 
@@ -501,10 +501,10 @@
                 </tr>
                 <tr>
                     <td>Conversor RCA</td>
-                    <td>Hi-Lo Converter</td>
+                    <td>Corzus CVR 4.0 RMT</td>
                     <td>—</td>
                     <td>—</td>
-                    <td>5V RMS</td>
+                    <td>2.5V RMS</td>
                     <td>Sinal de referência amplificado</td>
                 </tr>
             </table>
@@ -529,15 +529,15 @@
                 </div>
                 <div id="presetDesc"
                     style="font-size:11px;color:var(--text2);margin-bottom:10px;padding:6px 10px;background:var(--card2);border-radius:6px;border-left:3px solid var(--accent)">
-                    💪 Ganho moderado — Mesma curva do Máximo, volume de estrada. ~121dB máx.
+                    💪 Ganho moderado — Mesma curva do Máximo, volume de estrada. ~118dB máx.
                 </div>
                 <div class="slider-group">
-                    <label>Ganho Canais 1+2 (Frente — Kit 2 Vias) <span id="gainFrontVal">40%</span></label>
-                    <input type="range" id="gainFront" min="0" max="100" value="40" oninput="updateAll()">
+                    <label>Ganho Canais 1+2 (Frente — Kit 2 Vias) <span id="gainFrontVal">55%</span></label>
+                    <input type="range" id="gainFront" min="0" max="100" value="55" oninput="updateAll()">
                 </div>
                 <div class="slider-group">
-                    <label>Ganho Canais 3+4 Bridge (Subwoofer) <span id="gainSubVal">33%</span></label>
-                    <input type="range" id="gainSub" min="0" max="100" value="33" oninput="updateAll()">
+                    <label>Ganho Canais 3+4 Bridge (Subwoofer) <span id="gainSubVal">46%</span></label>
+                    <input type="range" id="gainSub" min="0" max="100" value="46" oninput="updateAll()">
                 </div>
                 <h3>Filtros do Módulo</h3>
                 <div class="slider-group">
@@ -742,12 +742,12 @@
                 <div class="config-summary">
                     <div class="config-item">
                         <div class="title">Ganho Frente (Ch 1+2)</div>
-                        <div class="value" id="cfgGainF">40%</div>
+                        <div class="value" id="cfgGainF">55%</div>
                         <div class="detail" id="cfgPwrF">≈ 21W por canal</div>
                     </div>
                     <div class="config-item">
                         <div class="title">Ganho Sub (Ch 3+4 Bridge)</div>
-                        <div class="value" id="cfgGainS">33%</div>
+                        <div class="value" id="cfgGainS">46%</div>
                         <div class="detail" id="cfgPwrS">≈ 44W bridge</div>
                     </div>
                     <div class="config-item">
@@ -768,7 +768,7 @@
                     <div class="config-item">
                         <div class="title">Preset Ativo</div>
                         <div class="value" id="cfgPreset">💪 Potente</div>
-                        <div class="detail">Razão 78:65 preservada</div>
+                        <div class="detail">Corzus 2.5V calibrado</div>
                     </div>
                     <div class="config-item">
                         <div class="title">Crossover Passivo</div>
@@ -777,8 +777,8 @@
                     </div>
                     <div class="config-item">
                         <div class="title">RCA Converter</div>
-                        <div class="value">5V RMS</div>
-                        <div class="detail">+8dB headroom</div>
+                        <div class="value">2.5V RMS</div>
+                        <div class="detail">+2dB headroom</div>
                     </div>
                 </div>
                 <h3 style="margin-top:16px">Checklist de Instalação</h3>
@@ -855,10 +855,10 @@
     <!-- Volume Sensation -->
     <div class="container">
         <div class="card" style="margin-top:16px">
-            <h2><span class="icon">🎧</span> SPL por Nível do Visor — VW Up! TSI + RCA 5V</h2>
+            <h2><span class="icon">🎧</span> SPL por Nível do Visor — VW Up! TSI + Corzus 2.5V</h2>
             <div style="font-size:12px;line-height:1.7;color:var(--text2)">
-                <p style="margin-bottom:10px">Conversor RCA: <strong style="color:var(--cyan)">5V RMS</strong>
-                    = <strong style="color:var(--green)">+8dB de headroom</strong> vs head unit padrão 2V.
+                <p style="margin-bottom:10px">Conversor RCA: <strong style="color:var(--cyan)">2.5V RMS</strong>
+                    = <strong style="color:var(--green)">+2dB de headroom</strong> vs head unit padrão 2V.
                     O visor do Up! TSI vai de 0 a 30 com curva de potência não-linear.</p>
                 <table id="volSensationTable">
                     <tr>
@@ -878,16 +878,16 @@
         function genFreqs() { const f = []; for (let i = Math.log10(20); i <= Math.log10(20000); i += 0.02)f.push(Math.pow(10, i)); return f }
         const freqs = genFreqs();
 
-        const vRCA = 5.0, vRef = 2.0;
+        const vRCA = 2.5, vRef = 2.0;
         const rcaBoostDB = 20 * Math.log10(vRCA / vRef);
 
-        // V4.1: 5 Presets calibrados — MESMA RAZÃO front/sub (78:65 ≈ 0.833) em todos
+        // V4.2: 5 Presets calibrados — MESMA RAZÃO front/sub (78:65 ≈ 0.833) em todos
         const presets = {
-            max: { gF: 78, gS: 65, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Performance máxima — Curva de referência. ~126dB máx.' },
-            potente: { gF: 40, gS: 33, emoji: '💪', name: 'Potente', desc: '💪 Ganho moderado — Mesma curva do Máximo, volume de estrada. ~121dB máx.' },
-            media: { gF: 30, gS: 25, emoji: '🎵', name: 'Média', desc: '🎵 Confortável — Mesma curva, dia a dia tranquilo. ~119dB máx.' },
-            natural: { gF: 15, gS: 13, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Volume original amplificado — Mesma curva, ~113dB máx.' },
-            baixo: { gF: 7, gS: 6, emoji: '🔈', name: 'Volume Baixo', desc: '🔈 Volume baixo Hi-Fi — Mesma curva, som ambiente refinado. ~106dB máx.' }
+            max: { gF: 84, gS: 70, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Performance máxima — Curva de referência. ~122dB máx.' },
+            potente: { gF: 55, gS: 46, emoji: '💪', name: 'Potente', desc: '💪 Ganho moderado — Mesma curva do Máximo, volume de estrada. ~118dB máx.' },
+            media: { gF: 35, gS: 29, emoji: '🎵', name: 'Média', desc: '🎵 Confortável — Mesma curva, dia a dia tranquilo. ~114dB máx.' },
+            natural: { gF: 21, gS: 18, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Volume original amplificado — Mesma curva, ~110dB máx.' },
+            baixo: { gF: 14, gS: 12, emoji: '🔈', name: 'Volume Baixo', desc: '🔈 Volume baixo Hi-Fi — Mesma curva, som ambiente refinado. ~106dB máx.' }
         };
         let activePreset = 'potente';
 

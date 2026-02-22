@@ -471,9 +471,9 @@
 <body>
     <div class="header">
         <h1>🔊 Car Audio Analyzer</h1>
-        <p>5 Presets calibrados + Visor 0-30 + RCA 5V</p>
+        <p>5 Presets calibrados + Visor 0-30 + Corzus 2.5V</p>
         <div class="car-badge">🚗 VW Up! TSI 2017</div>
-        <div class="version">V4.1 — Razão 78:65 calibrada em 5 presets</div>
+        <div class="version">V4.2 — Corzus 2.5V calibrada em 5 presets</div>
     </div>
     <div class="container">
 
@@ -494,15 +494,15 @@
             </div>
             <div id="presetDesc"
                 style="font-size:9px;color:var(--text2);margin-bottom:8px;padding:5px 8px;background:var(--card2);border-radius:5px;border-left:2px solid var(--accent)">
-                💪 Mesma curva do Máximo, volume de estrada. ~121dB máx.
+                💪 Mesma curva do Máximo, volume de estrada. ~118dB máx.
             </div>
             <div class="slider-group">
-                <label>Ganho Frente (Kit 2V) <span id="gainFrontVal">40%</span></label>
-                <input type="range" id="gainFront" min="0" max="100" value="40" oninput="updateAll()">
+                <label>Ganho Frente (Kit 2V) <span id="gainFrontVal">55%</span></label>
+                <input type="range" id="gainFront" min="0" max="100" value="55" oninput="updateAll()">
             </div>
             <div class="slider-group">
-                <label>Ganho Sub (Bridge) <span id="gainSubVal">33%</span></label>
-                <input type="range" id="gainSub" min="0" max="100" value="33" oninput="updateAll()">
+                <label>Ganho Sub (Bridge) <span id="gainSubVal">46%</span></label>
+                <input type="range" id="gainSub" min="0" max="100" value="46" oninput="updateAll()">
             </div>
             <div class="slider-group">
                 <label>HPF Frente <span id="hpfVal">80 Hz</span></label>
@@ -683,12 +683,12 @@
                 <div class="config-summary">
                     <div class="config-item">
                         <div class="title">Ganho Front</div>
-                        <div class="value" id="cfgGainF">40%</div>
+                        <div class="value" id="cfgGainF">55%</div>
                         <div class="detail" id="cfgPwrF">≈ 21W/ch</div>
                     </div>
                     <div class="config-item">
                         <div class="title">Ganho Sub</div>
-                        <div class="value" id="cfgGainS">33%</div>
+                        <div class="value" id="cfgGainS">46%</div>
                         <div class="detail" id="cfgPwrS">≈ 44W brg</div>
                     </div>
                     <div class="config-item">
@@ -709,7 +709,7 @@
                     <div class="config-item">
                         <div class="title">Preset</div>
                         <div class="value" id="cfgPreset">💪 Potente</div>
-                        <div class="detail">Razão 78:65</div>
+                        <div class="detail">Corzus 2.5V</div>
                     </div>
                     <div class="config-item">
                         <div class="title">XO Passivo</div>
@@ -718,8 +718,8 @@
                     </div>
                     <div class="config-item">
                         <div class="title">RCA</div>
-                        <div class="value">5V RMS</div>
-                        <div class="detail">+8dB boost</div>
+                        <div class="value">2.5V RMS</div>
+                        <div class="detail">+2dB boost</div>
                     </div>
                 </div>
             </div>
@@ -751,16 +751,16 @@
         function genFreqs() { const f = []; for (let i = Math.log10(20); i <= Math.log10(20000); i += 0.025) f.push(Math.pow(10, i)); return f }
         const freqs = genFreqs();
 
-        const vRCA = 5.0, vRef = 2.0;
+        const vRCA = 2.5, vRef = 2.0;
         const rcaBoostDB = 20 * Math.log10(vRCA / vRef);
 
-        // V4.1: 5 Presets calibrados — MESMA RAZÃO (78:65 ≈ 0.833) em todos
+        // V4.2: 5 Presets calibrados — MESMA RAZÃO (78:65 ≈ 0.833) em todos
         const presets = {
-            max: { gF: 78, gS: 65, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Curva de referência. ~126dB máx.' },
-            potente: { gF: 40, gS: 33, emoji: '💪', name: 'Potente', desc: '💪 Mesma curva, volume de estrada. ~121dB máx.' },
-            media: { gF: 30, gS: 25, emoji: '🎵', name: 'Média', desc: '🎵 Mesma curva, dia a dia. ~119dB máx.' },
-            natural: { gF: 15, gS: 13, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Mesma curva, ~113dB máx.' },
-            baixo: { gF: 7, gS: 6, emoji: '🔈', name: 'Volume Baixo', desc: '🔈 Som ambiente Hi-Fi. ~106dB máx. Bass +1 opcional.' }
+            max: { gF: 84, gS: 70, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Curva de referência. ~122dB máx.' },
+            potente: { gF: 55, gS: 46, emoji: '💪', name: 'Potente', desc: '💪 Mesma curva, volume de estrada. ~118dB máx.' },
+            media: { gF: 35, gS: 29, emoji: '🎵', name: 'Média', desc: '🎵 Mesma curva, dia a dia. ~114dB máx.' },
+            natural: { gF: 21, gS: 18, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Mesma curva, ~110dB máx.' },
+            baixo: { gF: 14, gS: 12, emoji: '🔈', name: 'Volume Baixo', desc: '🔈 Som ambiente Hi-Fi. ~106dB máx. Bass +1 opcional.' }
         };
         let activePreset = 'potente';
 
