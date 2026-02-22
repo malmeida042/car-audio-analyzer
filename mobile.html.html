@@ -471,9 +471,9 @@
 <body>
     <div class="header">
         <h1>🔊 Car Audio Analyzer</h1>
-        <p>5 Presets calibrados + Visor 0-30 + Corzus 2.5V</p>
+        <p>5 Presets calibrados + Visor 0-30 + Sem conversor</p>
         <div class="car-badge">🚗 VW Up! TSI 2017</div>
-        <div class="version">V4.2 — Corzus 2.5V calibrada em 5 presets</div>
+        <div class="version">V5 — Sem conversor calibrada em 5 presets</div>
     </div>
     <div class="container">
 
@@ -494,7 +494,7 @@
             </div>
             <div id="presetDesc"
                 style="font-size:9px;color:var(--text2);margin-bottom:8px;padding:5px 8px;background:var(--card2);border-radius:5px;border-left:2px solid var(--accent)">
-                💪 Mesma curva do Máximo, volume de estrada. ~118dB máx.
+                💪 Mesma curva do Máximo, volume de estrada. ~116dB máx.
             </div>
             <div class="slider-group">
                 <label>Ganho Frente (Kit 2V) <span id="gainFrontVal">55%</span></label>
@@ -709,7 +709,7 @@
                     <div class="config-item">
                         <div class="title">Preset</div>
                         <div class="value" id="cfgPreset">💪 Potente</div>
-                        <div class="detail">Corzus 2.5V</div>
+                        <div class="detail">Sem conversor</div>
                     </div>
                     <div class="config-item">
                         <div class="title">XO Passivo</div>
@@ -718,8 +718,8 @@
                     </div>
                     <div class="config-item">
                         <div class="title">RCA</div>
-                        <div class="value">2.5V RMS</div>
-                        <div class="detail">+2dB boost</div>
+                        <div class="value">2.HI INPUT</div>
+                        <div class="detail">sem boost RCA</div>
                     </div>
                 </div>
             </div>
@@ -751,16 +751,16 @@
         function genFreqs() { const f = []; for (let i = Math.log10(20); i <= Math.log10(20000); i += 0.025) f.push(Math.pow(10, i)); return f }
         const freqs = genFreqs();
 
-        const vRCA = 2.5, vRef = 2.0;
+        const vRCA = 1.0, vRef = 1.0;
         const rcaBoostDB = 20 * Math.log10(vRCA / vRef);
 
-        // V4.2: 5 Presets calibrados — MESMA RAZÃO (78:65 ≈ 0.833) em todos
+        // V5: 5 Presets calibrados — MESMA RAZÃO (78:65 ≈ 0.833) em todos
         const presets = {
-            max: { gF: 84, gS: 70, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Curva de referência. ~122dB máx.' },
-            potente: { gF: 55, gS: 46, emoji: '💪', name: 'Potente', desc: '💪 Mesma curva, volume de estrada. ~118dB máx.' },
-            media: { gF: 35, gS: 29, emoji: '🎵', name: 'Média', desc: '🎵 Mesma curva, dia a dia. ~114dB máx.' },
-            natural: { gF: 21, gS: 18, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Mesma curva, ~110dB máx.' },
-            baixo: { gF: 14, gS: 12, emoji: '🔈', name: 'Volume Baixo', desc: '🔈 Som ambiente Hi-Fi. ~106dB máx. Bass +1 opcional.' }
+            max: { gF: 82, gS: 68, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Curva de referência. ~120dB máx.' },
+            potente: { gF: 55, gS: 46, emoji: '💪', name: 'Potente', desc: '💪 Mesma curva, volume de estrada. ~116dB máx.' },
+            media: { gF: 35, gS: 29, emoji: '🎵', name: 'Média', desc: '🎵 Mesma curva, dia a dia. ~112dB máx.' },
+            natural: { gF: 22, gS: 18, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Mesma curva, ~108dB máx.' },
+            baixo: { gF: 14, gS: 12, emoji: '🔈', name: 'Volume Baixo', desc: '🔈 Som ambiente Hi-Fi. ~104dB máx. Bass +1 opcional.' }
         };
         let activePreset = 'potente';
 
@@ -925,7 +925,7 @@
         }
 
         function calcSPLat(gF, gS, volFactor) {
-            const pwrF = 132 * Math.pow(gF / 100, 2);
+            const pwrF = 100 * Math.pow(gF / 100, 2);
             const pwrS = 400 * Math.pow(gS / 100, 2);
             const splF = 93 + 10 * Math.log10(Math.max(0.001, pwrF * volFactor)) + rcaBoostDB;
             const splS = 87 + 10 * Math.log10(Math.max(0.001, pwrS * volFactor)) + rcaBoostDB;
@@ -967,7 +967,7 @@
             document.getElementById('lpfVal').textContent = lpf + ' Hz';
             document.getElementById('visorDisplay').textContent = visor;
 
-            const pwrF = 132 * Math.pow(gF / 100, 2);
+            const pwrF = 100 * Math.pow(gF / 100, 2);
             const pwrS = 400 * Math.pow(gS / 100, 2);
 
             const splF = 93 + 10 * Math.log10(Math.max(0.001, pwrF * volFactor)) + rcaBoostDB;
