@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <title>Car Audio Analyzer V5.1 — VW Up! TSI 2017</title>
+    <title>Car Audio Analyzer V5.2.1 — VW Up! TSI 2017</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -544,7 +544,7 @@
                     <td>Hertz ES 200.5</td>
                     <td>200W</td>
                     <td>4Ω</td>
-                    <td>87 dB</td>
+                    <td>88.5 dB</td>
                     <td>30Hz–400Hz</td>
                 </tr>
                 <tr>
@@ -939,11 +939,11 @@
 
         // V5.1: 5 Presets calibrados — MESMA RAZÃO front/sub (78:65 ≈ 0.833) em todos
         const presets = {
-            max: { gF: 78, gS: 65, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Performance máxima — Curva de referência. ~120dB máx.' },
-            potente: { gF: 49, gS: 41, emoji: '💪', name: 'Potente', desc: '💪 Ganho moderado — Mesma curva do Máximo, volume de estrada. ~116dB máx.' },
-            media: { gF: 31, gS: 26, emoji: '🎵', name: 'Média', desc: '🎵 Confortável — Mesma curva, dia a dia tranquilo. ~112dB máx.' },
-            natural: { gF: 19, gS: 16, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Volume original amplificado — Mesma curva, ~108dB máx.' },
-            baixo: { gF: 12, gS: 10, emoji: '🔈', name: 'Volume Baixo', desc: '🔈 Volume baixo Hi-Fi — Mesma curva, som ambiente refinado. ~104dB máx.' }
+            max: { gF: 89, gS: 62, emoji: '🔥', name: 'Máximo c/ Qualidade', desc: '🔥 Performance máxima — Curva de referência. ~120dB máx.' },
+            potente: { gF: 56, gS: 39, emoji: '💪', name: 'Potente', desc: '💪 Ganho moderado — Mesma curva do Máximo, volume de estrada. ~116dB máx.' },
+            media: { gF: 36, gS: 25, emoji: '🎵', name: 'Média', desc: '🎵 Confortável — Mesma curva, dia a dia tranquilo. ~112dB máx.' },
+            natural: { gF: 23, gS: 16, emoji: '🌿', name: 'Volume Natural', desc: '🌿 Volume original amplificado — Mesma curva, ~108dB máx.' },
+            baixo: { gF: 14, gS: 10, emoji: '🔈', name: 'Volume Baixo', desc: '🔈 Volume baixo Hi-Fi — Mesma curva, som ambiente refinado. ~104dB máx.' }
         };
         let activePreset = 'potente';
 
