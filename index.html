@@ -435,17 +435,19 @@ function splToSens(spl) {
 }
 
 function drawGridAndLabels(ctx, W, H, yMin, yMax, stepY) {
-    ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 1;
+    ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 2; // For retina
     for (let yDb = Math.ceil(yMin/stepY)*stepY; yDb <= yMax; yDb += stepY) {
         const y = H - ((yDb - yMin) / (yMax - yMin)) * H;
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+        ctx.fillStyle = '#64748b'; ctx.font = '22px Inter'; ctx.textAlign = 'left';
+        ctx.fillText(yDb + ' dB', 10, y - 8);
     }
     const freqs = [20,50,100,200,500,1000,2000,5000,10000,20000];
     freqs.forEach(f => {
         const x = (Math.log10(f) - Math.log10(20)) / Math.log10(1000) * W;
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
         ctx.fillStyle = '#475569'; ctx.font = '22px Inter'; ctx.textAlign = 'center';
-        ctx.fillText(f >= 1000 ? (f/1000) + 'k' : f, x, H - 5);
+        ctx.fillText(f >= 1000 ? (f/1000) + 'k' : f, x, H - 10);
     });
 }
 
@@ -500,12 +502,16 @@ function drawSysChart() {
     const c = document.getElementById('sysChart'), ctx = c.getContext('2d');
     const W = c.width = c.offsetWidth * 2, H = c.height = 440;
     
-    const maxVal = calcRawSplAtFreq(100, gF, gS); 
-    const yMax = Math.ceil(maxVal/10)*10 + 10;
-    const yMin = yMax - 80;
+    let maxVal = -Infinity;
+    const customSample = getSystemCurve(W, gF, gS, true, 'custom');
+    for(let i=0; i<customSample.length; i++) if(customSample[i] > maxVal) maxVal = customSample[i];
+    
+    // Zoomed in view: 25dB range showing the peak
+    const yMax = Math.ceil(maxVal / 5) * 5 + 5; 
+    const yMin = yMax - 25;
 
     ctx.clearRect(0,0,W,H);
-    drawGridAndLabels(ctx, W, H, yMin, yMax, 10);
+    drawGridAndLabels(ctx, W, H, yMin, yMax, 5);
 
     const orig = getSystemCurve(W, gF, gS, false, 'flat');
     const flat = getSystemCurve(W, gF, gS, true, 'flat');
@@ -601,12 +607,16 @@ function drawEqChart() {
     const c = document.getElementById('eqChart'), ctx = c.getContext('2d');
     const W = c.width = c.offsetWidth * 2, H = c.height = 440;
 
-    const maxVal = calcRawSplAtFreq(100, gF, gS); 
-    const yMax = Math.ceil(maxVal/10)*10 + 10;
-    const yMin = yMax - 80;
+    let maxVal = -Infinity;
+    const flatSample = getSystemCurve(W, gF, gS, true, 'flat');
+    for(let i=0; i<flatSample.length; i++) if(flatSample[i] > maxVal) maxVal = flatSample[i];
+    
+    // Zoomed in view: 25dB range showing the peak
+    const yMax = Math.ceil(maxVal / 5) * 5 + 5; 
+    const yMin = yMax - 25;
 
     ctx.clearRect(0,0,W,H);
-    drawGridAndLabels(ctx, W, H, yMin, yMax, 10);
+    drawGridAndLabels(ctx, W, H, yMin, yMax, 5);
 
     const orig = getSystemCurve(W, gF, gS, false, 'flat');
     const flat = getSystemCurve(W, gF, gS, true, 'flat');
