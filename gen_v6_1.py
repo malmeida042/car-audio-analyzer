@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+import os, sys
+sys.stdout.reconfigure(encoding='utf-8')
+base = os.path.dirname(os.path.abspath(__file__))
+
+html = r'''<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -617,4 +621,9 @@ window.addEventListener('load', function() {
 window.addEventListener('resize', () => { if(window.isInit) updateAll(); });
 </script>
 </body>
-</html>
+</html>'''
+
+out_path = os.path.join(base, 'index.html')
+with open(out_path, 'w', encoding='utf-8') as f:
+    f.write(html)
+print(f"Written {len(html)} bytes to {out_path}")
