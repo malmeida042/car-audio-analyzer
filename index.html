@@ -502,16 +502,15 @@ function drawSysChart() {
     const c = document.getElementById('sysChart'), ctx = c.getContext('2d');
     const W = c.width = c.offsetWidth * 2, H = c.height = 440;
     
-    let maxVal = -Infinity;
-    const customSample = getSystemCurve(W, gF, gS, true, 'custom');
-    for(let i=0; i<customSample.length; i++) if(customSample[i] > maxVal) maxVal = customSample[i];
+    const centerIdx = Math.round(W * ((Math.log10(1000) - Math.log10(20)) / Math.log10(1000)));
+    const meanSpl = getSystemCurve(W, gF, gS, true, 'flat')[centerIdx] || 100;
     
-    // Zoomed in view: 25dB range showing the peak
-    const yMax = Math.ceil(maxVal / 5) * 5 + 5; 
-    const yMin = yMax - 25;
+    // +/- 50dB range around the mean, total 100dB variation
+    const yMax = Math.ceil(meanSpl / 10) * 10 + 50; 
+    const yMin = yMax - 100;
 
     ctx.clearRect(0,0,W,H);
-    drawGridAndLabels(ctx, W, H, yMin, yMax, 5);
+    drawGridAndLabels(ctx, W, H, yMin, yMax, 10);
 
     const orig = getSystemCurve(W, gF, gS, false, 'flat');
     const flat = getSystemCurve(W, gF, gS, true, 'flat');
@@ -607,16 +606,15 @@ function drawEqChart() {
     const c = document.getElementById('eqChart'), ctx = c.getContext('2d');
     const W = c.width = c.offsetWidth * 2, H = c.height = 440;
 
-    let maxVal = -Infinity;
-    const flatSample = getSystemCurve(W, gF, gS, true, 'flat');
-    for(let i=0; i<flatSample.length; i++) if(flatSample[i] > maxVal) maxVal = flatSample[i];
+    const centerIdx = Math.round(W * ((Math.log10(1000) - Math.log10(20)) / Math.log10(1000)));
+    const meanSpl = getSystemCurve(W, gF, gS, true, 'flat')[centerIdx] || 100;
     
-    // Zoomed in view: 25dB range showing the peak
-    const yMax = Math.ceil(maxVal / 5) * 5 + 5; 
-    const yMin = yMax - 25;
+    // +/- 50dB range around the mean, total 100dB variation
+    const yMax = Math.ceil(meanSpl / 10) * 10 + 50; 
+    const yMin = yMax - 100;
 
     ctx.clearRect(0,0,W,H);
-    drawGridAndLabels(ctx, W, H, yMin, yMax, 5);
+    drawGridAndLabels(ctx, W, H, yMin, yMax, 10);
 
     const orig = getSystemCurve(W, gF, gS, false, 'flat');
     const flat = getSystemCurve(W, gF, gS, true, 'flat');
