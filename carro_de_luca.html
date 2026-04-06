@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Audio Analyzer — Pulse Abarth 2025 (Luca)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        :root {
+            --bg: #0a0a0f;
+            --card: #12121a;
+            --card2: #1a1a28;
+            --border: #2a2a3a;
+            --accent: #6c5ce7;
+            --accent2: #a29bfe;
+            --green: #00b894;
+            --orange: #fdcb6e;
+            --red: #e17055;
+            --cyan: #81ecec;
+            --pink: #fd79a8;
+            --text: #e0e0e0;
+            --text2: #a0a0b0;
+            --gold: #f9ca24
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1040 50%, #0a0a1a 100%);
+            padding: 30px 40px;
+            border-bottom: 1px solid var(--border);
+            text-align: center
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent2), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 6px
+        }
+
+        .header p {
+            color: var(--text2);
+            font-size: 14px;
+            font-weight: 300
+        }
+
+        .header .car-badge {
+            display: inline-block;
+            background: var(--card2);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 4px 16px;
+            font-size: 12px;
+            color: var(--accent2);
+            margin-top: 8px
+        }
+
+        .header .version {
+            font-size: 10px;
+            color: var(--green);
+            margin-top: 4px;
+            letter-spacing: 1px
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px
+        }
+
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 16px
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent)
+        }
+
+        .card h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent2);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .card h2 .icon {
+            font-size: 18px
+        }
+
+        .card h3 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text2);
+            margin: 12px 0 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px
+        }
+
+        .chart-wrap {
+            position: relative;
+            height: 320px;
+            margin: 10px 0
+        }
+
+        .chart-wrap.tall {
+            height: 420px
+        }
+
+        .slider-group {
+            margin: 8px 0
+        }
+
+        .slider-group label {
+            font-size: 12px;
+            color: var(--text2);
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px
+        }
+
+        .slider-group label span {
+            color: var(--accent2);
+            font-weight: 600
+        }
+
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--card2);
+            outline: none;
+            border: 1px solid var(--border)
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(108, 92, 231, .5)
+        }
+
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .preset-btn {
+            background: var(--card2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .preset-btn.active {
+            background: rgba(108, 92, 231, 0.15);
+            border-color: var(--accent);
+            color: var(--accent2);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px
+        }
+
+        .stat {
+            background: var(--card2);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            border: 1px solid var(--border)
+        }
+
+        .stat .val {
+            font-size: 22px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent2), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .stat .lbl {
+            font-size: 10px;
+            color: var(--text2);
+            margin-top: 2px;
+            text-transform: uppercase;
+            letter-spacing: .5px
+        }
+
+        .tip {
+            background: var(--card2);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            padding: 10px 14px;
+            font-size: 12px;
+            color: var(--text2);
+            margin: 10px 0;
+            line-height: 1.6
+        }
+
+        .tip strong {
+            color: var(--green)
+        }
+
+        .tip.warn {
+            border-left-color: var(--orange)
+        }
+
+        .tip.warn strong {
+            color: var(--orange)
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600
+        }
+
+        .badge.on {
+            background: rgba(0, 184, 148, .15);
+            color: var(--green);
+            border: 1px solid rgba(0, 184, 148, .3)
+        }
+
+        .badge.off {
+            background: rgba(225, 112, 85, .15);
+            color: var(--red);
+            border: 1px solid rgba(225, 112, 85, .3)
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin: 8px 0
+        }
+
+        table th {
+            text-align: left;
+            color: var(--text2);
+            font-weight: 600;
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+            font-size: 10px;
+            letter-spacing: .5px
+        }
+
+        table td {
+            padding: 8px;
+            border-bottom: 1px solid rgba(42, 42, 58, .5);
+            color: var(--text)
+        }
+
+        table tr:hover td {
+            background: rgba(108, 92, 231, .05)
+        }
+
+        .config-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        .config-item {
+            background: var(--card2);
+            border-radius: 10px;
+            padding: 14px;
+            border: 1px solid var(--border)
+        }
+
+        .config-item .title {
+            font-size: 11px;
+            color: var(--text2);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            margin-bottom: 6px
+        }
+
+        .config-item .value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--accent2)
+        }
+
+        .config-item .detail {
+            font-size: 11px;
+            color: var(--text2);
+            margin-top: 4px
+        }
+
+        .legend-custom {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 8px 0;
+            font-size: 11px
+        }
+
+        .legend-custom .item {
+            display: flex;
+            align-items: center;
+            gap: 4px
+        }
+
+        .legend-custom .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%
+        }
+
+        .eq-3band {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0
+        }
+
+        .eq-knob {
+            background: var(--card2);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            border: 1px solid var(--border)
+        }
+
+        .eq-knob .band-name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--accent2);
+            margin-bottom: 4px
+        }
+
+        .eq-knob .band-range {
+            font-size: 10px;
+            color: var(--text2);
+            margin-bottom: 10px
+        }
+
+        .eq-knob .band-value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--cyan);
+            margin: 8px 0
+        }
+
+        .eq-knob .band-reason {
+            font-size: 11px;
+            color: var(--text2);
+            margin-top: 8px;
+            line-height: 1.4
+        }
+
+        .amp-panel { background: #151515; border: 2px solid #2a2a3a; border-radius: 12px; padding: 25px 10px; display: flex; justify-content: space-evenly; align-items: flex-end; position: relative; margin: 20px 0; }
+        .knob-wrap { display: flex; flex-direction: column; align-items: center; width: 80px; }
+        .knob-title { font-size: 10px; color: #fff; font-weight: 700; border: 1px solid #fff; border-radius: 10px; padding: 1px 6px; margin-bottom: 8px; }
+        .knob-bg { width: 50px; height: 50px; border-radius: 50%; border: 2px solid #fff; padding: 3px; position: relative; }
+        .knob-dial { width: 100%; height: 100%; border-radius: 50%; background: #000; position: relative; transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+        .dial-line { position: absolute; top: 0; left: 50%; width: 4px; height: 16px; background: #fff; transform: translateX(-50%); border-radius: 2px; }
+        .knob-labels { display: flex; justify-content: space-between; width: 60px; margin-top: 4px; font-size: 9px; color: #fff; font-weight: 700; }
+        .knob-name { font-size: 11px; color: #fff; font-weight: 700; margin-top: 4px; }
+
+        @media(max-width:900px) {
+            .grid2 {
+                grid-template-columns: 1fr
+            }
+
+            .eq-3band {
+                grid-template-columns: 1fr
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>🔊 Car Audio Frequency Analyzer</h1>
+        <p>Configuração Otimizada para Máximo Sound Quality + SPL</p>
+        <div class="car-badge">🚗 Fiat Pulse Abarth 2025 (Luca)</div>
+        <div class="version">Projeto Dedicado • EQ 3 Bandas • SD 800.5 EVO 6</div>
+    </div>
+    <div class="container">
+
+        <!-- Equipment Overview -->
+        <div class="card" style="margin-bottom:16px">
+            <h2><span class="icon">📋</span> Equipamentos Instalados do Luca</h2>
+            <table>
+                <tr>
+                    <th>Componente</th>
+                    <th>Modelo</th>
+                    <th>Potência RMS</th>
+                    <th>Impedância</th>
+                    <th>Sensibilidade</th>
+                    <th>Canais Amp</th>
+                </tr>
+                <tr>
+                    <td>Módulo DSP/Amp</td>
+                    <td>SoundDigital 800.5 EVO6</td>
+                    <td>4×100W + 1×400W RMS</td>
+                    <td>4Ω</td>
+                    <td>SNR 103dB</td>
+                    <td>1 a 5</td>
+                </tr>
+                <tr>
+                    <td>Kit Focal Frente</td>
+                    <td>Hertz DCX 690.3 (6x9)</td>
+                    <td>90W / lado</td>
+                    <td>4Ω</td>
+                    <td>93 dB</td>
+                    <td>Ch 1 e 2</td>
+                </tr>
+                <tr>
+                    <td>Kit Focal Trás</td>
+                    <td>Hertz DCX 690.3 (6x9)</td>
+                    <td>90W / lado</td>
+                    <td>4Ω</td>
+                    <td>93 dB</td>
+                    <td>Unamplified (~18W)</td>
+                </tr>
+                <tr>
+                    <td>Subwoofer (Dutada)</td>
+                    <td>Pioneer TS-SW2590BR 10" Slim</td>
+                    <td>400W</td>
+                    <td>4Ω</td>
+                    <td>86.15 dB</td>
+                    <td>Ch 5</td>
+                </tr>
+                <tr>
+                    <td>Fonte / Player</td>
+                    <td>Mídia Original Abarth (Vol 0-38)</td>
+                    <td>Sinal Alto (High Level)</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Gain Controls + SPL -->
+        <div class="grid2">
+            <div class="card">
+                <h2><span class="icon">🎛️</span> Controle de Ganho Combinado</h2>
+                <div class="preset-grid">
+                    <button class="preset-btn active" onclick="setPreset('max')" id="btn-max">🔥 Máximo SPL<br><span style="font-size:10px;font-weight:400">~115 dB (Limite Seguro)</span></button>
+                    <button class="preset-btn" onclick="setPreset('hifi')" id="btn-hifi">🎵 Hi-Fi Balanceado<br><span style="font-size:10px;font-weight:400">~112 dB (Qualidade Max)</span></button>
+                    <button class="preset-btn" onclick="setPreset('low')" id="btn-low">🔈 Mais Fraca<br><span style="font-size:10px;font-weight:400">~105 dB (Suave)</span></button>
+                </div>
+
+                <div class="amp-panel">
+                    <div style="position:absolute; top:10px; left:15px; font-size:10px; color:#666; font-weight: 700;">SD 800.5 EVO 6 (PAINEL FÍSICO)</div>
+                    
+                    <div class="knob-wrap">
+                        <div class="knob-title">GAIN</div>
+                        <div class="knob-bg">
+                            <div class="knob-dial" id="dial-sub">
+                                <div class="dial-line"></div>
+                            </div>
+                        </div>
+                        <div class="knob-labels"><span>MIN</span><span>MAX</span></div>
+                        <div class="knob-name">SUB</div>
+                    </div>
+
+                    <div class="knob-wrap" style="opacity: 0.5;">
+                        <div class="knob-title">GAIN</div>
+                        <div class="knob-bg">
+                            <div class="knob-dial" id="dial-ch34" style="transform: rotate(-135deg);"> <!-- fixed at MIN -->
+                                <div class="dial-line"></div>
+                            </div>
+                        </div>
+                        <div class="knob-labels"><span>MIN</span><span>MAX</span></div>
+                        <div class="knob-name">CH3-CH4</div>
+                        <div style="font-size:8px; color:var(--orange); margin-top:4px;">(NÃO MUDAR)</div>
+                    </div>
+
+                    <div class="knob-wrap">
+                        <div class="knob-title">GAIN</div>
+                        <div class="knob-bg">
+                            <div class="knob-dial" id="dial-ch12">
+                                <div class="dial-line"></div>
+                            </div>
+                        </div>
+                        <div class="knob-labels"><span>MIN</span><span>MAX</span></div>
+                        <div class="knob-name">CH1-CH2</div>
+                    </div>
+                </div>
+
+                <div class="slider-group">
+                    <label>Volume Mídia Original (Visor) <span id="volVal">30</span></label>
+                    <input type="range" id="volSource" min="0" max="38" value="30" oninput="updateAllManual()">
+                </div>
+                <div class="slider-group" style="margin-top: 15px;">
+                    <label>Ganho Módulo Ch 1+2 (Frente 6x9) <span id="gainFrontVal">70%</span></label>
+                    <input type="range" id="gainFront" min="0" max="100" value="70" oninput="updateAllManual()">
+                </div>
+                <div class="slider-group">
+                    <label>Ganho Módulo Ch 5 (Subwoofer) <span id="gainSubVal">80%</span></label>
+                    <input type="range" id="gainSub" min="0" max="100" value="80" oninput="updateAllManual()">
+                </div>
+                <h3 style="margin-top:15px">Filtros do Módulo (Crossovers)</h3>
+                <div class="slider-group">
+                    <label>HPF Frente (Hz) <span id="hpfVal">80 Hz</span></label>
+                    <input type="range" id="hpfFreq" min="50" max="150" value="80" step="5" oninput="updateAllManual()">
+                </div>
+                <div class="slider-group">
+                    <label>LPF Sub (Hz) <span id="lpfVal">80 Hz</span></label>
+                    <input type="range" id="lpfFreq" min="50" max="150" value="80" step="5" oninput="updateAllManual()">
+                </div>
+                <div class="tip"><strong>Dica:</strong> O grave foi ajustado para ter uma curva suave, almejando <strong style="color:var(--gold)">máximo +7dB</strong> de pico (Sub) no gráfico, para entregar musicalidade sem embolar.</div>
+            </div>
+            <div class="card">
+                <h2><span class="icon">📊</span> SPL Estimado — Posição do Motorista</h2>
+                <div class="stat-grid">
+                    <div class="stat">
+                        <div class="val" id="splFront">—</div>
+                        <div class="lbl">Frente (Amp)</div>
+                    </div>
+                    <div class="stat">
+                        <div class="val" id="splRear">—</div>
+                        <div class="lbl">Trás (Original)</div>
+                    </div>
+                    <div class="stat">
+                        <div class="val" id="splSub">—</div>
+                        <div class="lbl">Subwoofer Pioneer</div>
+                    </div>
+                    <div class="stat" style="grid-column: span 3; background: rgba(108, 92, 231, 0.1); border-color: rgba(108, 92, 231, 0.4);">
+                        <div class="val" id="splTotal" style="font-size: 28px;">—</div>
+                        <div class="lbl">SPL Sistema Total (Estimado)</div>
+                    </div>
+                    <div class="stat">
+                        <div class="val" id="pwrFront">—</div>
+                        <div class="lbl">Potência Ch 1+2</div>
+                    </div>
+                    <div class="stat">
+                        <div class="val" id="pwrRear">—</div>
+                        <div class="lbl">Potência Rádio</div>
+                    </div>
+                    <div class="stat">
+                        <div class="val" id="pwrSub">—</div>
+                        <div class="lbl">Potência Ch 5</div>
+                    </div>
+                </div>
+                <div class="tip warn" style="margin-top:14px"><strong>⚠️ Atenção:</strong> O sub Pioneer suporta 400W RMS e o Amp entrega 400W. Cuidado com clipes mecânicos em volumes extremos do rádio (acima do visor 35).</div>
+            </div>
+        </div>
+
+        <!-- Individual Curves -->
+        <div class="card" style="margin-bottom:16px">
+            <h2><span class="icon">📈</span> Curvas de Frequência Individuais (Sub Pioneer + Hertz 6x9)</h2>
+            <div class="legend-custom">
+                <div class="item">
+                    <div class="dot" style="background:#a29bfe"></div> Frente 6x9" Amplificado (Hertz)
+                </div>
+                <div class="item">
+                    <div class="dot" style="background:#81ecec"></div> Trás 6x9" Mídia (Hertz)
+                </div>
+                <div class="item">
+                    <div class="dot" style="background:#e17055"></div> Subwoofer Pioneer (Caixa Dutada)
+                </div>
+            </div>
+            <div class="chart-wrap tall"><canvas id="chartIndividual"></canvas></div>
+        </div>
+
+        <!-- Combined System Response -->
+        <div class="card" style="margin-bottom:16px">
+            <h2><span class="icon">🎯</span> Resposta Combinada do Sistema (Abarth)</h2>
+            <div class="legend-custom">
+                <div class="item">
+                    <div class="dot" style="background:#6c5ce7"></div> Resposta Total
+                </div>
+                <div class="item">
+                    <div class="dot" style="background:rgba(249,202,36,.5)"></div> Curva-Alvo Hi-Fi (+7dB Bass)
+                </div>
+                <div class="item">
+                    <div class="dot" style="background:rgba(0,184,148,.3)"></div> Zona ±3dB Limite
+                </div>
+            </div>
+            <div class="chart-wrap tall"><canvas id="chartCombined"></canvas></div>
+            <div class="tip"><strong>Grave Natural:</strong> A curva do Pioneer TS-SW2590BR na caixa dutada apresenta uma extensão profunda, mas <strong style="color:var(--green)">sua curva foi alisada matematicamente</strong> sem picos agressivos na região de 50Hz, acompanhando a exigência de audição musical com grave contínuo e equilibrado em +7dB de pico sobre o SPL de médios.</div>
+        </div>
+
+        <!-- EQ 3 Bandas + Config -->
+        <div class="grid2">
+            <div class="card">
+                <h2><span class="icon">🎚️</span> EQ Rádio Original (3 Bandas)</h2>
+                <p style="font-size:12px;color:var(--text2);margin-bottom:6px">A configuração recomendada para balancear a sonoridade junto aos falantes Hertz 6x9 e o subwoofer Pioneer.</p>
+                <div class="eq-3band">
+                    <div class="eq-knob">
+                        <div class="band-name">🔈 GRAVE</div>
+                        <div class="band-value">-1</div>
+                        <div class="band-reason">O sub entregará graves suficientes. Reduzir minimamente o bass no rádio alivia distorção nos 6x9" não amplificados traseiros e previne retumbância média.</div>
+                    </div>
+                    <div class="eq-knob">
+                        <div class="band-name">🎙️ MÉDIO</div>
+                        <div class="band-value">+1</div>
+                        <div class="band-reason">Ajuda na presença de vozes e clareza nos falantes 6x9" Triaxiais, compensando a deficiência acústica de painéis e portas traseiras na cabine.</div>
+                    </div>
+                    <div class="eq-knob">
+                        <div class="band-name">✨ AGUDO</div>
+                        <div class="band-value">0</div>
+                        <div class="band-reason">O super-tweeter de domo PEI da Hertz já atua na faixa de sensibilidade extrema (93dB). Deixar zerado evita cansaço auditivo sem perder definição de pratos da bateria.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <h2><span class="icon">✅</span> Checklist de Performance Otimizada</h2>
+                <div class="config-summary">
+                    <div class="config-item">
+                        <div class="title">Canais 1+2 (Hertz 6x9 Frente)</div>
+                        <div class="value">Módulo SD 800.5</div>
+                        <div class="detail">Alimentados com até ~80W limpos.</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">Canal 5 (Pioneer Sub)</div>
+                        <div class="value">Módulo SD 800.5</div>
+                        <div class="detail">Alimentado com 400W RMS a 4 Ohms.</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">Falantes Traseiros (Hertz 6x9)</div>
+                        <div class="value">Direto da Mídia</div>
+                        <div class="detail">Preenchimento de palco moderado.</div>
+                    </div>
+                    <div class="config-item">
+                        <div class="title">Roteamento de Sinal Analógico</div>
+                        <div class="value">Entrada de Sinal Alto (Portas)</div>
+                        <div class="detail">Sem conversor RCA externo (evita delay/ruído).</div>
+                    </div>
+                </div>
+                <h3 style="margin-top:16px">Tuning de Filtros (Crossover Analógico)</h3>
+                <table>
+                    <tr>
+                        <td>🔊</td>
+                        <td>Frente (Módulo Ch 1+2)</td>
+                        <td class="badge on">HPF 80Hz</td>
+                    </tr>
+                    <tr>
+                        <td>🔈</td>
+                        <td>Subwoofer (Módulo Ch 5)</td>
+                        <td class="badge on">LPF 80Hz</td>
+                    </tr>
+                    <tr>
+                        <td>📻</td>
+                        <td>Traseiros (Rádio Orig.)</td>
+                        <td class="badge off">Pass-through</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Preset configurations
+        const presets = {
+            'max': { vol: 35, gF: 80, gS: 90 }, // Max Output without burning (keeping within amp limits)
+            'hifi': { vol: 30, gF: 65, gS: 75 }, // Hi-Fi Mode
+            'low': { vol: 20, gF: 50, gS: 60 }   // 105 dB limit
+        };
+
+        // Component Definitions
+        // Módulo SD 800.5: 4x 100W (Ch1-4), 1x 400W (Ch5)
+        const PWR_FRONT_MAX = 100 * 2; // 2 channels front
+        const PWR_REAR_MAX = 18 * 2;   // Head unit internal amp ~18W per channel (2 rear channels)
+        const PWR_SUB_MAX = 400;       // Ch5
+        
+        // Sensitivities
+        const SENS_FRONT = 93;   // Hertz 6x9
+        const SENS_REAR = 93;    // Hertz 6x9
+        const SENS_SUB = 86.15;  // Pioneer
+        
+        const CABIN_GAIN = 8; // dB gain at low frequencies (~2.8m³ cabin Abarth)
+
+        function setPreset(key) {
+            const p = presets[key];
+            document.getElementById('volSource').value = p.vol;
+            document.getElementById('gainFront').value = p.gF;
+            document.getElementById('gainSub').value = p.gS;
+            
+            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-' + key).classList.add('active');
+            
+            updateAll();
+        }
+
+        function updateAllManual() {
+            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+            updateAll();
+        }
+
+        function genFreqs() { 
+            const f = []; 
+            for (let i = Math.log10(20); i <= Math.log10(20000); i += 0.03) f.push(Math.pow(10, i)); 
+            return f; 
+        }
+        const freqs = genFreqs();
+
+        function hpf12(f, fc) { return -10 * Math.log10(1 + Math.pow(fc / f, 4)); }
+        function lpf12(f, fc) { return -10 * Math.log10(1 + Math.pow(f / fc, 4)); }
+
+        // Mapeamento curva Sub = Pioneer Dutada 16L
+        function subPioneerResponse(f) {
+            if (f < 20) return -40;
+            const ft = 45; // Freq sintonização caixa dutada ~45Hz
+            // Smooth peak reduction (+7dB target met by gain mostly, not sharp Q)
+            const peak = 1.0 * Math.exp(-Math.pow((f - ft) / 25, 2)); 
+            const loRoll = f < ft ? -18 * Math.log10(ft / f) : 0; // Dutada 24dB roll basically
+            const hiRoll = f > 150 ? -12 * Math.log10(f / 150) : 0;
+            return Math.max(peak + loRoll + hiRoll, -40);
+        }
+
+        function hertz6x9Response(f, isFront) {
+            if (f < 30) return -40;
+            let spl = 0;
+            if (f < 60) spl = -12 * Math.log10(60 / f);
+            
+            // 6x9 natural presence in mid-bass
+            spl += 1.5 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(150)) / 0.3, 2));
+            
+            // Typical Triaxial high end boost (Super tweeter PEI)
+            if (f > 4000) spl += 2.5 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(9000)) / 0.4, 2));
+            if (f > 16000) spl -= 6 * Math.log10(f / 16000);
+            
+            return Math.max(spl, -40);
+        }
+
+        function cabinTFAbarth(f) {
+            let g = 0;
+            if (f < 200) g += CABIN_GAIN * Math.pow(Math.max(0, (200 - f) / 200), 1.5);
+            // Resonance modes Abarth/Pulse
+            g += 1.0 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(70)) / 0.1, 2));
+            g -= 1.0 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(200)) / 0.12, 2));
+            if (f > 5000) g -= 1.5 * Math.log10(f / 5000);
+            return g;
+        }
+
+        function harmanTarget(f, maxBassOffset) {
+            let t = 0;
+            if (f < 200) t = maxBassOffset * Math.pow(Math.max(0, (200 - f) / 200), 0.6); // bass shelf (+7dB curve)
+            if (f > 1000) t -= 0.5 * Math.log2(f / 1000);
+            t += 0.5 * Math.exp(-Math.pow((Math.log10(f) - Math.log10(3000)) / 0.2, 2));
+            return t;
+        }
+
+        let cI, cC;
+        const fontOpts = { size: 10, color: '#a0a0b0' };
+
+        function initCharts() {
+            const base = {
+                responsive: true, maintainAspectRatio: false, animation: { duration: 0 },
+                elements: { point: { radius: 0 } },
+                scales: {
+                    x: {
+                        type: 'logarithmic', min: 20, max: 20000, title: { display: true, text: 'Frequência (Hz)', color: '#a0a0b0' },
+                        grid: { color: 'rgba(42,42,58,0.5)' },
+                        ticks: { color: '#a0a0b0', maxTicksLimit: 8, callback: function (v) { const n = [20, 50, 100, 200, 500, 1000, 5000, 20000]; return n.includes(v) ? (v >= 1000 ? v / 1000 + 'k' : v) : null } }
+                    },
+                    y: {
+                        min: 70, max: 130, title: { display: true, text: 'SPL (dB)', color: '#a0a0b0' },
+                        grid: { color: 'rgba(42,42,58,0.5)' },
+                        ticks: { color: '#a0a0b0', stepSize: 10 }
+                    }
+                },
+                plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } }
+            };
+
+            cI = new Chart(document.getElementById('chartIndividual'), { type: 'line', data: { labels: freqs, datasets: [] }, options: base });
+            
+            const baseCombined = JSON.parse(JSON.stringify(base));
+            baseCombined.scales.y.max = 135;
+            baseCombined.scales.y.min = 75;
+            
+            cC = new Chart(document.getElementById('chartCombined'), { type: 'line', data: { labels: freqs, datasets: [] }, options: baseCombined });
+        }
+
+        function updateAll() {
+            const gF = parseInt(document.getElementById('gainFront').value) / 100;
+            const gS = parseInt(document.getElementById('gainSub').value) / 100;
+            const hpf = parseInt(document.getElementById('hpfFreq').value);
+            const lpf = parseInt(document.getElementById('lpfFreq').value);
+            
+            // Max vol is 38
+            const rawVolPos = parseInt(document.getElementById('volSource').value);
+            const volLinear = Math.pow(rawVolPos / 38, 2); // Squared pot mapping
+
+            document.getElementById('volVal').innerText = rawVolPos;
+            document.getElementById('gainFrontVal').innerText = Math.round(gF * 100) + '%';
+            document.getElementById('gainSubVal').innerText = Math.round(gS * 100) + '%';
+            document.getElementById('hpfVal').innerText = hpf + ' Hz';
+            document.getElementById('lpfVal').innerText = lpf + ' Hz';
+
+            // update dials: map 0-100% to -135deg to +135deg
+            const degFront = -135 + (gF * 270);
+            const degSub = -135 + (gS * 270);
+            
+            const dFront = document.getElementById('dial-ch12');
+            const dSub = document.getElementById('dial-sub');
+            if(dFront) dFront.style.transform = `rotate(${degFront}deg)`;
+            if(dSub) dSub.style.transform = `rotate(${degSub}deg)`;
+
+            // Powers
+            const pF_total = PWR_FRONT_MAX * Math.pow(gF, 2) * volLinear; 
+            const pR_total = PWR_REAR_MAX * volLinear; 
+            const pS_total = PWR_SUB_MAX * Math.pow(gS, 2) * volLinear; 
+
+            document.getElementById('pwrFront').innerText = `~${pF_total.toFixed(0)}W`;
+            document.getElementById('pwrRear').innerText = `~${pR_total.toFixed(0)}W`;
+            document.getElementById('pwrSub').innerText = `~${pS_total.toFixed(0)}W`;
+
+            // Arrays
+            const fSPL = [], rSPL = [], sSPL = [], tSPL = [], tgtSPL = [], bandTop = [], bandBot = [];
+            let maxTotal = 0;
+
+            const eq3Band = { bass: -1, mid: 1, treble: 0 };
+            
+            const pF_safe = Math.max(0.001, pF_total);
+            const pR_safe = Math.max(0.001, pR_total);
+            const pS_safe = Math.max(0.001, pS_total);
+
+            // Base unEQ'd raw averages to find the peak for stats
+            const frontRoot = SENS_FRONT + 10 * Math.log10(pF_safe);
+            const rearRoot = SENS_REAR + 10 * Math.log10(pR_safe);
+            const subRoot = SENS_SUB + 10 * Math.log10(pS_safe) + CABIN_GAIN;
+
+            for (let i = 0; i < freqs.length; i++) {
+                const f = freqs[i];
+
+                // EQ adjustments from Head Unit
+                let eqGain = 0;
+                if (f < 200) eqGain += eq3Band.bass;
+                if (f >= 500 && f <= 3000) eqGain += eq3Band.mid;
+                if (f > 6000) eqGain += eq3Band.treble;
+
+                // Front (HighPassed)
+                let sf = frontRoot + hertz6x9Response(f, true) + cabinTFAbarth(f) + hpf12(f, hpf) + eqGain;
+                // Rear (FullRange from HeadUnit) - They typically naturally roll off below 50Hz without box
+                let sr = rearRoot + hertz6x9Response(f, false) + cabinTFAbarth(f) + eqGain;
+                // Sub (LowPassed)
+                let ss = subRoot + subPioneerResponse(f) + cabinTFAbarth(f) + lpf12(f, lpf) + eqGain;
+
+                // Power sum in linear domain
+                const powF = Math.pow(10, sf / 10);
+                const powR = Math.pow(10, sr / 10);
+                const powS = Math.pow(10, ss / 10);
+                
+                const powTot = powF + powR + powS;
+                const totSpl = 10 * Math.log10(powTot);
+
+                fSPL.push(sf);
+                rSPL.push(sr);
+                sSPL.push(ss);
+                tSPL.push(totSpl);
+
+                if (totSpl > maxTotal) maxTotal = totSpl;
+            }
+
+            // Averages for Display
+            const avgFront = fSPL[Math.floor(fSPL.length / 2)] + 2; // Rough mid representation
+            const avgRear = rSPL[Math.floor(rSPL.length / 2)];
+            // Sub peak is mostly near 50-60Hz
+            const avgSubIndex = freqs.findIndex(freq => freq >= 60);
+            let avgSub = sSPL[avgSubIndex];
+
+            document.getElementById('splFront').innerText = avgFront.toFixed(1) + ' dB';
+            document.getElementById('splRear').innerText = avgRear.toFixed(1) + ' dB';
+            document.getElementById('splSub').innerText = avgSub.toFixed(1) + ' dB';
+            document.getElementById('splTotal').innerText = maxTotal.toFixed(1) + ' dB';
+
+            // Calc Hi-Fi target relative to approx midrange average (1kHz)
+            const idx1k = freqs.findIndex(freq => freq >= 1000);
+            const midSplRef = tSPL[idx1k] || 105;
+            
+            for (let i = 0; i < freqs.length; i++) {
+                // max bass offset 7dB as requested ("ganhos de grave em até +7db")
+                tgtSPL.push(midSplRef + harmanTarget(freqs[i], 7)); 
+                bandTop.push(midSplRef + harmanTarget(freqs[i], 7) + 3);
+                bandBot.push(midSplRef + harmanTarget(freqs[i], 7) - 3);
+            }
+
+            // Update individual chart
+            cI.data.datasets = [
+                { label: 'Frente Amplif.', data: fSPL, borderColor: '#a29bfe', borderWidth: 2, tension: 0.4 },
+                { label: 'Trás Mídia', data: rSPL, borderColor: '#81ecec', borderWidth: 2, tension: 0.4, borderDash: [5, 5] },
+                { label: 'Subwoofer Pioneer', data: sSPL, borderColor: '#e17055', borderWidth: 2, tension: 0.4 }
+            ];
+            cI.update();
+
+            // Update combined chart
+            cC.data.datasets = [
+                { label: 'Resposta Sistema', data: tSPL, borderColor: '#6c5ce7', borderWidth: 4, tension: 0.3 },
+                { label: 'Fio Target HiFi', data: tgtSPL, borderColor: '#f9ca24', borderWidth: 2, tension: 0.4, borderDash: [4, 4] },
+                { label: 'Límite Superior', data: bandTop, borderColor: 'rgba(0,184,148,0)', backgroundColor: 'rgba(0,184,148,0.1)', fill: '+1', tension: 0.4 },
+                { label: 'Límite Inferior', data: bandBot, borderColor: 'rgba(0,184,148,0)', fill: false, tension: 0.4 }
+            ];
+            cC.update();
+        }
+
+        window.onload = () => {
+            initCharts();
+            setPreset('hifi'); // Init with balanced preset
+        };
+
+    </script>
+</body>
+
+</html>
