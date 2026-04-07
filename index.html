@@ -3,110 +3,107 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Car Audio Analyzer V6.2 — VW Up! TSI 2017</title>
-<meta name="description" content="Configurador de som automotivo com DSP STX2448BT + SD 800.5 EVO 6 + Hertz">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Car Audio V7.0 — VW Up! TSI 2017</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0a0e17;--card:#111827;--border:#1e293b;--text:#e2e8f0;--text2:#94a3b8;--accent:#3b82f6;--accent2:#60a5fa;--green:#22c55e;--orange:#f97316;--red:#ef4444;--yellow:#eab308;--purple:#a855f7}
+:root{--bg:#0a0e17;--card:#111827;--card2:#0f1623;--border:#1e293b;--text:#e2e8f0;--text2:#94a3b8;--accent:#3b82f6;--accent2:#60a5fa;--green:#22c55e;--orange:#f97316;--red:#ef4444;--yellow:#eab308;--purple:#a855f7;--teal:#14b8a6}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;padding:12px}
-.container{max-width:900px;margin:0 auto}
-h1{font-size:1.5rem;font-weight:900;text-align:center;background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
-.subtitle{text-align:center;color:var(--text2);font-size:.75rem;margin-bottom:16px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;position:relative}
-.card h2{font-size:.9rem;font-weight:700;color:var(--accent2);margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.badge{display:inline-block;padding:2px 8px;border-radius:99px;font-size:.65rem;font-weight:700}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;padding:10px}
+.container{max-width:920px;margin:0 auto}
+h1{font-size:1.4rem;font-weight:900;text-align:center;background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:2px}
+.subtitle{text-align:center;color:var(--text2);font-size:.72rem;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px}
+.card h2{font-size:.85rem;font-weight:700;color:var(--accent2);margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.card h3{font-size:.75rem;font-weight:700;color:var(--orange);margin:10px 0 5px}
+table{width:100%;border-collapse:collapse;font-size:.72rem;margin:6px 0}
+th,td{padding:5px 7px;text-align:center;border-bottom:1px solid var(--border)}
+th{color:var(--accent2);font-weight:600;font-size:.62rem;text-transform:uppercase}
+td.left{text-align:left}
+.badge{display:inline-block;padding:2px 7px;border-radius:99px;font-size:.62rem;font-weight:700}
 .badge-safe{background:#22c55e22;color:var(--green);border:1px solid #22c55e44}
 .badge-warn{background:#f9731622;color:var(--orange);border:1px solid #f9731644}
-table{width:100%;border-collapse:collapse;font-size:.75rem;margin:8px 0}
-th,td{padding:6px 8px;text-align:center;border-bottom:1px solid var(--border)}
-th{color:var(--accent2);font-weight:600;font-size:.65rem;text-transform:uppercase}
-.signal-chain{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;font-size:.7rem;margin:8px 0}
-.signal-chain .node{background:#1e293b;padding:4px 10px;border-radius:8px;border:1px solid var(--border)}
+.badge-info{background:#3b82f622;color:var(--accent2);border:1px solid #3b82f644}
+.signal-chain{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:4px;font-size:.68rem;margin:6px 0}
+.signal-chain .node{background:#1e293b;padding:4px 9px;border-radius:7px;border:1px solid var(--border)}
 .signal-chain .arrow{color:var(--accent2);font-weight:700}
-.preset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0}
-.preset-btn{padding:10px 6px;border-radius:8px;border:2px solid var(--border);background:transparent;color:var(--text);cursor:pointer;text-align:center;font-family:inherit;font-size:.7rem;transition:.2s}
-.preset-btn:hover{border-color:var(--accent)}
-.preset-btn.active{border-color:var(--accent);background:rgba(59,130,246,.1)}
-.slider-group{margin:10px 0}
-.slider-row{display:flex;align-items:center;gap:8px;margin:4px 0}
-.slider-row label{font-size:.7rem;min-width:50px;color:var(--text2)}
-.slider-row input[type=range]{flex:1;accent-color:var(--accent);height:6px}
-.slider-row .val{font-size:.75rem;font-weight:700;min-width:40px;color:var(--accent2)}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
-.stat{text-align:center;padding:8px;background:#1e293b;border-radius:8px}
-.stat .label{font-size:.6rem;color:var(--text2);text-transform:uppercase}
-.stat .val{font-size:1rem;font-weight:900;color:var(--accent2)}
-.stat .unit{font-size:.6rem;color:var(--text2)}
-.toggle-group{display:flex;gap:4px;margin:8px 0}
-.toggle-btn{flex:1;padding:6px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-size:.65rem;font-family:inherit;transition:.2s}
-.toggle-btn.active{background:rgba(59,130,246,.15);color:var(--accent2);border-color:var(--accent)}
-.eq-band{display:inline-flex;flex-direction:column;align-items:center;margin:2px;font-size:.55rem}
+/* MODE SELECTOR */
+.mode-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}
+.mode-btn{padding:12px 8px;border-radius:10px;border:2px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:inherit;font-size:.75rem;font-weight:600;transition:.2s;text-align:center}
+.mode-btn:hover{border-color:var(--accent)}
+.mode-btn.active-natural{border-color:var(--teal);background:rgba(20,184,166,.1);color:var(--teal)}
+.mode-btn.active-impact{border-color:var(--orange);background:rgba(249,115,22,.1);color:var(--orange)}
+/* EQ Grids */
+.eq-grid{display:flex;flex-wrap:wrap;gap:3px;margin:6px 0}
+.eq-band{display:inline-flex;flex-direction:column;align-items:center;min-width:36px;font-size:.55rem}
+.eq-band .val{font-weight:700;font-size:.7rem}
 .eq-band .freq{color:var(--text2)}
-.eq-band .val{font-weight:700}
-.eq-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:2px;margin:6px 0}
-.dsp-config{font-size:.72rem;line-height:1.6}
-.dsp-config strong{color:var(--accent2)}
-.power-bar{height:6px;border-radius:3px;background:#1e293b;margin:4px 0;overflow:hidden}
+/* Sliders */
+.slider-group{margin:8px 0}
+.slider-row{display:flex;align-items:center;gap:8px;margin:4px 0}
+.slider-row label{font-size:.68rem;min-width:56px;color:var(--text2)}
+.slider-row input[type=range]{flex:1;accent-color:var(--accent);height:5px}
+.slider-row .val{font-size:.72rem;font-weight:700;min-width:38px;color:var(--accent2)}
+.power-bar{height:5px;border-radius:3px;background:#1e293b;margin:3px 0;overflow:hidden}
 .power-bar .fill{height:100%;border-radius:3px;transition:.3s}
-canvas{width:100%;height:220px;border-radius:8px;background:#0f172a;margin:8px 0;cursor:crosshair}
-.legend{display:flex;justify-content:center;gap:12px;font-size:.65rem;margin-top:4px}
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:8px 0}
+.stat{text-align:center;padding:7px;background:#1e293b;border-radius:8px}
+.stat .label{font-size:.58rem;color:var(--text2);text-transform:uppercase}
+.stat .val{font-size:.95rem;font-weight:900;color:var(--accent2)}
+.stat .unit{font-size:.58rem;color:var(--text2)}
+/* Preset buttons */
+.preset-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:8px 0}
+.preset-btn{padding:9px 5px;border-radius:7px;border:2px solid var(--border);background:transparent;color:var(--text);cursor:pointer;text-align:center;font-family:inherit;font-size:.68rem;transition:.2s}
+.preset-btn:hover,.preset-btn.active{border-color:var(--accent);background:rgba(59,130,246,.1)}
+/* Toggle */
+.toggle-group{display:flex;gap:4px;margin:6px 0}
+.toggle-btn{flex:1;padding:6px;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-size:.63rem;font-family:inherit;transition:.2s}
+.toggle-btn.active{background:rgba(59,130,246,.15);color:var(--accent2);border-color:var(--accent)}
+/* Info blocks */
+.info-box{background:#1e293b;border-radius:8px;padding:10px 12px;margin:6px 0;font-size:.7rem;line-height:1.6;color:var(--text2)}
+.info-box strong{color:var(--text)}
+.info-box .ok{color:var(--green);font-weight:700}
+.info-box .warn{color:var(--orange);font-weight:700}
+/* Crossover visual */
+.xover-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0}
+.xover-block{background:#1e293b;border-radius:8px;padding:10px 12px;font-size:.7rem}
+.xover-block .title{font-weight:700;color:var(--accent2);margin-bottom:6px;font-size:.72rem}
+.xover-block .row{display:flex;justify-content:space-between;margin:3px 0}
+.xover-block .key{color:var(--text2)}
+.xover-block .val{font-weight:700;color:var(--text)}
+/* Charts */
+canvas{width:100%;height:200px;border-radius:8px;background:#0f172a;margin:6px 0;cursor:crosshair}
+.legend{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;font-size:.62rem;margin-top:3px}
 .legend-item{display:flex;align-items:center;gap:4px}
-.legend-color{width:12px;height:3px;border-radius:2px}
-.vol-table{max-height:300px;overflow-y:auto}
-
-/* Tooltip Interactive */
-#tooltip {
-  position: absolute;
-  background: rgba(17, 24, 39, 0.95);
-  backdrop-filter: blur(4px);
-  border: 1px solid var(--border);
-  padding: 8px 12px;
-  border-radius: 6px;
-  pointer-events: none;
-  font-size: 0.7rem;
-  z-index: 10;
-  display: none;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5);
-  color: var(--text);
-  min-width: 140px;
-}
-.tt-row { display: flex; justify-content: space-between; align-items:center; gap: 12px; margin: 4px 0; }
-.tt-color { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right:4px; vertical-align:middle; }
-
-@media(max-width:600px){
-  body{padding:6px}
-  h1{font-size:1.1rem}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-  .preset-grid{grid-template-columns:repeat(3,1fr)}
-  .card{padding:10px}
-  table{font-size:.65rem}
-  th,td{padding:4px}
-}
+.legend-color{width:14px;height:3px;border-radius:2px}
+#tooltip{position:absolute;background:rgba(17,24,39,.96);border:1px solid var(--border);padding:7px 11px;border-radius:6px;pointer-events:none;font-size:.68rem;z-index:10;display:none;min-width:145px}
+.tt-row{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:3px 0}
+.tt-color{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:3px;vertical-align:middle}
+.vol-table{max-height:280px;overflow-y:auto}
+@media(max-width:600px){body{padding:5px}h1{font-size:1.05rem}.stats-grid{grid-template-columns:repeat(2,1fr)}.xover-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="container">
 
-<h1>🔊 Car Audio Analyzer V6.2</h1>
-<p class="subtitle">VW Up! TSI 2017 — Gráficos Interativos de SPL & DSP</p>
+<h1>🔊 Car Audio Analyzer V7.0</h1>
+<p class="subtitle">VW Up! TSI 2017 — Sistema Completo: EQ + Crossover + Ganhos + Limiter</p>
 
 <!-- Signal Chain -->
 <div class="card">
 <h2>⛓️ Cadeia de Sinal</h2>
 <div class="signal-chain">
-<span class="node">📱 Multimídia CASKA<br><small>TDA7388</small></span>
-<span class="arrow">→</span>
-<span class="node">🔌 HIGH INPUT</span>
-<span class="arrow">→</span>
-<span class="node">🎛️ STX2448BT<br><small>DSP Processor</small></span>
-<span class="arrow">→</span>
-<span class="node">🔌 RCA 2V</span>
-<span class="arrow">→</span>
-<span class="node">⚡ SD 800.5 EVO 6<br><small>Amplificador</small></span>
-<span class="arrow">→</span>
-<span class="node">🔊 Hertz<br><small>DSK 165.3 + ES 200.5</small></span>
+  <span class="node">📱 CASKA A100<br><small>TDA7388 ~18W</small></span>
+  <span class="arrow">→</span>
+  <span class="node">🔌 HIGH INPUT</span>
+  <span class="arrow">→</span>
+  <span class="node">🎛️ STX2448BT<br><small>DSP + EQ 10B</small></span>
+  <span class="arrow">→</span>
+  <span class="node">🔌 RCA 2V</span>
+  <span class="arrow">→</span>
+  <span class="node">⚡ SD 800.5 EVO 6<br><small>4×100W + 1×400W</small></span>
+  <span class="arrow">→</span>
+  <span class="node">🔊 Hertz DSK 165.3<br><small>+ ES 200.5</small></span>
 </div>
 </div>
 
@@ -114,554 +111,569 @@ canvas{width:100%;height:220px;border-radius:8px;background:#0f172a;margin:8px 0
 <div class="card">
 <h2>📋 Equipamentos</h2>
 <table>
-<thead><tr><th>Componente</th><th>Modelo</th><th>Potência</th><th>Impedância</th><th>Sensibilidade</th></tr></thead>
+<thead><tr><th>Componente</th><th>Modelo</th><th>RMS</th><th>Pico</th><th>Sens.</th><th>Impedância</th></tr></thead>
 <tbody>
-<tr><td>Multimídia</td><td>NAVPRO CASKA A100 PRO+</td><td id="mediaWatts">~18W RMS</td><td>4Ω</td><td>—</td></tr>
-<tr><td>Processador</td><td>Stetsom STX2448BT</td><td>2V RMS out</td><td>—</td><td>90dB SNR</td></tr>
-<tr><td>Amplificador</td><td>SoundDigital 800.5 EVO 6</td><td>4×100W + 1×400W</td><td>4Ω</td><td>103.9dB SNR</td></tr>
-<tr><td>Front Kit</td><td>Hertz DSK 165.3</td><td>80W RMS / 160W pico</td><td>4Ω</td><td>93 dB</td></tr>
-<tr><td>Subwoofer</td><td>Hertz ES 200.5</td><td>200W RMS / 400W pico</td><td>4Ω</td><td>88.5 dB</td></tr>
+<tr><td class="left">Multimídia</td><td>NAVPRO CASKA A100 PRO+</td><td id="mediaWatts">~18W</td><td>—</td><td>—</td><td>4Ω</td></tr>
+<tr><td class="left">DSP</td><td>Stetsom STX2448BT</td><td>2V out</td><td>—</td><td>90dB SNR</td><td>—</td></tr>
+<tr><td class="left">Amplificador</td><td>SoundDigital 800.5 EVO 6</td><td>4×100W+400W</td><td>4×200W+800W</td><td>103.9dB SNR</td><td>4Ω</td></tr>
+<tr><td class="left">Front Kit</td><td>Hertz DSK 165.3 (2 vias)</td><td>80W</td><td>160W</td><td>93dB/1W/1m</td><td>4Ω</td></tr>
+<tr><td class="left">Subwoofer</td><td>Hertz ES 200.5 (caixa fechada)</td><td>200W</td><td>400W</td><td>88.5dB/1W/1m</td><td>4Ω</td></tr>
 </tbody>
 </table>
 <div class="toggle-group">
-<button class="toggle-btn active" onclick="setMediaPower(18)" id="btn18w">🔋 18W RMS (limpo)</button>
-<button class="toggle-btn" onclick="setMediaPower(25)" id="btn25w">⚡ 25W RMS (otimista)</button>
+  <button class="toggle-btn active" onclick="setMediaPower(18)" id="btn18w">🔋 18W RMS (real)</button>
+  <button class="toggle-btn" onclick="setMediaPower(25)" id="btn25w">⚡ 25W RMS (otimista)</button>
 </div>
-<p style="font-size:.6rem;color:var(--text2)">TDA7388: 45W é marketing. Potência limpa real ≈ 18W/ch @ &lt;1% THD.</p>
 </div>
 
-<!-- Gain Control -->
+<!-- MODO DO SISTEMA -->
 <div class="card">
-<h2>🎛️ Controle de Ganho — SD 800.5 EVO 6</h2>
-<p style="font-size:.7rem;color:var(--text2);margin-bottom:8px">Selecione um preset ou ajuste manualmente. <span class="badge badge-safe">Limite de segurança ativo</span></p>
+<h2>🎯 Modo do Sistema</h2>
+<p style="font-size:.68rem;color:var(--text2);margin-bottom:8px">Selecione o perfil sonoro. Isso ajusta simultaneamente o EQ da Multimídia e do Processador.</p>
+<div class="mode-selector">
+  <button class="mode-btn active-natural" id="btnNatural" onclick="setSystemMode('natural')">
+    🟢 HiFi Natural<br>
+    <small style="font-weight:400;color:var(--text2)">Bass suave +2dB · Médios e vozes em destaque · Agudos naturais</small>
+  </button>
+  <button class="mode-btn" id="btnImpact" onclick="setSystemMode('impact')">
+    🟠 Impacto Musical<br>
+    <small style="font-weight:400;color:var(--text2)">Bass marcante +6dB · Mids claros · Roll-off agudos sem fadiga</small>
+  </button>
+</div>
+<div class="info-box" id="modeDesc">
+  <strong>HiFi Natural ativo</strong> — Curva próxima à Harman Target com toque da Monitor Audio Gold 300 (sua referência de casa).
+  Médios e vozes em protagonismo. Ideal para audição crítica, longas viagens e qualquer gênero musical.
+  CASKA em modo acústico puro + DSP em perfil Natural.
+</div>
+</div>
+
+<!-- EQ CASKA 32 BANDAS -->
+<div class="card">
+<h2>📱 EQ Multimídia CASKA — 32 Bandas (Correção Acústica)</h2>
+<p style="font-size:.65rem;color:var(--text2);margin-bottom:6px">
+  Este EQ compensa as deficiências acústicas da cabine do VW Up! (ressônâncias de porta, cabin gain, reflexões de painel).
+  Muda automaticamente com o Modo do Sistema acima.
+</p>
+<div class="eq-grid" id="caskaEqGrid"></div>
+<p style="font-size:.6rem;color:var(--text2);text-align:center;margin-top:4px" id="caskaEqDesc"></p>
+
+<h3>📌 Como Aplicar na CASKA</h3>
+<div class="info-box">
+  <strong>Passo a passo:</strong><br>
+  1. Menu → Configurações de Som → Equalizador → Modo Usuário (32 bandas)<br>
+  2. Ajuste cada banda conforme os valores acima (toque e segure para editar valor manual)<br>
+  3. Salve como "Perfil A" (HiFi Natural) e "Perfil B" (Impacto Musical)<br>
+  <strong>Importante:</strong> Deixe o <span class="ok">Volume da CASKA em 70-75% (visor 21-22)</span> para máxima relação sinal/ruído antes do processador.
+</div>
+</div>
+
+<!-- EQ DSP PROCESSADOR -->
+<div class="card">
+<h2>🎛️ EQ Processador STX2448BT — 10 Bandas (Caráter Sonoro)</h2>
+<p style="font-size:.65rem;color:var(--text2);margin-bottom:6px">
+  O DSP define o <em>caráter</em> da curva final. Muda automaticamente com o Modo do Sistema.
+</p>
+<div class="eq-grid" id="dspEqGrid"></div>
+<p style="font-size:.6rem;color:var(--text2);text-align:center;margin-top:4px" id="dspEqDesc"></p>
+
+<h3>🔀 Roteamento do DSP</h3>
+<table>
+<thead><tr><th>Entrada</th><th>Saída</th><th>Destino</th><th>Notas</th></tr></thead>
+<tbody>
+<tr><td>IN A (L)</td><td>OUT 1</td><td>Amp CH1 — Front L</td><td>Sinal estéreo esquerdo</td></tr>
+<tr><td>IN B (R)</td><td>OUT 2</td><td>Amp CH2 — Front R</td><td>Sinal estéreo direito</td></tr>
+<tr><td>IN A+B (mono)</td><td>OUT 3</td><td>Amp CH5 — Subwoofer</td><td>Mix mono para sub</td></tr>
+<tr><td>—</td><td>OUT 4</td><td>Não utilizado</td><td>—</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- CROSSOVER -->
+<div class="card">
+<h2>✂️ Configuração de Crossover</h2>
+<div class="info-box" style="margin-bottom:8px">
+  <strong>Filtro fixo do Amplificador SD 800.5 EVO 6 (não alterável):</strong><br>
+  Canais 1-4 (Front): <span class="ok">HPF 80Hz · -12dB/oct (Butterworth)</span><br>
+  Canal 5 (Sub): <span class="ok">LPF 80Hz · -12dB/oct (Butterworth)</span>
+</div>
+<div class="xover-grid">
+  <div class="xover-block">
+    <div class="title">🔊 OUT 1+2 — Front (Hertz DSK 165.3)</div>
+    <div class="row"><span class="key">Filtro DSP</span><span class="val">HPF</span></div>
+    <div class="row"><span class="key">Frequência</span><span class="val">80 Hz</span></div>
+    <div class="row"><span class="key">Tipo DSP</span><span class="val">Linkwitz-Riley</span></div>
+    <div class="row"><span class="key">Slope DSP</span><span class="val">48 dB/oct</span></div>
+    <div class="row"><span class="key">+ Amp nativo</span><span class="val">12 dB/oct BW</span></div>
+    <div class="row"><span class="key">Corte total aprox.</span><span class="val" style="color:var(--green)">~60 dB/oct</span></div>
+    <div class="row"><span class="key">Xover interno kit</span><span class="val">~3.5 kHz passivo</span></div>
+    <div class="row"><span class="key">Tweeter protegido</span><span class="val" style="color:var(--green)">✅ Sim</span></div>
+  </div>
+  <div class="xover-block">
+    <div class="title">🔈 OUT 3 — Sub (Hertz ES 200.5)</div>
+    <div class="row"><span class="key">Filtro DSP</span><span class="val">LPF</span></div>
+    <div class="row"><span class="key">Frequência</span><span class="val">80 Hz</span></div>
+    <div class="row"><span class="key">Tipo DSP</span><span class="val">Linkwitz-Riley</span></div>
+    <div class="row"><span class="key">Slope DSP</span><span class="val">48 dB/oct</span></div>
+    <div class="row"><span class="key">+ Amp nativo</span><span class="val">12 dB/oct BW</span></div>
+    <div class="row"><span class="key">Corte total aprox.</span><span class="val" style="color:var(--green)">~60 dB/oct</span></div>
+    <div class="row"><span class="key">Cabin gain sub</span><span class="val">+6~10 dB 40-80Hz</span></div>
+    <div class="row"><span class="key">Sub protegido</span><span class="val" style="color:var(--green)">✅ Sim</span></div>
+  </div>
+</div>
+<h3>⏱️ Delay (Alinhamento Temporal)</h3>
+<table>
+<thead><tr><th>Saída</th><th>Distância estimada</th><th>Delay</th><th>Função</th></tr></thead>
+<tbody>
+<tr><td>OUT 1 — Front L</td><td>~50 cm (motorista)</td><td>0.6 ms</td><td>Atrasa o lado mais próximo</td></tr>
+<tr><td>OUT 2 — Front R</td><td>~120 cm (referência)</td><td>0.0 ms</td><td>Referência (mais distante)</td></tr>
+<tr><td>OUT 3 — Sub</td><td>~200 cm (porta-malas)</td><td>1.2 ms</td><td>Sincroniza sub com fronts</td></tr>
+</tbody>
+</table>
+<div class="info-box" style="margin-top:6px">
+  <strong>Por que 80Hz para ambos?</strong> O Hertz DSK 165.3 (6.5") começa a perder eficiência abaixo de ~80Hz na porta.
+  O ES 200.5 (8" selado) vai até ~25Hz com facilidade. A sobreposição suave em 70-90Hz garantida pela diferença entre
+  os slopes cria uma transição musical sem buracos nem picos. O cabin gain compensa naturalmente qualquer queda nessa região.
+</div>
+</div>
+
+<!-- GANHOS -->
+<div class="card">
+<h2>🎛️ Calibração de Ganhos — SD 800.5 EVO 6</h2>
+<div class="info-box">
+  <strong>Método de calibração recomendado:</strong><br>
+  1. DSP: reproduza sinal de teste 1kHz 0dBFS (ou use faixa de teste rosa noise)<br>
+  2. Suba o ganho do amp até ouvir/medir distorção leve, depois recue 20%<br>
+  3. <strong>Front CH1-2:</strong> Ganho para ~80W @ 4Ω → V saída ≈ 17.9V — posição ≈ 55-60% do potenciômetro<br>
+  4. <strong>Sub CH5:</strong> Ganho para ~200W @ 4Ω → V saída ≈ 28.3V — posição ≈ 45-50% do potenciômetro<br>
+  <span class="warn">⚠ Nunca deixe amp clipando — distorção destrói tweeters e sub!</span>
+</div>
+<p style="font-size:.68rem;color:var(--text2);margin-bottom:8px">Selecione um preset ou ajuste manualmente. <span class="badge badge-safe">Limites de segurança ativos</span></p>
 <div class="preset-grid">
-<button class="preset-btn active" onclick="setPreset('alto')" id="pAlto">🔊 Alto<br><small>~115 dB</small></button>
-<button class="preset-btn" onclick="setPreset('medio')" id="pMedio">🎵 Médio<br><small>~109 dB</small></button>
-<button class="preset-btn" onclick="setPreset('baixo')" id="pBaixo">🔈 Baixo<br><small>~106 dB</small></button>
+  <button class="preset-btn active" onclick="setPreset('alto')" id="pAlto">🔊 Alto<br><small>~115 dB SPL</small></button>
+  <button class="preset-btn" onclick="setPreset('medio')" id="pMedio">🎵 Médio<br><small>~109 dB SPL</small></button>
+  <button class="preset-btn" onclick="setPreset('baixo')" id="pBaixo">🔈 Baixo<br><small>~106 dB SPL</small></button>
 </div>
 <div class="slider-group">
-<div class="slider-row">
-<label>🔊 Front</label>
-<input type="range" id="gainFront" min="0" max="89" value="50" oninput="updateAll()">
-<div class="val" id="valFront">50%</div>
-</div>
-<div class="power-bar"><div class="fill" id="barFront" style="width:31%;background:var(--green)"></div></div>
-<div style="display:flex;justify-content:space-between;font-size:.55rem;color:var(--text2)">
-<span id="pwrFront">25.0W</span><span>máx seguro: 80W (89%)</span>
-</div>
-<div class="slider-row" style="margin-top:8px">
-<label>🔈 Sub</label>
-<input type="range" id="gainSub" min="0" max="71" value="35" oninput="updateAll()">
-<div class="val" id="valSub">35%</div>
-</div>
-<div class="power-bar"><div class="fill" id="barSub" style="width:12%;background:var(--green)"></div></div>
-<div style="display:flex;justify-content:space-between;font-size:.55rem;color:var(--text2)">
-<span id="pwrSub">49.0W</span><span>máx seguro: 200W (71%)</span>
-</div>
+  <div class="slider-row">
+    <label>🔊 Front</label>
+    <input type="range" id="gainFront" min="0" max="89" value="50" oninput="updateAll()">
+    <div class="val" id="valFront">50%</div>
+  </div>
+  <div class="power-bar"><div class="fill" id="barFront" style="width:31%;background:var(--green)"></div></div>
+  <div style="display:flex;justify-content:space-between;font-size:.55rem;color:var(--text2)">
+    <span id="pwrFront">25.0W</span><span>Limite: 80W (89% slider)</span>
+  </div>
+  <div class="slider-row" style="margin-top:7px">
+    <label>🔈 Sub</label>
+    <input type="range" id="gainSub" min="0" max="71" value="35" oninput="updateAll()">
+    <div class="val" id="valSub">35%</div>
+  </div>
+  <div class="power-bar"><div class="fill" id="barSub" style="width:12%;background:var(--green)"></div></div>
+  <div style="display:flex;justify-content:space-between;font-size:.55rem;color:var(--text2)">
+    <span id="pwrSub">49.0W</span><span>Limite: 200W (71% slider)</span>
+  </div>
 </div>
 </div>
 
-<!-- SPL Stats -->
+<!-- LIMITER -->
 <div class="card">
-<h2>📊 SPL — Pressão Sonora Estimada (visor 30)</h2>
-<div class="stats-grid">
-<div class="stat"><div class="label">Front (par)</div><div class="val" id="splFront">—</div><div class="unit">dB SPL</div></div>
-<div class="stat"><div class="label">Sub + Cabin</div><div class="val" id="splSub">—</div><div class="unit">dB SPL</div></div>
-<div class="stat"><div class="label">Sistema</div><div class="val" id="splTotal">—</div><div class="unit">dB SPL</div></div>
+<h2>🛡️ Configuração de Limiter (STX2448BT)</h2>
+<div class="xover-grid">
+  <div class="xover-block">
+    <div class="title">🔊 Limiter — OUT 1+2 (Front)</div>
+    <div class="row"><span class="key">Threshold</span><span class="val" style="color:var(--green)">-1 dB</span></div>
+    <div class="row"><span class="key">Attack</span><span class="val">0.5 ms</span></div>
+    <div class="row"><span class="key">Release</span><span class="val">50 ms</span></div>
+    <div class="row"><span class="key">Ratio</span><span class="val">∞:1 (brick wall)</span></div>
+    <div class="row"><span class="key">Protege</span><span class="val">Woofer + Tweeter</span></div>
+    <div class="row"><span class="key">Objetivo</span><span class="val">Max 80W → DSK 165.3</span></div>
+  </div>
+  <div class="xover-block">
+    <div class="title">🔈 Limiter — OUT 3 (Sub)</div>
+    <div class="row"><span class="key">Threshold</span><span class="val" style="color:var(--green)">-3 dB</span></div>
+    <div class="row"><span class="key">Attack</span><span class="val">1 ms</span></div>
+    <div class="row"><span class="key">Release</span><span class="val">100 ms</span></div>
+    <div class="row"><span class="key">Ratio</span><span class="val">∞:1 (brick wall)</span></div>
+    <div class="row"><span class="key">Protege</span><span class="val">Bobina ES 200.5</span></div>
+    <div class="row"><span class="key">Objetivo</span><span class="val">Max 200W → ES 200.5</span></div>
+  </div>
+</div>
+<div class="info-box">
+  <strong>Por que esses valores?</strong><br>
+  • Front -1dB: O amp entrega max 100W, o DSK suporta 80W. Threshold de -1dB recua ~20% da potência de pico mantendo dinâmica.<br>
+  • Sub -3dB: O amp entrega 400W, o ES 200.5 suporta 200W (50%). Threshold de -3dB = corte em 50% de potência máxima.<br>
+  • Attack 0.5ms Front: Captura transientes de tweeter rapidamente — o driver mais vulnerável.<br>
+  • Release 100ms Sub: Sub tem massa maior; release mais lento evita "pumping" nos graves.<br>
+  <span class="ok">✅ Com estes valores, o sistema opera em full power por anos sem comprometer drivers.</span>
 </div>
 </div>
 
-<!-- Interactive Frequency Response Chart -->
+<!-- SPL STATS -->
+<div class="card">
+<h2>📊 SPL Estimado em Posição de Escuta</h2>
+<div class="stats-grid">
+  <div class="stat"><div class="label">Front (par)</div><div class="val" id="splFront">—</div><div class="unit">dB SPL</div></div>
+  <div class="stat"><div class="label">Sub + Cabin</div><div class="val" id="splSub">—</div><div class="unit">dB SPL</div></div>
+  <div class="stat"><div class="label">Sistema Total</div><div class="val" id="splTotal">—</div><div class="unit">dB SPL</div></div>
+</div>
+</div>
+
+<!-- CHART -->
 <div class="card" style="position:relative">
-<h2>📈 Comparativo de Resposta do Sistema Interativo</h2>
-<p style="font-size:.65rem;color:var(--text2);">Visão do som nas posições escolhidas dos ganhos. <strong>(Passe o mouse para ver ganhos e quedas exatos das correções)</strong></p>
+<h2>📈 Resposta do Sistema — Gráfico Interativo</h2>
+<p style="font-size:.63rem;color:var(--text2)">Passe o mouse para ver valores exatos. Curva muda conforme o Modo selecionado.</p>
 <canvas id="sysChart"></canvas>
 <div class="legend">
-  <div class="legend-item"><div class="legend-color" style="background:#ef4444;height:3px"></div> CUSTOM (+6dB grave)</div>
-  <div class="legend-item"><div class="legend-color" style="background:#ffffff;height:2px"></div> FLAT (EQ Correção)</div>
-  <div class="legend-item"><div class="legend-color" style="background:transparent;border-top:2px dashed #64748b"></div> Original "Cru"</div>
+  <div class="legend-item"><div class="legend-color" style="background:#ef4444"></div>Modo Ativo (com EQ)</div>
+  <div class="legend-item"><div class="legend-color" style="background:#fff"></div>Sem EQ (acústico cru)</div>
+  <div class="legend-item"><div class="legend-color" style="background:#f59e0b;height:2px;border-top:1px dashed #f59e0b"></div>Harman Target</div>
 </div>
-<!-- Interatividade Mouse Hover -->
 <div id="tooltip"></div>
 </div>
 
-<!-- EQ Action Chart -->
-<div class="card">
-<h2>🎛️ Ação de Correção Acústica (Multimídia 32 Bandas)</h2>
-<p style="font-size:.65rem;color:var(--text2);">Como o EQ CASKA preenche e atenua as falhas naturais dos alto-falantes nas portas do VW Up!.</p>
-<canvas id="eqChart"></canvas>
-<div class="legend">
-  <div class="legend-item"><div class="legend-color" style="background:rgba(34,197,94,0.4);height:10px"></div> Curva do EQ CASKA</div>
-  <div class="legend-item"><div class="legend-color" style="background:#ffffff;height:2px"></div> Resultado Final (FLAT)</div>
-  <div class="legend-item"><div class="legend-color" style="background:transparent;border-top:2px dashed #64748b"></div> Falantes Originais</div>
-</div>
-</div>
-
-<!-- Volume Sensation Table -->
-<div class="card">
-<h2>📈 SPL por Nível de Volume (visor 0–30)</h2>
-<div class="vol-table">
-<table id="volTable">
-<thead><tr><th>Visor</th><th>Potência</th><th>SPL Sistema</th><th>Sensação</th></tr></thead>
-<tbody></tbody>
-</table>
-</div>
-</div>
-
-<!-- DSP Config -->
-<div class="card">
-<h2>🎚️ Configuração STX2448BT (Processador DSP)</h2>
-
-<h3 style="font-size:.75rem;color:var(--orange);margin:8px 0 4px">🔀 Roteamento</h3>
-<table>
-<thead><tr><th>Entrada</th><th>Roteamento</th><th>Saída</th><th>Destino</th></tr></thead>
-<tbody>
-<tr><td>IN A (L)</td><td>A</td><td>OUT 1</td><td>Amp CH1 (Front L)</td></tr>
-<tr><td>IN B (R)</td><td>B</td><td>OUT 2</td><td>Amp CH2 (Front R)</td></tr>
-<tr><td>IN A+B</td><td>A+B (mono)</td><td>OUT 3</td><td>Amp CH5 (Sub)</td></tr>
-<tr><td>—</td><td>—</td><td>OUT 4</td><td>Não usado</td></tr>
-</tbody>
-</table>
-
-<h3 style="font-size:.75rem;color:var(--orange);margin:8px 0 4px">✂️ Crossover (LR48 + 12dB fixo do amp = ~60dB/oct)</h3>
-<table>
-<thead><tr><th>Saída</th><th>Filtro</th><th>Freq</th><th>Tipo</th><th>Slope DSP</th><th>Total c/ Amp</th></tr></thead>
-<tbody>
-<tr><td>OUT 1+2</td><td>HPF</td><td>80Hz</td><td>Linkwitz-Riley</td><td>48dB/oct</td><td>~60dB/oct</td></tr>
-<tr><td>OUT 3</td><td>LPF</td><td>80Hz</td><td>Linkwitz-Riley</td><td>48dB/oct</td><td>~60dB/oct</td></tr>
-</tbody>
-</table>
-
-<h3 style="font-size:.75rem;color:var(--orange);margin:8px 0 4px">🔒 Limiter (anti-distorção)</h3>
-<div class="dsp-config">
-<strong>Threshold:</strong> -3dB &nbsp;|&nbsp; <strong>Attack:</strong> Automático (0.5ms) &nbsp;|&nbsp; <strong>Release:</strong> Automático (50ms)<br>
-<span style="font-size:.6rem;color:var(--green)">✅ Corta picos e previne ruído ao amplificador. Volume máximo da CASKA: ~75% (visor 22).</span>
-</div>
-
-<h3 style="font-size:.75rem;color:var(--orange);margin:8px 0 4px">⏱️ Delay (alinhamento temporal a testar)</h3>
-<table>
-<thead><tr><th>Saída</th><th>Delay Inicial</th><th>Nota</th></tr></thead>
-<tbody>
-<tr><td>OUT 1 (Front L)</td><td>0.6 ms</td><td>Mais perto do motorista (~50cm)</td></tr>
-<tr><td>OUT 2 (Front R)</td><td>0.0 ms</td><td>Referência (mais longe ~120cm)</td></tr>
-<tr><td>OUT 3 (Sub)</td><td>1.2 ms</td><td>Porta-malas (~200cm)</td></tr>
-</tbody>
-</table>
-</div>
-
-<!-- DSP EQ Presets -->
-<div class="card">
-<h2>🎵 EQ do Processador — Presets de Entrada</h2>
-<div class="toggle-group">
-<button class="toggle-btn active" onclick="setDspEq('flat')" id="btnFlat">🎯 FLAT (Graves Neutros)</button>
-<button class="toggle-btn" onclick="setDspEq('custom')" id="btnCustom">🎸 CUSTOM (Grave Profundo +6dB)</button>
-</div>
-<div class="eq-grid" id="dspEqGrid"></div>
-<p style="font-size:.6rem;color:var(--text2);text-align:center" id="dspEqDesc">Todas as 10 bandas em 0dB. Neutro e de alta fidelidade.</p>
-</div>
-
-<!-- Multimedia EQ -->
-<div class="card">
-<h2>📱 EQ da Multimídia CASKA — 32 Bandas (Acústica)</h2>
-<p style="font-size:.65rem;color:var(--text2);margin-bottom:6px">Fica sempre ativo. Compensa buracos da cabine do VW Up!.</p>
-<div class="eq-grid" id="mediaEqGrid"></div>
-</div>
-
-<!-- Safety -->
+<!-- SAFETY -->
 <div class="card">
 <h2>🛡️ Limites de Segurança</h2>
 <table>
-<thead><tr><th>Componente</th><th>RMS Máx</th><th>Pico Máx</th><th>Ganho Máx Seguro</th><th>Status</th></tr></thead>
+<thead><tr><th>Componente</th><th>RMS Máx</th><th>Pico Máx</th><th>Limiter Threshold</th><th>Status</th></tr></thead>
 <tbody>
-<tr><td>Front DSK 165.3</td><td>80W</td><td>160W</td><td>89% (Front)</td><td id="safeFront" class="badge badge-safe">OK</td></tr>
-<tr><td>Sub ES 200.5</td><td>200W</td><td>400W</td><td>71% (Sub)</td><td id="safeSub" class="badge badge-safe">OK</td></tr>
+<tr><td class="left">Hertz DSK 165.3</td><td>80W</td><td>160W</td><td>-1 dB (out 1+2)</td><td id="safeFront" class="badge badge-safe">OK</td></tr>
+<tr><td class="left">Hertz ES 200.5</td><td>200W</td><td>400W</td><td>-3 dB (out 3)</td><td id="safeSub" class="badge badge-safe">OK</td></tr>
 </tbody>
 </table>
+</div>
+
+<!-- VOLUME TABLE -->
+<div class="card">
+<h2>📈 SPL por Nível de Volume (visor 0–30)</h2>
+<div class="vol-table"><table id="volTable"><thead><tr><th>Visor</th><th>Potência</th><th>SPL</th><th>Sensação</th></tr></thead><tbody></tbody></table></div>
 </div>
 
 </div><!-- /container -->
 
 <script>
-// === SYSTEM CONSTANTS ===
-const PWR_F_MAX = 100, PWR_S_MAX = 400;
-const SENS_F = 93, SENS_S = 88.5;
-const PAIR = 3, CABIN = 8;
-const SAFE_F = 80, SAFE_S = 200;
-let mediaPower = 18;
+// ═══════════════════════════════════════════════════════════
+// SYSTEM CONSTANTS
+// ═══════════════════════════════════════════════════════════
+const PWR_F_MAX=100, PWR_S_MAX=400;
+const SENS_F=93, SENS_S=88.5;
+const PAIR=3, CABIN=8;
+const SAFE_F=80, SAFE_S=200;
+let mediaPower=18;
+let systemMode='natural'; // 'natural' | 'impact'
 
-// Presets
-const presets = {
-    alto:  { gF: 50, gS: 35, emoji: '🔊', name: 'Alto',  desc: '🔊 Volume alto — ~115 dB máx. Uso pontual.' },
-    medio: { gF: 25, gS: 18, emoji: '🎵', name: 'Médio', desc: '🎵 Dia a dia — ~109 dB máx. Confortável.' },
-    baixo: { gF: 18, gS: 12, emoji: '🔈', name: 'Baixo', desc: '🔈 Background — ~106 dB máx. Hi-Fi suave.' }
+// ── VOLUME CURVE POINTS (display 0-30)
+const vol_pts=[[0,0],[3,0.000032],[6,0.000316],[9,0.00126],[12,0.005],[15,0.0159],[18,0.0447],[21,0.112],[24,0.282],[27,0.562],[30,1.00]];
+
+// ── GAIN PRESETS
+const presets={
+  alto: {gF:50,gS:35,emoji:'🔊',name:'Alto',desc:'🔊 Volume alto — ~115 dB. Uso pontual, shows e picos.'},
+  medio:{gF:25,gS:18,emoji:'🎵',name:'Médio',desc:'🎵 Dia a dia — ~109 dB. Confortável e dinâmico.'},
+  baixo:{gF:18,gS:12,emoji:'🔈',name:'Baixo',desc:'🔈 Background — ~106 dB. HiFi suave, longas viagens.'}
 };
 
-const dspEqFlat   = [0,0,0,0,0,0,0,0,0,0];
-const dspEqCustom = [3,6,4,1,0,0,0,0,0,0];
-const dspFreqs = ['31','63','125','250','500','1k','2k','4k','8k','16k'];
+// ── EQ: CASKA 32 bandas (acoustic correction)
+const CASKA_FREQS=['20','25','32','40','50','63','80','100','125','160','200','250','315','400','500','630','800','1k','1.2k','1.6k','2k','2.5k','3.1k','4k','5k','6.3k','8k','10k','12.5k','16k','18k','20k'];
+// HiFi Natural: correção acústica pura da cabine Up!
+const CASKA_NATURAL=[0,0,1,1,-2,-2,0,1,1,2,2,2,1,1,1,1,0,0,0,0,-1,-1,0,0,1,1,0,-1,-1,-1,-1,-1];
+// Impacto Musical: correção + presença extra graves e mids
+const CASKA_IMPACT= [1,1,2,2,0,0,1,1,1,2,2,2,1,1,1,1,1,1,1,1,0,-1,0,0,1,1,0,-1,-1,-2,-2,-2];
 
-const mediaEqFreqs = ['20','25','32','40','50','63','80','100','125','160','200','250','315','400','500','630','800','1k','1.2k','1.6k','2k','2.5k','3.1k','4k','5k','6.3k','8k','10k','12.5k','16k','18k','20k'];
-const mediaEqVals  = [0,0,0,0,-2,-2,0,0,1,1,1,2,2,2,1,1,0,0,0,0,-1,-1,0,0,1,1,0,0,-1,-1,-1,-1];
+// ── EQ: DSP STX2448BT 10 bandas (som character)
+const DSP_FREQS=['31','63','125','250','500','1k','2k','4k','8k','16k'];
+// HiFi Natural: +2dB bass max, mids com presença, highs naturais
+const DSP_NATURAL=[1,2,1,0,0,1,1.5,0.5,0,-1];
+// Impacto Musical: entre preset 1 e 2 — bass +6dB, mids claros, roll-off highs
+const DSP_IMPACT=  [4,6,3,1,1,1,0.5,0,-1,-2];
 
-// Helper to parse freqs 
-function parseF(s) {
-    if (s.endsWith('k')) return parseFloat(s) * 1000;
-    return parseFloat(s);
+// ── PARSE FREQ STRING
+function parseF(s){return s.endsWith('k')?parseFloat(s)*1000:parseFloat(s);}
+const caskaLogF_nat=CASKA_FREQS.map(f=>Math.log10(parseF(f)));
+const caskaLogF_imp=CASKA_FREQS.map(f=>Math.log10(parseF(f)));
+const dspLogF=DSP_FREQS.map(f=>Math.log10(parseF(f)));
+
+// ── GAUSSIAN EQ INTERPOLATION
+function getEqGain(f,logFreqs,gains,Q){
+  const l=Math.log10(f);let t=0;
+  for(let i=0;i<logFreqs.length;i++){
+    if(gains[i]===0)continue;
+    const d=l-logFreqs[i];
+    t+=gains[i]*Math.exp(-(d*d)*Q);
+  }
+  return t;
 }
 
-const mediaEqLogF = mediaEqFreqs.map(f => Math.log10(parseF(f)));
-const dspEqLogF = dspFreqs.map(f => Math.log10(parseF(f)));
-
-// Gaussian Bell interpolation sum for EQ
-function getEqGain(f, logFreqs, gains, Q) {
-    const l = Math.log10(f);
-    let total = 0;
-    for (let i = 0; i < logFreqs.length; i++) {
-        if (gains[i] === 0) continue;
-        const diff = l - logFreqs[i];
-        total += gains[i] * Math.exp(- (diff * diff) * Q);
+// ── VOLUME CURVE
+function displayToPower(d){
+  if(d<=0)return 0.0001;if(d>=30)return 1.0;
+  for(let i=0;i<vol_pts.length-1;i++){
+    if(d>=vol_pts[i][0]&&d<=vol_pts[i+1][0]){
+      const t=(d-vol_pts[i][0])/(vol_pts[i+1][0]-vol_pts[i][0]);
+      return vol_pts[i][1]+t*(vol_pts[i+1][1]-vol_pts[i][1]);
     }
-    return total;
+  }
+  return 1.0;
 }
 
-const pts = [[0,0],[3,0.000032],[6,0.000316],[9,0.00126],[12,0.005],[15,0.0159],[18,0.0447],[21,0.112],[24,0.282],[27,0.562],[30,1.00]];
-function displayToPower(d) {
-    if (d <= 0) return 0.0001;
-    if (d >= 30) return 1.0;
-    for (let i = 0; i < pts.length - 1; i++) {
-        if (d >= pts[i][0] && d <= pts[i+1][0]) {
-            const t = (d - pts[i][0]) / (pts[i+1][0] - pts[i][0]);
-            return pts[i][1] + t * (pts[i+1][1] - pts[i][1]);
-        }
+// ── SPL CALC
+function calcSPL(gF,gS,vf){
+  const pwrF=PWR_F_MAX*Math.pow(gF/100,2)*vf;
+  const pwrS=PWR_S_MAX*Math.pow(gS/100,2)*vf;
+  const splF=SENS_F+10*Math.log10(Math.max(0.001,pwrF))+PAIR;
+  const splS=SENS_S+10*Math.log10(Math.max(0.001,pwrS))+CABIN;
+  const sys=10*Math.log10(Math.pow(10,splF/10)+Math.pow(10,splS/10));
+  return{splF,splS,splSys:sys,pwrF,pwrS};
+}
+
+// ── RAW SPL AT FREQ
+function calcRawSplAtFreq(f,gF,gS){
+  const pwrF=PWR_F_MAX*Math.pow(gF/100,2);
+  let splF=SENS_F+10*Math.log10(Math.max(0.001,pwrF))+PAIR;
+  if(f<80)splF-=60*Math.log2(80/f);
+  if(f>15000)splF-=6*Math.log2(f/15000);
+  if(f>3500&&f<5000)splF-=2;
+  if(f>100&&f<700)splF-=2.5*Math.exp(-Math.pow(Math.log10(f/300),2)*5);
+  if(f>1500&&f<4000)splF+=1.5*Math.exp(-Math.pow(Math.log10(f/2500),2)*10);
+  const pwrS=PWR_S_MAX*Math.pow(gS/100,2);
+  let splS=SENS_S+10*Math.log10(Math.max(0.001,pwrS))+CABIN;
+  if(f>80)splS-=60*Math.log2(f/80);
+  if(f<30)splS-=12*Math.log2(30/f);
+  if(f>=35&&f<=65)splS+=4*(1-Math.abs(f-50)/15);
+  return 10*Math.log10(Math.pow(10,splF/10)+Math.pow(10,splS/10));
+}
+
+function getSystemCurve(W,gF,gS,applyEq){
+  const pts=[];
+  const caskaVals=systemMode==='natural'?CASKA_NATURAL:CASKA_IMPACT;
+  const dspVals=systemMode==='natural'?DSP_NATURAL:DSP_IMPACT;
+  for(let i=0;i<=W;i++){
+    const f=Math.pow(10,Math.log10(20)+(i/W)*Math.log10(1000));
+    let spl=calcRawSplAtFreq(f,gF,gS);
+    if(applyEq){
+      spl+=getEqGain(f,caskaLogF_nat,caskaVals,80);
+      spl+=getEqGain(f,dspLogF,dspVals,15);
     }
-    return 1.0;
+    pts.push(spl);
+  }
+  return pts;
 }
 
-function calcSPL(gF, gS, vf) {
-    const pwrF = PWR_F_MAX * Math.pow(gF/100, 2) * vf;
-    const pwrS = PWR_S_MAX * Math.pow(gS/100, 2) * vf;
-    const splF = SENS_F + 10 * Math.log10(Math.max(0.001, pwrF)) + PAIR;
-    const splS = SENS_S + 10 * Math.log10(Math.max(0.001, pwrS)) + CABIN;
-    const sSys = 10 * Math.log10(Math.pow(10, splF/10) + Math.pow(10, splS/10));
-    return { splF, splS, splSys: sSys, pwrF, pwrS };
+// Harman target curve (approximated for overlay)
+function getHarmanCurve(W,meanSpl){
+  const pts=[];
+  for(let i=0;i<=W;i++){
+    const f=Math.pow(10,Math.log10(20)+(i/W)*Math.log10(1000));
+    let adj=0;
+    if(f<200)adj=5.5*(1-Math.min(1,Math.log10(200/f)));
+    else if(f<2000)adj=0;
+    else if(f<3000)adj=0.5;
+    else adj=0.5-3*Math.log10(f/3000);
+    pts.push(meanSpl+adj);
+  }
+  return pts;
 }
 
-function setPreset(id) {
-    const p = presets[id];
-    document.getElementById('gainFront').value = p.gF;
-    document.getElementById('gainSub').value = p.gS;
-    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById('p' + id.charAt(0).toUpperCase() + id.slice(1)).classList.add('active');
-    updateAll();
+// ── SYSTEM MODE UI
+function setSystemMode(mode){
+  systemMode=mode;
+  document.getElementById('btnNatural').className='mode-btn'+(mode==='natural'?' active-natural':'');
+  document.getElementById('btnImpact').className='mode-btn'+(mode==='impact'?' active-impact':'');
+  const descEl=document.getElementById('modeDesc');
+  if(mode==='natural'){
+    descEl.innerHTML='<strong>HiFi Natural ativo</strong> — Curva próxima à Harman Target com toque da Monitor Audio Gold 300 (sua referência de casa). Médios e vozes em protagonismo. CASKA em correção acústica pura + DSP modo Natural (+2dB bass max).';
+  } else {
+    descEl.innerHTML='<strong>Impacto Musical ativo</strong> — Entre Preset 1 e 2: bass +6dB, médios claros como P2, roll-off suave nos agudos. Inspirado no Wilson Alexx V (graves) + Sonus Faber (mids) + Focal Sopra/Dynaudio (highs). Sem fadiga auditiva.';
+  }
+  renderCaskaEq();
+  renderDspEq();
+  if(window.isInit)updateAll();
 }
 
-function setMediaPower(w) {
-    mediaPower = w;
-    document.getElementById('btn18w').classList.toggle('active', w === 18);
-    document.getElementById('btn25w').classList.toggle('active', w === 25);
-    document.getElementById('mediaWatts').textContent = '~' + w + 'W RMS';
-    updateAll();
+// ── RENDER EQ GRIDS
+function renderCaskaEq(){
+  const vals=systemMode==='natural'?CASKA_NATURAL:CASKA_IMPACT;
+  const grid=document.getElementById('caskaEqGrid');
+  grid.innerHTML='';
+  vals.forEach((v,i)=>{
+    const color=v>0?'#22c55e':v<0?'#ef4444':'#64748b';
+    grid.innerHTML+=`<div class="eq-band"><span class="val" style="color:${color}">${v>0?'+':v===0?'±':''}${v}</span><span class="freq">${CASKA_FREQS[i]}</span></div>`;
+  });
+  const desc=document.getElementById('caskaEqDesc');
+  desc.textContent=systemMode==='natural'
+    ?'CASKA: Correção acústica pura — compensa cabin gain, ressonâncias de porta e reflexões do painel do Up!'
+    :'CASKA: Correção acústica + presença adicional — mais energy em graves e mids para Modo Impacto.';
 }
 
-function setDspEq(preset) {
-    const vals = preset === 'flat' ? dspEqFlat : dspEqCustom;
-    document.getElementById('btnFlat').classList.toggle('active', preset === 'flat');
-    document.getElementById('btnCustom').classList.toggle('active', preset === 'custom');
-    const grid = document.getElementById('dspEqGrid');
-    grid.innerHTML = '';
-    for (let i = 0; i < 10; i++) {
-        const v = vals[i];
-        const color = v > 0 ? '#22c55e' : v < 0 ? '#ef4444' : '#94a3b8';
-        grid.innerHTML += `<div class="eq-band"><span class="val" style="color:${color}">${v > 0 ? '+' + v : (v===0?'-':v)}</span><span class="freq">${dspFreqs[i]}</span></div>`;
+function renderDspEq(){
+  const vals=systemMode==='natural'?DSP_NATURAL:DSP_IMPACT;
+  const grid=document.getElementById('dspEqGrid');
+  grid.innerHTML='';
+  vals.forEach((v,i)=>{
+    const color=v>0?'#22c55e':v<0?'#ef4444':'#64748b';
+    const s=v>0?'+':v===0?'±':'';
+    grid.innerHTML+=`<div class="eq-band"><span class="val" style="color:${color}">${s}${v}</span><span class="freq">${DSP_FREQS[i]}</span></div>`;
+  });
+  const desc=document.getElementById('dspEqDesc');
+  desc.textContent=systemMode==='natural'
+    ?'DSP: HiFi Natural — +2dB bass max, presença vocal +1.5dB em 2kHz, roll-off suave nos agudos. Máxima qualidade e fidelidade.'
+    :'DSP: Impacto Musical — +6dB em 63Hz, mids claros (+1dB), agudos com roll-off progressivo. Sem fadiga, com punch.';
+}
+
+// ── UI UPDATES
+function setPreset(id){
+  const p=presets[id];
+  document.getElementById('gainFront').value=p.gF;
+  document.getElementById('gainSub').value=p.gS;
+  document.querySelectorAll('.preset-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('p'+id.charAt(0).toUpperCase()+id.slice(1)).classList.add('active');
+  updateAll();
+}
+function setMediaPower(w){
+  mediaPower=w;
+  document.getElementById('btn18w').classList.toggle('active',w===18);
+  document.getElementById('btn25w').classList.toggle('active',w===25);
+  document.getElementById('mediaWatts').textContent='~'+w+'W RMS';
+  updateAll();
+}
+
+function updateAll(){
+  const gF=parseInt(document.getElementById('gainFront').value);
+  const gS=parseInt(document.getElementById('gainSub').value);
+  document.getElementById('valFront').textContent=gF+'%';
+  document.getElementById('valSub').textContent=gS+'%';
+  const r=calcSPL(gF,gS,1.0);
+  document.getElementById('splFront').textContent=r.splF.toFixed(1);
+  document.getElementById('splSub').textContent=r.splS.toFixed(1);
+  document.getElementById('splTotal').textContent=r.splSys.toFixed(1);
+  const pF=PWR_F_MAX*Math.pow(gF/100,2);
+  const pS=PWR_S_MAX*Math.pow(gS/100,2);
+  document.getElementById('pwrFront').textContent=pF.toFixed(1)+'W';
+  document.getElementById('pwrSub').textContent=pS.toFixed(1)+'W';
+  const pctF=(pF/SAFE_F)*100;
+  const pctS=(pS/SAFE_S)*100;
+  document.getElementById('barFront').style.width=Math.min(100,pctF)+'%';
+  document.getElementById('barFront').style.background=pctF>90?'var(--orange)':'var(--green)';
+  document.getElementById('barSub').style.width=Math.min(100,pctS)+'%';
+  document.getElementById('barSub').style.background=pctS>90?'var(--orange)':'var(--green)';
+  document.getElementById('safeFront').textContent=pF<=SAFE_F?'✅ OK':'⚠️ OVER';
+  document.getElementById('safeFront').className='badge '+(pF<=SAFE_F?'badge-safe':'badge-warn');
+  document.getElementById('safeSub').textContent=pS<=SAFE_S?'✅ OK':'⚠️ OVER';
+  document.getElementById('safeSub').className='badge '+(pS<=SAFE_S?'badge-safe':'badge-warn');
+  updateVolTable(gF,gS);
+  drawSysChart();
+}
+
+function updateVolTable(gF,gS){
+  const levels=[{d:3,e:'🔇'},{d:6,e:'🔈'},{d:9,e:'🔈'},{d:12,e:'🔉'},{d:15,e:'🔉'},{d:18,e:'🔊'},{d:21,e:'🔊'},{d:24,e:'📢'},{d:27,e:'📢'},{d:30,e:'🚨'}];
+  let html='';
+  levels.forEach(l=>{
+    const pf=displayToPower(l.d);
+    const r=calcSPL(gF,gS,pf);
+    html+=`<tr><td>${l.e} ${l.d}</td><td>${(pf*100).toFixed(1)}%</td><td>${r.splSys.toFixed(1)} dB</td><td style="font-size:.6rem">${splToSens(r.splSys)}</td></tr>`;
+  });
+  document.querySelector('#volTable tbody').innerHTML=html;
+}
+
+function splToSens(spl){
+  if(spl<70)return 'Quase inaudível';if(spl<80)return 'Fundo musical';
+  if(spl<90)return 'Confortável';if(spl<100)return 'Moderado';
+  if(spl<110)return 'Alto (limpo)';if(spl<115)return 'Muito alto';
+  return 'Extremo ⚠️';
+}
+
+// ── CHART DRAWING
+function drawGridAndLabels(ctx,W,H,yMin,yMax,stepY){
+  ctx.strokeStyle='#1e293b';ctx.lineWidth=2;
+  for(let yDb=Math.ceil(yMin/stepY)*stepY;yDb<=yMax;yDb+=stepY){
+    const y=H-((yDb-yMin)/(yMax-yMin))*H;
+    ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+    ctx.fillStyle='#64748b';ctx.font='22px Inter';ctx.textAlign='left';
+    ctx.fillText(yDb+' dB',8,y-6);
+  }
+  [20,50,100,200,500,1000,2000,5000,10000,20000].forEach(f=>{
+    const x=(Math.log10(f)-Math.log10(20))/Math.log10(1000)*W;
+    ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();
+    ctx.fillStyle='#475569';ctx.font='22px Inter';ctx.textAlign='center';
+    ctx.fillText(f>=1000?(f/1000)+'k':f,x,H-8);
+  });
+}
+
+function strokePath(ctx,W,H,pts,color,width,yMin,yMax,dashed=false){
+  ctx.strokeStyle=color;ctx.lineWidth=width;
+  ctx.setLineDash(dashed?[8,6]:[]);
+  ctx.beginPath();
+  for(let i=0;i<=W;i++){
+    const y=H-((pts[i]-yMin)/(yMax-yMin))*H;
+    if(i===0)ctx.moveTo(i,y);else ctx.lineTo(i,y);
+  }
+  ctx.stroke();ctx.setLineDash([]);
+}
+
+let sysMouseX=-1;
+function drawSysChart(){
+  const gF=parseInt(document.getElementById('gainFront').value);
+  const gS=parseInt(document.getElementById('gainSub').value);
+  const c=document.getElementById('sysChart'),ctx=c.getContext('2d');
+  const W=c.width=c.offsetWidth*2,H=c.height=400;
+  const midI=Math.round(W*((Math.log10(1000)-Math.log10(20))/Math.log10(1000)));
+  const meanSpl=getSystemCurve(W,gF,gS,true)[midI]||100;
+  const yMax=Math.ceil(meanSpl/10)*10+50;
+  const yMin=yMax-100;
+  ctx.clearRect(0,0,W,H);
+  drawGridAndLabels(ctx,W,H,yMin,yMax,10);
+  const orig=getSystemCurve(W,gF,gS,false);
+  const eq=getSystemCurve(W,gF,gS,true);
+  const harman=getHarmanCurve(W,meanSpl);
+  strokePath(ctx,W,H,orig,'#64748b',3,yMin,yMax,true);
+  strokePath(ctx,W,H,harman,'#f59e0b',3,yMin,yMax,true);
+  strokePath(ctx,W,H,eq,systemMode==='natural'?'#14b8a6':'#ef4444',5,yMin,yMax,false);
+  if(sysMouseX>=0){
+    let xR=Math.min(1,Math.max(0,sysMouseX/c.offsetWidth));
+    const ix=Math.round(xR*W);
+    ctx.strokeStyle='rgba(255,255,255,.3)';ctx.lineWidth=2;ctx.setLineDash([8,8]);
+    ctx.beginPath();ctx.moveTo(xR*W,0);ctx.lineTo(xR*W,H);ctx.stroke();ctx.setLineDash([]);
+    if(orig[ix]){
+      [[orig[ix],'#64748b'],[eq[ix],systemMode==='natural'?'#14b8a6':'#ef4444'],[harman[ix],'#f59e0b']].forEach(([v,cl])=>{
+        ctx.fillStyle=cl;ctx.beginPath();ctx.arc(xR*W,H-((v-yMin)/(yMax-yMin))*H,6,0,Math.PI*2);ctx.fill();
+      });
     }
-    document.getElementById('dspEqDesc').textContent = preset === 'flat'
-        ? 'Todas as 10 bandas em 0dB. Neutro e de alta fidelidade.'
-        : 'Reforço de grave com pico em 63Hz (+6dB). Sensação de subgrave imersiva.';
-    if(window.isInit) updateAll();
+  }
 }
 
-function updateAll() {
-    const gF = parseInt(document.getElementById('gainFront').value);
-    const gS = parseInt(document.getElementById('gainSub').value);
-    document.getElementById('valFront').textContent = gF + '%';
-    document.getElementById('valSub').textContent = gS + '%';
-
-    const r = calcSPL(gF, gS, 1.0);
-    document.getElementById('splFront').textContent = r.splF.toFixed(1);
-    document.getElementById('splSub').textContent = r.splS.toFixed(1);
-    document.getElementById('splTotal').textContent = r.splSys.toFixed(1);
-
-    const pF = PWR_F_MAX * Math.pow(gF/100, 2);
-    const pS = PWR_S_MAX * Math.pow(gS/100, 2);
-    document.getElementById('pwrFront').textContent = pF.toFixed(1) + 'W';
-    document.getElementById('pwrSub').textContent = pS.toFixed(1) + 'W';
-    const pctF = (pF / SAFE_F) * 100;
-    const pctS = (pS / SAFE_S) * 100;
-    document.getElementById('barFront').style.width = Math.min(100, pctF) + '%';
-    document.getElementById('barFront').style.background = pctF > 90 ? 'var(--orange)' : 'var(--green)';
-    document.getElementById('barSub').style.width = Math.min(100, pctS) + '%';
-    document.getElementById('barSub').style.background = pctS > 90 ? 'var(--orange)' : 'var(--green)';
-
-    document.getElementById('safeFront').textContent = pF <= SAFE_F ? '✅ OK' : '⚠️ OVER';
-    document.getElementById('safeFront').className = 'badge ' + (pF <= SAFE_F ? 'badge-safe' : 'badge-warn');
-    document.getElementById('safeSub').textContent = pS <= SAFE_S ? '✅ OK' : '⚠️ OVER';
-    document.getElementById('safeSub').className = 'badge ' + (pS <= SAFE_S ? 'badge-safe' : 'badge-warn');
-
-    updateVolTable(gF, gS);
-    drawSysChart();
-    drawEqChart();
-}
-
-function updateVolTable(gF, gS) {
-    const levels = [{d:3,emoji:'🔇'},{d:6,emoji:'🔈'},{d:9,emoji:'🔈'},{d:12,emoji:'🔉'},{d:15,emoji:'🔉'},{d:18,emoji:'🔊'},{d:21,emoji:'🔊'},{d:24,emoji:'📢'},{d:27,emoji:'📢'},{d:30,emoji:'🚨'}];
-    let html = '';
-    levels.forEach(l => {
-        const pf = displayToPower(l.d);
-        const r = calcSPL(gF, gS, pf);
-        const isCurrent = l.d === 30 ? ' style="background:rgba(59,130,246,.1)"' : '';
-        html += `<tr${isCurrent}><td>${l.emoji} ${l.d}</td><td>${(pf * 100).toFixed(1)}%</td><td>${r.splSys.toFixed(1)} dB</td><td style="font-size:.6rem">${splToSens(r.splSys)}</td></tr>`;
-    });
-    document.querySelector('#volTable tbody').innerHTML = html;
-}
-
-function splToSens(spl) {
-    if (spl < 70) return 'Quase inaudível';
-    if (spl < 80) return 'Música de fundo';
-    if (spl < 90) return 'Confortável';
-    if (spl < 100) return 'Moderado';
-    if (spl < 110) return 'Alto (limpo)';
-    if (spl < 115) return 'Muito alto';
-    return 'Extremo ⚠️';
-}
-
-function drawGridAndLabels(ctx, W, H, yMin, yMax, stepY) {
-    ctx.strokeStyle = '#1e293b'; ctx.lineWidth = 2; // For retina
-    for (let yDb = Math.ceil(yMin/stepY)*stepY; yDb <= yMax; yDb += stepY) {
-        const y = H - ((yDb - yMin) / (yMax - yMin)) * H;
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-        ctx.fillStyle = '#64748b'; ctx.font = '22px Inter'; ctx.textAlign = 'left';
-        ctx.fillText(yDb + ' dB', 10, y - 8);
-    }
-    const freqs = [20,50,100,200,500,1000,2000,5000,10000,20000];
-    freqs.forEach(f => {
-        const x = (Math.log10(f) - Math.log10(20)) / Math.log10(1000) * W;
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
-        ctx.fillStyle = '#475569'; ctx.font = '22px Inter'; ctx.textAlign = 'center';
-        ctx.fillText(f >= 1000 ? (f/1000) + 'k' : f, x, H - 10);
-    });
-}
-
-function calcRawSplAtFreq(f, gF, gS) {
-    const pwrF = PWR_F_MAX * Math.pow(gF/100, 2);
-    let splF = SENS_F + 10 * Math.log10(Math.max(0.001, pwrF)) + PAIR;
-    if (f < 80) splF -= 60 * Math.log2(80 / f); 
-    if (f > 3500 && f < 5000) splF -= 2;
-    if (f > 15000) splF -= 6 * Math.log2(f / 15000);
-    if (f > 100 && f < 700) splF -= 2.5 * Math.exp(-Math.pow(Math.log10(f/300), 2) * 5); 
-    if (f > 1500 && f < 4000) splF += 1.5 * Math.exp(-Math.pow(Math.log10(f/2500), 2) * 10);
-
-    const pwrS = PWR_S_MAX * Math.pow(gS/100, 2);
-    let splS = SENS_S + 10 * Math.log10(Math.max(0.001, pwrS)) + CABIN;
-    if (f > 80) splS -= 60 * Math.log2(f / 80);
-    if (f < 30) splS -= 12 * Math.log2(30 / f);
-    if (f >= 35 && f <= 65) splS += 4 * (1 - Math.abs(f - 50) / 15); 
-    
-    return 10 * Math.log10(Math.pow(10, splF/10) + Math.pow(10, splS/10));
-}
-
-function getSystemCurve(W, gF, gS, applyMediaEq, applyDspEqPreset) {
-    const pts = [];
-    for (let i = 0; i <= W; i++) {
-        const f = Math.pow(10, Math.log10(20) + (i / W) * Math.log10(1000));
-        let spl = calcRawSplAtFreq(f, gF, gS);
-        if (applyMediaEq) spl += getEqGain(f, mediaEqLogF, mediaEqVals, 80); 
-        if (applyDspEqPreset === 'custom') spl += getEqGain(f, dspEqLogF, dspEqCustom, 15);
-        pts.push(spl);
-    }
-    return pts;
-}
-
-function strokePath(ctx, W, H, pts, color, width, yMin, yMax, dashed=false) {
-    ctx.strokeStyle = color; ctx.lineWidth = width;
-    if (dashed) ctx.setLineDash([8,6]); else ctx.setLineDash([]);
-    ctx.beginPath();
-    for (let i = 0; i <= W; i++) {
-        const y = H - ((pts[i] - yMin) / (yMax - yMin)) * H;
-        if (i === 0) ctx.moveTo(i, y); else ctx.lineTo(i, y);
-    }
-    ctx.stroke();
-    ctx.setLineDash([]);
-}
-
-let sysMouseX = -1; // global for interaction
-
-function drawSysChart() {
-    const gF = parseInt(document.getElementById('gainFront').value);
-    const gS = parseInt(document.getElementById('gainSub').value);
-    
-    const c = document.getElementById('sysChart'), ctx = c.getContext('2d');
-    const W = c.width = c.offsetWidth * 2, H = c.height = 440;
-    
-    const centerIdx = Math.round(W * ((Math.log10(1000) - Math.log10(20)) / Math.log10(1000)));
-    const meanSpl = getSystemCurve(W, gF, gS, true, 'flat')[centerIdx] || 100;
-    
-    // +/- 50dB range around the mean, total 100dB variation
-    const yMax = Math.ceil(meanSpl / 10) * 10 + 50; 
-    const yMin = yMax - 100;
-
-    ctx.clearRect(0,0,W,H);
-    drawGridAndLabels(ctx, W, H, yMin, yMax, 10);
-
-    const orig = getSystemCurve(W, gF, gS, false, 'flat');
-    const flat = getSystemCurve(W, gF, gS, true, 'flat');
-    const custom = getSystemCurve(W, gF, gS, true, 'custom');
-
-    strokePath(ctx, W, H, orig, '#64748b', 3, yMin, yMax, true); 
-    strokePath(ctx, W, H, flat, '#ffffff', 4, yMin, yMax, false); 
-    strokePath(ctx, W, H, custom, '#ef4444', 5, yMin, yMax, false); 
-
-    if (sysMouseX >= 0) {
-        let xRatio = sysMouseX / c.offsetWidth;
-        if(xRatio < 0) xRatio = 0; if(xRatio > 1) xRatio = 1;
-        const intX = xRatio * W;
-        ctx.strokeStyle = 'rgba(255,255,255,0.4)';
-        ctx.lineWidth = 2;
-        ctx.setLineDash([10,10]);
-        ctx.beginPath(); ctx.moveTo(intX, 0); ctx.lineTo(intX, H); ctx.stroke();
-        ctx.setLineDash([]);
-        
-        // draw dots
-        const i = Math.round(xRatio * W);
-        if(orig[i]) {
-            ctx.fillStyle = '#64748b'; ctx.beginPath(); ctx.arc(intX, H - ((orig[i] - yMin)/(yMax - yMin))*H, 6, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(intX, H - ((flat[i] - yMin)/(yMax - yMin))*H, 6, 0, Math.PI*2); ctx.fill();
-            ctx.fillStyle = '#ef4444'; ctx.beginPath(); ctx.arc(intX, H - ((custom[i] - yMin)/(yMax - yMin))*H, 6, 0, Math.PI*2); ctx.fill();
-        }
-    }
-}
-
-// Mouse Interactions
-document.getElementById('sysChart').addEventListener('mousemove', function(e) {
-    const c = document.getElementById('sysChart');
-    const rect = c.getBoundingClientRect();
-    sysMouseX = e.clientX - rect.left;
-    
-    const W = c.offsetWidth;
-    let xRatio = sysMouseX / W;
-    if(xRatio < 0) xRatio = 0; if(xRatio > 1) xRatio = 1;
-    const f = Math.pow(10, Math.log10(20) + xRatio * Math.log10(1000));
-    
-    const gF = parseInt(document.getElementById('gainFront').value);
-    const gS = parseInt(document.getElementById('gainSub').value);
-    
-    const rootSpl = calcRawSplAtFreq(f, gF, gS);
-    const dFlat = getEqGain(f, mediaEqLogF, mediaEqVals, 80);
-    const dCust = dFlat + getEqGain(f, dspEqLogF, dspEqCustom, 15);
-    
-    const flatSpl = rootSpl + dFlat;
-    const custSpl = rootSpl + dCust;
-    
-    const tt = document.getElementById('tooltip');
-    tt.style.display = 'block';
-    
-    const tw = 170; // tooltip approx width
-    let nx = sysMouseX + 15;
-    if(nx + tw > W) nx = sysMouseX - tw - 15; // flip
-    tt.style.left = nx + 'px';
-    tt.style.top = Math.max(10, (e.clientY - rect.top - 40)) + 'px';
-    
-    const fStr = f < 1000 ? Math.round(f) + ' Hz' : (f/1000).toFixed(1) + 'k Hz';
-    const cdtF = dFlat > 0 ? 'var(--green)' : 'var(--orange)';
-    const cdtC = dCust > 0 ? 'var(--green)' : 'var(--orange)';
-    
-    tt.innerHTML = `
-        <div style="font-weight:900;text-align:center;border-bottom:1px solid #334155;padding-bottom:4px;margin-bottom:6px">${fStr}</div>
-        <div class="tt-row">
-            <span><div class="tt-color" style="background:#64748b"></div> Orig.</span>
-            <span style="font-weight:700">${rootSpl.toFixed(1)} dB</span>
-        </div>
-        <div class="tt-row">
-            <span><div class="tt-color" style="background:#ffffff"></div> FLAT</span>
-            <span style="font-weight:700">${flatSpl.toFixed(1)} dB <span style="font-size:0.6rem;color:${cdtF};font-weight:400">(${dFlat>0?'+':''}${dFlat.toFixed(1)})</span></span>
-        </div>
-        <div class="tt-row">
-            <span><div class="tt-color" style="background:#ef4444"></div> CUST.</span>
-            <span style="font-weight:700">${custSpl.toFixed(1)} dB <span style="font-size:0.6rem;color:${cdtC};font-weight:400">(${dCust>0?'+':''}${dCust.toFixed(1)})</span></span>
-        </div>
-    `;
-    
-    drawSysChart();
+document.getElementById('sysChart').addEventListener('mousemove',function(e){
+  const c=document.getElementById('sysChart'),rect=c.getBoundingClientRect();
+  sysMouseX=e.clientX-rect.left;
+  const xR=Math.min(1,Math.max(0,sysMouseX/c.offsetWidth));
+  const f=Math.pow(10,Math.log10(20)+xR*Math.log10(1000));
+  const gF=parseInt(document.getElementById('gainFront').value);
+  const gS=parseInt(document.getElementById('gainSub').value);
+  const rawSpl=calcRawSplAtFreq(f,gF,gS);
+  const caskaVals=systemMode==='natural'?CASKA_NATURAL:CASKA_IMPACT;
+  const dspVals=systemMode==='natural'?DSP_NATURAL:DSP_IMPACT;
+  const dEq=getEqGain(f,caskaLogF_nat,caskaVals,80)+getEqGain(f,dspLogF,dspVals,15);
+  const eqSpl=rawSpl+dEq;
+  const tt=document.getElementById('tooltip'),tw=170;
+  tt.style.display='block';
+  let nx=sysMouseX+15;if(nx+tw>c.offsetWidth)nx=sysMouseX-tw-15;
+  tt.style.left=nx+'px';tt.style.top=Math.max(8,e.clientY-rect.top-40)+'px';
+  const fStr=f<1000?Math.round(f)+' Hz':(f/1000).toFixed(1)+'k Hz';
+  const dColor=dEq>=0?'var(--green)':'var(--orange)';
+  tt.innerHTML=`<div style="font-weight:900;text-align:center;border-bottom:1px solid #334155;padding-bottom:3px;margin-bottom:5px">${fStr}</div>
+  <div class="tt-row"><span><div class="tt-color" style="background:#64748b"></div>Sem EQ</span><span style="font-weight:700">${rawSpl.toFixed(1)} dB</span></div>
+  <div class="tt-row"><span><div class="tt-color" style="background:${systemMode==='natural'?'#14b8a6':'#ef4444'}"></div>Com EQ</span><span style="font-weight:700">${eqSpl.toFixed(1)} dB <span style="font-size:.6rem;color:${dColor}">(${dEq>=0?'+':''}${dEq.toFixed(1)})</span></span></div>`;
+  drawSysChart();
+});
+document.getElementById('sysChart').addEventListener('mouseleave',function(){
+  sysMouseX=-1;document.getElementById('tooltip').style.display='none';drawSysChart();
 });
 
-document.getElementById('sysChart').addEventListener('mouseleave', function() {
-    sysMouseX = -1;
-    document.getElementById('tooltip').style.display = 'none';
-    drawSysChart();
+window.addEventListener('load',function(){
+  renderCaskaEq();
+  renderDspEq();
+  setPreset('alto');
+  window.isInit=true;
 });
-
-function drawEqChart() {
-    const gF = parseInt(document.getElementById('gainFront').value);
-    const gS = parseInt(document.getElementById('gainSub').value);
-
-    const c = document.getElementById('eqChart'), ctx = c.getContext('2d');
-    const W = c.width = c.offsetWidth * 2, H = c.height = 440;
-
-    const centerIdx = Math.round(W * ((Math.log10(1000) - Math.log10(20)) / Math.log10(1000)));
-    const meanSpl = getSystemCurve(W, gF, gS, true, 'flat')[centerIdx] || 100;
-    
-    // +/- 50dB range around the mean, total 100dB variation
-    const yMax = Math.ceil(meanSpl / 10) * 10 + 50; 
-    const yMin = yMax - 100;
-
-    ctx.clearRect(0,0,W,H);
-    drawGridAndLabels(ctx, W, H, yMin, yMax, 10);
-
-    const orig = getSystemCurve(W, gF, gS, false, 'flat');
-    const flat = getSystemCurve(W, gF, gS, true, 'flat');
-
-    strokePath(ctx, W, H, orig, '#64748b', 3, yMin, yMax, true); 
-    strokePath(ctx, W, H, flat, '#ffffff', 4, yMin, yMax, false); 
-
-    const eq0 = H - ((yMin + 25 - yMin) / (yMax - yMin)) * H;
-    
-    ctx.beginPath(); ctx.moveTo(0, eq0);
-    const eqPts = [];
-    for (let i = 0; i <= W; i++) {
-        const f = Math.pow(10, Math.log10(20) + (i / W) * Math.log10(1000));
-        const gain = getEqGain(f, mediaEqLogF, mediaEqVals, 80);
-        const y = eq0 - gain * 12; // 12px per dB visual
-        ctx.lineTo(i, y);
-        eqPts.push(y);
-    }
-    ctx.lineTo(W, eq0);
-    ctx.fillStyle = 'rgba(34,197,94,0.15)'; ctx.fill();
-    
-    ctx.strokeStyle = '#22c55e'; ctx.lineWidth = 4;
-    ctx.beginPath();
-    for(let i=0; i<=W; i++){ if(i===0) ctx.moveTo(i, eqPts[i]); else ctx.lineTo(i, eqPts[i]); }
-    ctx.stroke();
-
-    ctx.strokeStyle = 'rgba(34,197,94,0.3)'; ctx.setLineDash([10,10]);
-    ctx.beginPath(); ctx.moveTo(0, eq0); ctx.lineTo(W, eq0); ctx.stroke(); ctx.setLineDash([]);
-}
-
-function initMediaEq() {
-    const grid = document.getElementById('mediaEqGrid');
-    grid.innerHTML = '';
-    for (let i = 0; i < 32; i++) {
-        const v = mediaEqVals[i];
-        const color = v > 0 ? '#22c55e' : v < 0 ? '#ef4444' : '#94a3b8';
-        grid.innerHTML += `<div class="eq-band"><span class="val" style="color:${color}">${v > 0 ? '+' + v : (v===0?'-':v)}</span><span class="freq">${mediaEqFreqs[i]}</span></div>`;
-    }
-}
-
-window.addEventListener('load', function() {
-    initMediaEq();
-    setDspEq('flat');
-    setPreset('alto');
-    window.isInit = true;
-});
-window.addEventListener('resize', () => { if(window.isInit) updateAll(); });
+window.addEventListener('resize',()=>{if(window.isInit)updateAll();});
 </script>
 </body>
 </html>

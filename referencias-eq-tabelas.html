@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabelas de Equalização Automotiva Hi-Fi</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #bfdbfe;
+            font-size: 2.5em;
+            margin-bottom: 5px;
+        }
+        .intro {
+            text-align: center;
+            color: #94a3b8;
+            margin-bottom: 50px;
+            font-size: 1.1em;
+        }
+        .speaker-block {
+            background-color: #1e293b;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border-left: 5px solid #3b82f6;
+        }
+        h2 {
+            margin-top: 0;
+            color: #60a5fa;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 10px;
+        }
+        p {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background-color: #0f172a;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        th, td {
+            text-align: center;
+            padding: 12px;
+            border: 1px solid #334155;
+        }
+        th {
+            background-color: #3b82f6;
+            color: #ffffff;
+            font-weight: 600;
+        }
+        td.freq {
+            background-color: #1e293b;
+            font-weight: bold;
+            color: #94a3b8;
+        }
+        td.zero {
+            font-weight: bold;
+            color: #fca5a5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Referências de EQ Hi-Fi (Tabelas Diretas)</h1>
+    <p class="intro">15 assinaturas de som traduzidas em ganhos/cortes de decibéis (dB) para seu Processador Automotivo.<br>Ponto neutro (0 dB) estabelecido em 1 kHz.</p>
+
+    <div class="speaker-block">
+        <h2>1. Curva Alvo Harman (Referência Automotiva)</h2>
+        <p>A Referência de Ouro com Bass Shelf e Roll-Off nos agudos.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+8.0</td><td>+9.0</td><td>+6.0</td><td>+2.0</td><td>0.0</td><td>0.0</td><td class="zero">0.0</td><td>-1.0</td><td>-2.0</td><td>-4.0</td><td>-6.0</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>2. Monitor Audio Bronze (Sua Casa)</h2>
+        <p>Ataque forte nos graves (punch rápido) e brilho marcado no tweeter sem agressão aos vocais.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+5.0</td><td>+7.0</td><td>+6.0</td><td>+2.0</td><td>+0.5</td><td>-0.5</td><td class="zero">0.0</td><td>+1.0</td><td>+2.0</td><td>+4.0</td><td>+3.0</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>3. Bowers & Wilkins 801 D4</h2>
+        <p>O palco luxuoso de estúdio, com recuo na presença (-2.0 em 2.5k) formando o 'BBC Dip' e extensão enorme nos agudos diamante.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+4.0</td><td>+6.0</td><td>+4.0</td><td>+1.0</td><td>0.0</td><td>0.0</td><td class="zero">0.0</td><td>-2.0</td><td>+1.0</td><td>+4.0</td><td>+5.0</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>4. Focal Grande Utopia EM</h2>
+        <p>Dinâmica francesa pura. Avassalador no grave, mas com uma resposta média estupidamente neutra e tweeter berílio macio.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+6.0</td><td>+6.0</td><td>+5.0</td><td>+1.0</td><td>0.0</td><td>+0.5</td><td class="zero">+0.5</td><td>+1.0</td><td>+1.5</td><td>+2.0</td><td>+2.5</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>5. Wilson Audio Sasha DAW</h2>
+        <p>Peso tonal extremo e textura nas vozes grossas/guitarras. Grave volumoso de impacto real.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+6.0</td><td>+7.0</td><td>+6.0</td><td>+2.0</td><td>+0.5</td><td>-0.5</td><td class="zero">-0.5</td><td>-1.5</td><td>+1.0</td><td>+2.5</td><td>+2.0</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>6. Devialet Phantom I 108 dB</h2>
+        <p>Tecnologia DSP agressiva. Sub-graves absurdos forçados pela placa e agudos em V-Shape glorioso muito limpos.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+12.0</td><td>+8.0</td><td>+4.0</td><td>+1.0</td><td>0.0</td><td>0.0</td><td class="zero">0.0</td><td>+1.0</td><td>+2.0</td><td>+3.0</td><td>+4.0</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>7. Adam Audio S3V</h2>
+        <p>Monitor de mixagem cirúrgico. Grave seco focado no instante, neutra ao centro e agudos de fita incrivelmente polidos.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+2.0</td><td>+4.0</td><td>+2.0</td><td>0.0</td><td>0.0</td><td>0.0</td><td class="zero">0.0</td><td>+0.5</td><td>+1.0</td><td>+3.0</td><td>+4.0</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>8. Sonus Faber Aida</h2>
+        <p>O conforto italiano vintage. Som "Lush" que levanta os graves e médios, e corta fortemente os agudos na ponta. Zero fadiga na direção.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+4.0</td><td>+6.0</td><td>+5.0</td><td>+3.0</td><td>+2.0</td><td>+1.0</td><td class="zero">0.0</td><td>-1.0</td><td>-2.0</td><td>-3.0</td><td>-4.0</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>9. Dynaudio Confidence 60</h2>
+        <p>Grave do tipo percussivo muito contundente na transição do woofer, médios incrivelmente realistas e som não fadigante.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+3.0</td><td>+5.0</td><td>+4.0</td><td>+1.5</td><td>+0.5</td><td>0.0</td><td class="zero">0.0</td><td>-0.5</td><td>0.0</td><td>+1.0</td><td>+1.0</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>10. ELAC Concentro / Vela</h2>
+        <p>Extrema aregação no som pela utilização de tweeter especializado nos ultrassons, criando enormes ecos espaciais de jazz.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+4.0</td><td>+5.0</td><td>+3.0</td><td>+1.0</td><td>0.0</td><td>0.0</td><td class="zero">0.0</td><td>+0.5</td><td>+2.0</td><td>+3.5</td><td>+4.0</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>11. Sonos Five</h2>
+        <p>Simulação sonora DSP 'Big Room'. Quebra ligeira nos 600Hz escapando das vozes abafadas e muito volume grave empolgante.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+7.0</td><td>+8.0</td><td>+5.0</td><td>+1.0</td><td>0.0</td><td>-1.0</td><td class="zero">0.0</td><td>+2.0</td><td>+3.0</td><td>+2.0</td><td>+1.0</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>12. Polk Audio Legend L800</h2>
+        <p>Ataque frontal ao vivo. Traz as vozes cantadas pra frente da caixa com calor vocal, além da energia nas pancadas secas.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+6.0</td><td>+8.0</td><td>+6.0</td><td>+2.5</td><td>+1.0</td><td>+0.5</td><td class="zero">0.0</td><td>+1.5</td><td>+2.0</td><td>+1.0</td><td>+0.5</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>13. KEF Blade One</h2>
+        <p>Evolução linear. Coaxial Uni-Q entrega neutralidade sem sobressaltos e coerência de fase absoluta para estúdios.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+4.0</td><td>+5.0</td><td>+3.0</td><td>+1.0</td><td>0.0</td><td>0.0</td><td class="zero">0.0</td><td>0.0</td><td>-0.5</td><td>0.0</td><td>+1.0</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>14. Klipsch Heritage Cornwall</h2>
+        <p>Caixa PA corneta. Empurra ar visceralmente do mid-bass até os agudos do vocal gerando um som esmagador de bateria de show ao vivo.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+4.0</td><td>+6.0</td><td>+8.0</td><td>+6.0</td><td>+4.0</td><td>+3.0</td><td class="zero">+2.0</td><td>+4.0</td><td>+5.0</td><td>+4.0</td><td>+2.0</td></tr>
+        </table>
+    </div>
+
+    <div class="speaker-block">
+        <h2>15. Burmester High-End</h2>
+        <p>Hiper detalhamento alemão automotivo. O polimento textural foca num subgrave definido e em enormes aberturas limpas acima dos 10kHz.</p>
+        <table>
+            <tr><td class="freq">Frequência</td><td>20 Hz</td><td>40 Hz</td><td>80 Hz</td><td>160 Hz</td><td>300 Hz</td><td>600 Hz</td><td class="zero">1 kHz</td><td>2.5 kHz</td><td>5 kHz</td><td>10 kHz</td><td>20 kHz</td></tr>
+            <tr><td class="freq">Ganho (dB)</td><td>+5.0</td><td>+6.0</td><td>+4.0</td><td>+1.0</td><td>0.0</td><td>0.0</td><td class="zero">0.0</td><td>+1.0</td><td>+2.0</td><td>+3.5</td><td>+5.0</td></tr>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

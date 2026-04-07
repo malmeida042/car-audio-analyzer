@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referências de EQ Hi-Fi para Processador Automotivo</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: rgba(30, 41, 59, 0.7);
+            --primary: #3b82f6;
+            --accent: #8b5cf6;
+            --accent-glow: rgba(139, 92, 246, 0.5);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: radial-gradient(circle at top center, #1e293b 0%, var(--bg-dark) 100%);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 4rem 2rem 2rem;
+            background: linear-gradient(to bottom, rgba(15, 23, 42, 0.9), transparent);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .harman-section {
+            margin-bottom: 4rem;
+            border-radius: 24px;
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(12px);
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 40px var(--accent-glow);
+            transform: translateY(0);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .harman-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 60px var(--accent-glow);
+        }
+
+        h2.harman-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            color: #fff;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        h2.harman-title span {
+            font-size: 1rem;
+            background: var(--accent);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 4px;
+            background: linear-gradient(90deg, var(--color-start), var(--color-end));
+            opacity: 0.8;
+        }
+
+        .card:hover {
+            transform: translateY(-5px) scale(1.01);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.6rem;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 250px;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .harman-chart {
+            height: 400px;
+        }
+
+        .description {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .highlight {
+            color: #e2e8f0;
+            font-weight: 600;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: 1fr; }
+            h1 { font-size: 2rem; }
+            .harman-chart { height: 300px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Referências Hi-Fi & High-End</h1>
+        <p class="subtitle">Catálogo de curvas de resposta de frequência inspiradas nos maiores clássicos do áudio mundial. Utilize essas assinaturas sonoras como base para ajustar o equalizador paramétrico do seu processador de áudio automotivo, buscando personalidade, graves profundos e agudos cristalinos.</p>
+    </header>
+
+    <div class="container">
+        
+        <!-- HARMAN REFERENCE -->
+        <section class="harman-section">
+            <h2 class="harman-title">Curva Alvo Harman (Automotivo) <span>Target Reference</span></h2>
+            <div class="chart-container harman-chart">
+                <canvas id="chart-harman"></canvas>
+            </div>
+            <p class="description" style="font-size: 1.1rem; color: #cbd5e1;">
+                <span class="highlight">A Referência de Ouro:</span> Resultado de pesquisas massivas da Harman International para reproduzir um som "natural e prazeroso" no ambiente desafiador do carro. 
+                <br><br>
+                <strong>Características:</strong> Possui o icônico <em>Bass Shelf</em> (prateleira de graves) com elevação de +6dB a +8dB nos sub-graves para vencer o ruído de rodagem e trazer impacto (peso). Os médios são predominantemente planos (flat) para manter a clareza e fidelidade das vozes, enquanto os agudos iniciam um suave e gradual <em>roll-off</em> (declínio) a partir dos 4kHz para evitar fadiga auditiva (som agressivo) gerada pelo reflexo dos vidros do carro. Um ótimo ponto de partida.
+            </p>
+        </section>
+
+        <!-- GRID DE CAIXAS -->
+        <div class="grid" id="speakers-grid">
+            <!-- Cards gerados via JS -->
+        </div>
+
+    </div>
+
+    <script>
+        // Configuração Global Chart.js
+        Chart.defaults.color = '#94a3b8';
+        Chart.defaults.font.family = "'Inter', sans-serif";
+
+        const freqLabels = ['20', '40', '80', '160', '300', '600', '1k', '2.5k', '5k', '10k', '20k'];
+
+        // Helper para criar degradê nas linhas
+        const createGradient = (ctx, colorStart, colorEnd) => {
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, colorStart);
+            gradient.addColorStop(1, `${colorStart}00`); // transição pra transparente
+            return gradient;
+        };
+
+        const renderChart = (id, dataPoints, colorLine, colorFill) => {
+            const ctx = document.getElementById(id).getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: freqLabels,
+                    datasets: [{
+                        label: 'Ganho (dB)',
+                        data: dataPoints,
+                        borderColor: colorLine,
+                        backgroundColor: createGradient(ctx, colorFill, colorFill),
+                        borderWidth: 3,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: colorLine,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        fill: true,
+                        tension: 0.4 // Curvas suaves
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            min: -10,
+                            max: 15,
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            title: { display: true, text: 'dB Volts' }
+                        },
+                        x: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            title: { display: true, text: 'Frequência (Hz)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 14, weight: 'bold' },
+                            padding: 12,
+                            cornerRadius: 8,
+                            displayColors: false
+                        }
+                    }
+                }
+            });
+        };
+
+        // Render Harman Chart
+        renderChart('chart-harman', [8.0, 9.0, 6.0, 2.0, 0, 0, 0, -1.0, -2.0, -4.0, -6.0], '#8b5cf6', 'rgba(139, 92, 246, 0.3)');
+
+        // Base de dados das Caixas (Top Tiers)
+        const speakers = [
+            {
+                id: 'monitor-audio',
+                name: 'Monitor Audio Bronze 800 (Sua Casa)',
+                tags: ['Punchy Bass', 'Médios Abertos', 'Agudos Brilhantes'],
+                colorStart: '#f59e0b', colorEnd: '#ef4444',
+                data: [5.0, 7.0, 6.0, 2.0, 0.5, -0.5, 0, 1.0, 2.0, 4.0, 3.0],
+                desc: 'Seu referencial em casa. A linha de torres da Monitor Audio é conhecida pela enorme "mordida" e vivacidade. <span class="highlight">O som não é "morto" ou super analítico;</span> ele tem uma pegada rítmica forte nos médio-graves (punch). Os agudos do tweeter C-CAM entregam um brilho e uma extensão de ar muito bem definidos e expressivos (a elevação leve nos 10k-20k). Para trazer isso ao carro, você precisa focar em médios claros e agudos definidos sem exageros estridentes na faixa de presença (2k-4k).'
+            },
+            {
+                id: 'bw-801d4',
+                name: 'Bowers & Wilkins 801 D4',
+                tags: ['Palco Imersivo', 'Agudos Diamante', 'V-Shape Suave'],
+                colorStart: '#3b82f6', colorEnd: '#2dd4bf',
+                data: [4.0, 6.0, 4.0, 1.0, 0, 0, 0, -2.0, 1.0, 4.0, 5.0],
+                desc: 'A lenda dos estúdios Abbey Road. <span class="highlight">A personalidade B&W traz o famoso "BBC dip"</span> reduzindo levemente as frequências de presença (2k-3k) para aumentar a percepção de profundidade de palco e afastar um som "gritante". Em compensação, há um belo boost nos ultra-agudos (graças ao tweeter de diamante) criando uma sensação imensa de "ar" e detalhe espacial, além de uma fundação de graves absurdamente firme e articulada.'
+            },
+            {
+                id: 'focal-utopia',
+                name: 'Focal Grande Utopia EM',
+                tags: ['Dinâmica Absurda', 'Neutro-Quente', 'Berílio'],
+                colorStart: '#ec4899', colorEnd: '#f43f5e',
+                data: [6.0, 6.0, 5.0, 1.0, 0, 0.5, 0.5, 1.0, 1.5, 2.0, 2.5],
+                desc: 'O pináculo do áudio francês. A Utopia é caracterizada por sua <span class="highlight">dinâmica e naturalidade extrema</span>. Agudos incrivelmente extensos e sem distorção (tweeter de Berílio), com uma curva progressiva e muito sedosa. Os médios são expressivos mas neutros, e o sub-grave proporcionado pelo eletroímã traz um peso avassalador que parece abraçar o ouvinte sem nunca ofuscar as vozes.'
+            },
+            {
+                id: 'wilson-sasha',
+                name: 'Wilson Audio Sasha DAW / Alexx',
+                tags: ['Peso Tonal', 'Musicalidade', 'Impacto Físico'],
+                colorStart: '#10b981', colorEnd: '#059669',
+                data: [6.0, 7.0, 6.0, 2.0, 0.5, -0.5, -0.5, -1.0, 1.0, 2.5, 2.0],
+                desc: 'Caixas com alma rock & roll e excelência orquestral. Conhecidas pelo seu <span class="highlight">grave monumental e visceral</span> que te bate no peito. A região média inferior traz muita riqueza tonal para cellos e guitarras. Para equalizar como uma Wilson, você não quer uma linha puramente reta; você quer energia, graves profundos marcantes e médios altamente tridimensionais, mas sem o brilho exacerbado nas sibilâncias.'
+            },
+            {
+                id: 'devialet-phantom',
+                name: 'Devialet Phantom I 108 dB',
+                tags: ['Sub-Graves Gigantes', 'Maciço', 'Agudos Energizados'],
+                colorStart: '#a855f7', colorEnd: '#d946ef',
+                data: [12.0, 8.0, 4.0, 1.0, 0, 0, 0, 1.0, 2.0, 3.0, 4.0],
+                desc: 'Agressividade tecnológica. Estas super caixas acústicas usam DSP massivo para forçar <span class="highlight">graves profundos absurdos (chegando aos 14Hz)</span> sem distorção. A curva é moldada para impressionar: puro impacto sub-sônico em V-Shape glorioso, médios limpos ditados pelo DSP interno e agudos que projetam os pratos e percussões para frente. Muito divertido e impactante.'
+            },
+            {
+                id: 'adam-s-series',
+                name: 'Adam Audio S3V',
+                tags: ['Analítico', 'Tweeter Ribbon', 'Cirúrgico'],
+                colorStart: '#f97316', colorEnd: '#fbbf24',
+                data: [2.0, 4.0, 2.0, 0, 0, 0, 0, 0.5, 1.0, 3.0, 4.0],
+                desc: 'O cérebro das mixagens. Caixas ativas de referência em estúdios. O som é incrivelmente transparente, plano no núcleo dos vocais, mas com <span class="highlight">agudos altamente resolutos e aveludados no extremo superior</span> por conta do tweeter X-ART (fita). Os graves são secos, rápidos, precisos — "kick" definido sem qualquer sobras rumbosas. Excelente inspiração se deseja extrema clareza e separação instrumental.'
+            },
+            {
+                id: 'sonus-faber',
+                name: 'Sonus Faber Aida',
+                tags: ['Som Italiano', 'Lush Mids', 'Vintage Warmth'],
+                colorStart: '#7dd3fc', colorEnd: '#38bdf8',
+                data: [4.0, 6.0, 5.0, 3.0, 2.0, 1.0, 0, -1.0, -2.0, -3.0, -4.0],
+                desc: 'O romântico "Som Italiano". Se você gosta de ficar horas ouvindo sem nenhuma fadiga auditiva (zero estresse gotejante), esta é a meta. <span class="highlight">Graves muito gordos e envolventes, região médio-grave quente</span> que dá uma textura maravilhosa a vozes e saxofones, e agudos que decaem suavemente no final. Para relaxar ouvindo dentro do carro em trânsitos estressantes sem perder peso.'
+            },
+            {
+                id: 'dynaudio-conf',
+                name: 'Dynaudio Confidence 60',
+                tags: ['Ultra-Neutro', 'Coesão Otimizada', 'Slam e Punch'],
+                colorStart: '#a3e635', colorEnd: '#84cc16',
+                data: [3.0, 5.0, 4.0, 1.5, 0.5, 0, 0, -0.5, 0, 1.0, 1.0],
+                desc: 'Equilíbrio formidável. O tweeter Esotar3 é mágico em manter tudo detalhado e ultra sedoso. <span class="highlight">Os médios são impressionantemente realistas ("você está lá")</span>. Os graves têm excelente impacto (o famoso mid-bass punch / kick rápido da Dynaudio), mas sem o exagero sintético. Inspiração para um áudio que esbanja luxo acústico clássico.'
+            },
+            {
+                id: 'elac-vela',
+                name: 'ELAC Vela / Concentro',
+                tags: ['Médios Abertos', 'Vastos Agudos (JET5)', 'Encantador'],
+                colorStart: '#c084fc', colorEnd: '#a855f7',
+                data: [4.0, 5.0, 3.0, 1.0, 0, 0, 0, 0.5, 2.0, 3.5, 4.0],
+                desc: 'O brilho mágico elétrico. Usam o tweeter JET (semelhante ao ribbon) que faz pratos e metais brilharem com enorme espaço no palco. <span class="highlight">Resposta muito arejada na extremidade superior</span> e graves controladíssimos, gerando uma experiência super detalhista. Ótima fonte para ajustar agudos de altíssima definição no carro.'
+            },
+            {
+                id: 'sonos-five',
+                name: 'Sonos Five (DSP Tuned)',
+                tags: ['Room Filling', 'Grave Modelado', 'Divertido'],
+                colorStart: '#e879f9', colorEnd: '#c026d3',
+                data: [7.0, 8.0, 5.0, 1.0, 0, -1.0, 0, 2.0, 3.0, 2.0, 1.0],
+                desc: 'A calibração Trueplay cria uma assinatura absurdamente empolgante. <span class="highlight">O DSP engorda muito a faixa de graves e sub</span> dando uma ilusão "Big Room" e os agudos são sintonizados dinamicamente. Os médio-baixos sofrem um "scoop" para retirar qualquer som anasalado nas vozes, tornando-se algo incrivelmente moderno e fácil de consumir. Ótima meta de "V-Shape Controlado" para carro.'
+            },
+            {
+                id: 'polk-legend',
+                name: 'Polk Audio Legend L800',
+                tags: ['Ataque Dinâmico', 'Amplo Eixo', 'Vocal Frontal'],
+                colorStart: '#fecdd3', colorEnd: '#fb7185',
+                data: [6.0, 8.0, 6.0, 2.5, 1.0, 0.5, 0, 1.5, 2.0, 1.0, 0.5],
+                desc: 'Caixas com muito vigor físico. Utilizando a tecnologia SDA para um palco enorme (widescreen). Focado na <span class="highlight">energia rock/eletrônica com um gravão que empurra ar abundantemente</span> e vocais médios muito vívidos projetados para frente da caixa. Não tão cirúrgico quanto adam, sendo mais "festeiro e visceral".'
+            },
+            {
+                id: 'kef-blade',
+                name: 'KEF Blade One',
+                tags: ['Uni-Q', 'Imagem Holográfica', 'Linear'],
+                colorStart: '#bae6fd', colorEnd: '#38bdf8',
+                data: [4.0, 5.0, 3.0, 1.0, 0, 0, 0, 0, -0.5, 0, 1.0],
+                desc: 'Imagem Estéreo Absoluta. O alto falante axial (grave+médio centralizado) faz as vozes aparecerem no meio de sua sala/carro. A curva dela dita forte neutralidade nos agudos, mas com grande firmeza e presença corpórea. Excelente se você tiver excelentes tweeters direcionados no painel e quer aquele ajuste plano perfeito.'
+            },
+            {
+                id: 'klipsch-cornwall',
+                name: 'Klipsch Heritage Cornwall IV',
+                tags: ['Graves Massivos', 'Live Sound', 'Córneas'],
+                colorStart: '#fdba74', colorEnd: '#ea580c',
+                data: [4.0, 6.0, 8.0, 6.0, 4.0, 3.0, 2.0, 4.0, 5.0, 4.0, 2.0],
+                desc: 'Som de Show ao Vivo. Com cornetas e drivers de compressão, essas caixas têm a curva focada em pura agressividade controlada. <span class="highlight">Dinâmica esmagadora, e médio-graves na casa dos 60-150hz que disparam socos diretos.</span> O som pula em você, com médios e agudos brilhantes de corneta. Focado para quem gosta do calor "live" e percussivo puro sangue.'
+            },
+            {
+                id: 'burmester-3d',
+                name: 'Burmester High-End 3D',
+                tags: ['Luxo Alemão', 'Cintilante', 'Clareza Absoluta'],
+                colorStart: '#e2e8f0', colorEnd: '#94a3b8',
+                data: [5.0, 6.0, 4.0, 1.0, 0, 0, 0, 1.0, 2.0, 3.5, 5.0],
+                desc: 'Instalado em Porsches e Mercedes-Maybachs. Traz um som "Clean & Crisp". O baixo não é exagerado no volume, mas tem <span class="highlight">textura rítmica imaculada</span>. O destaque está nos agudos altíssimos extremamente polidos, gerando a sensação de que as cordas flutuam no espaço com infinitos harmônicos reproduzidos. Um gosto apurado pelo detalhe sedoso.'
+            }
+        ];
+
+        const grid = document.getElementById('speakers-grid');
+        
+        speakers.forEach(speaker => {
+            const tagsHtml = speaker.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+            
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.style.setProperty('--color-start', speaker.colorStart);
+            card.style.setProperty('--color-end', speaker.colorEnd);
+            
+            card.innerHTML = `
+                <h3>${speaker.name}</h3>
+                <div class="card-tags">${tagsHtml}</div>
+                <div class="chart-container">
+                    <canvas id="chart-${speaker.id}"></canvas>
+                </div>
+                <p class="description">${speaker.desc}</p>
+            `;
+            grid.appendChild(card);
+            
+            // Render the chart dynamically
+            // Need a slight timeout to ensure element is in DOM (or defer to end)
+            setTimeout(() => {
+                renderChart(`chart-${speaker.id}`, speaker.data, speaker.colorStart, `${speaker.colorStart}30`);
+            }, 0);
+        });
+
+    </script>
+</body>
+</html>

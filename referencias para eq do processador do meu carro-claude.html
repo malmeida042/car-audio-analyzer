@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Referências de EQ — Processador do Carro</title>
+<meta name="description" content="Curvas de frequência de referência HiFi para inspirar a equalização do sistema de som do carro — Harman, Focal, B&W, Wilson, Sonus Faber, Dynaudio e mais.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c12;
+    --surface: #111420;
+    --card: #161b2e;
+    --border: #252d47;
+    --accent: #4f8ef7;
+    --accent2: #a78bfa;
+    --gold: #f59e0b;
+    --text: #e8eaf6;
+    --muted: #8892b0;
+    --grid: rgba(255,255,255,0.04);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+  /* HERO */
+  .hero{
+    background:linear-gradient(135deg,#0a0c12 0%,#0d1128 40%,#10173a 100%);
+    padding:60px 20px 40px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(79,142,247,.15),transparent);
+    pointer-events:none;
+  }
+  .hero-badge{
+    display:inline-block;background:rgba(79,142,247,.15);border:1px solid rgba(79,142,247,.4);
+    color:var(--accent);border-radius:20px;padding:5px 14px;font-size:11px;letter-spacing:2px;
+    text-transform:uppercase;margin-bottom:18px;font-weight:600;
+  }
+  .hero h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(28px,5vw,54px);font-weight:700;
+    background:linear-gradient(135deg,#fff 30%,#a78bfa 100%);-webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;background-clip:text;line-height:1.15;margin-bottom:16px;}
+  .hero p{color:var(--muted);font-size:clamp(14px,2vw,17px);max-width:700px;margin:0 auto 30px;line-height:1.7;}
+  .pref-pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;}
+  .pill{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:30px;
+    padding:5px 14px;font-size:12px;color:var(--muted);}
+  .pill span{color:var(--accent2);font-weight:600;}
+
+  /* LEGEND GLOBAL */
+  .global-legend{
+    display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
+    padding:18px 20px;background:var(--surface);border-bottom:1px solid var(--border);
+  }
+  .legend-item{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);}
+  .legend-line{width:26px;height:3px;border-radius:2px;}
+
+  /* SECTION */
+  .section{padding:0 20px 60px;max-width:1100px;margin:0 auto;}
+  .section-title{
+    font-family:'Space Grotesk',sans-serif;font-size:13px;letter-spacing:3px;
+    text-transform:uppercase;color:var(--accent);margin:50px 0 6px;
+  }
+  .section-desc{color:var(--muted);font-size:14px;margin-bottom:28px;line-height:1.6;}
+
+  /* CARD */
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;
+    overflow:hidden;margin-bottom:36px;
+    box-shadow:0 4px 30px rgba(0,0,0,.5);
+    transition:box-shadow .3s;
+  }
+  .card:hover{box-shadow:0 8px 50px rgba(79,142,247,.12);}
+  .card-header{
+    padding:18px 24px;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  }
+  .card-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
+  .card-brand{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:600;}
+  .card-model{font-family:'Space Grotesk',sans-serif;font-size:clamp(16px,2.5vw,21px);font-weight:700;color:#fff;}
+  .card-tag{
+    margin-left:auto;background:rgba(79,142,247,.12);border:1px solid rgba(79,142,247,.3);
+    color:var(--accent);border-radius:8px;padding:3px 10px;font-size:11px;font-weight:600;
+  }
+
+  /* CHART */
+  .chart-wrap{padding:16px 12px 8px;background:var(--bg);position:relative;}
+  canvas{width:100%;height:220px;display:block;}
+
+  /* AXES labels */
+  .axis-hz{display:flex;justify-content:space-between;padding:4px 14px 0;font-size:10px;color:var(--muted);}
+
+  /* DESCRIPTION */
+  .card-body{padding:22px 24px;}
+  .desc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:18px;}
+  .desc-item{background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:14px;}
+  .desc-item h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+  .desc-item p{font-size:13px;line-height:1.6;color:var(--text);}
+  .desc-main{font-size:14px;line-height:1.75;color:var(--muted);border-top:1px solid var(--border);padding-top:16px;}
+  .desc-main strong{color:var(--text);}
+
+  /* EQ HINTS */
+  .eq-hints{
+    display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;
+  }
+  .eq-hint{
+    background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);
+    color:var(--accent2);border-radius:6px;padding:3px 10px;font-size:11px;font-weight:500;
+  }
+
+  /* HARMAN special */
+  .card.harman{border-color:rgba(245,158,11,.35);}
+  .card.harman .card-tag{background:rgba(245,158,11,.12);border-color:rgba(245,158,11,.3);color:var(--gold);}
+
+  /* FOOTER */
+  footer{text-align:center;padding:30px 20px 50px;color:var(--muted);font-size:12px;border-top:1px solid var(--border);}
+  footer a{color:var(--accent);text-decoration:none;}
+
+  @media(max-width:600px){
+    .desc-grid{grid-template-columns:1fr;}
+    .card-header{gap:8px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-badge">🎛️ Referências de Equalização</div>
+  <h1>Curvas de Frequência<br>de Referência HiFi</h1>
+  <p>Guia visual baseado nas assinaturas sonoras das melhores caixas do mundo. Compare, inspire-se e aplique no processador do seu <strong style="color:#fff">Fiat Pulse Abarth</strong>.</p>
+  <div class="pref-pills">
+    <div class="pill">Graves: <span>marcantes e profundos</span></div>
+    <div class="pill">Médios: <span>claros e expressivos</span></div>
+    <div class="pill">Agudos: <span>definidos, sem exagero</span></div>
+    <div class="pill">Som com <span>personalidade</span></div>
+  </div>
+</header>
+
+<!-- GLOBAL LEGEND -->
+<div class="global-legend" id="global-legend">
+  <!-- preenchido via JS -->
+</div>
+
+<div class="section">
+  <div class="section-title">Como Usar</div>
+  <div class="section-desc">Cada gráfico mostra a curva de resposta em frequência de 20 Hz a 20 kHz. O eixo Y representa decibéis (dB) relativos. Identifique os padrões que mais te agradam e use como inspiração no ajuste de banda do seu processador DSP.</div>
+
+  <!-- CARDS serão inseridos aqui -->
+  <div id="cards-container"></div>
+</div>
+
+<footer>
+  <p>Curvas baseadas em medições e características publicadas por fabricantes, <em>Stereophile</em>, <em>Hi-Fi News</em>, <em>Erin's Audio Corner</em> e <em>Spinorama.org</em>.</p>
+  <p style="margin-top:6px">Criado para referência pessoal de equalização — Fiat Pulse Abarth · SoundDigital 800.5 EVO 6 · <a href="#">car-audio-analyzer</a></p>
+</footer>
+
+<script>
+// ─── DADOS DAS CURVAS ────────────────────────────────────────────────────────
+// Frequências de referência: 20,30,40,60,80,100,150,200,300,400,500,800,1k,1.5k,2k,3k,4k,5k,6k,8k,10k,12k,15k,20k Hz
+// Valores em dB relativos (0 = neutro)
+
+const SPEAKERS = [
+  {
+    id: 'harman',
+    brand: 'Harman / AKG',
+    model: 'Harman Target Curve (HiFi Reference)',
+    tag: '★ REFERÊNCIA MESTRE',
+    color: '#f59e0b',
+    isHarman: true,
+    curve: [4,4.5,5,5.5,5.5,5,4.5,3.5,2,1,0.5,0,0,0,-0.5,-0.5,0,0.5,0.5,-1,-2,-3,-4,-5],
+    bass:'Elevação suave de +5 dB de 20–80 Hz simulando a sala acústica ideal. Fundamental como ponto de partida.',
+    mids:'Absolutamente plano de 200 Hz a 2 kHz. Reprodução de voz e instrumentos sem coloração.',
+    highs:'Leve boost em 3 kHz (presença auditiva natural humana) com roll-off gradual acima de 8 kHz.',
+    desc:'A <strong>Harman Target Curve</strong> é o resultado de anos de pesquisa duplo-cega conduzida por Sean Olive e Floyd Toole. Representa a preferência média estatística de ouvintes treinados e leigos. No carro, funciona como "norte": se sua curva se aproximar desta forma, seu sistema estará bem calibrado. Use como âncora e ajuste conforme seu gosto pessoal.',
+    hints:['Bass Shelf +5dB até 80Hz','Midrange 0dB (flat)','Presença suave 3kHz','Roll-off acima 8kHz']
+  },
+  {
+    id: 'focal-sopra3',
+    brand: 'Focal',
+    model: 'Sopra N°3',
+    tag: 'French Hi-End',
+    color: '#ef4444',
+    curve: [2,2.5,3.5,4,4,3.5,3,2,1,0.5,0,-0.5,-0.5,0,0.5,1,1,0.5,0,-0.5,-1,-1.5,-2,-3],
+    bass:'Graves controlados e firmes. Ligeiro boost de 3–4 dB entre 40–80 Hz. Profundidade real sem lentidão.',
+    mids:'Médios ultra-detalhados com tweeter de Berílio. A faixa 1–4 kHz tem leve presença (+1 dB) que garante vozes e instrumentos adiante na cena.',
+    highs:'Agudos brilhantes e estendidos até 40 kHz. Suave roll-off acima de 12 kHz sem perder detalhes.',
+    desc:'A <strong>Focal Sopra N°3</strong> usa woofers de cone em "W" de fibra de vidro e tweeter invertido de Berílio puro. Sua assinatura é <strong>precisa, dinâmica e naturalmente musical</strong> — não é fria nem quente, é verdadeira. Os graves são profundos e rápidos (26 Hz a -6 dB). Os médios revelam texturas que outros perdem. Os agudos brilham sem agressividade. Ideal para quem quer um som presente, envolto em detalhes.',
+    hints:['Sub-bass estendido 26Hz','Graves firmes +3.5dB','Presença sutil 1-4kHz','Highs estendidos']
+  },
+  {
+    id: 'bw800d4',
+    brand: 'Bowers & Wilkins',
+    model: '800 D4',
+    tag: 'British Reference',
+    color: '#3b82f6',
+    curve: [1.5,2,2.5,3.5,3.5,3,2.5,2,1,0.5,0,0,0.5,1,1,1.5,1,0.5,0,-0.5,-1.5,-2.5,-3.5,-5],
+    bass:'Graves sólidos e bem articulados. Bass reflex otimizado com dois woofers Æ3 de 10 pol. Profundidade real a partir de 20 Hz.',
+    mids:'Médios com driver de midrange dedicado em FST (Fixed Suspension Transducer). Neutralidade e resolução exemplar.',
+    highs:'Tweeter de diamante — the most linear and stiff tweeter material. Pico suave de presença 1–3 kHz que adiciona "foco" vocal.',
+    desc:'A <strong>B&W 800 D4</strong> é a caixa de referência em estúdios de gravação mundo afora (Abbey Road, AIR Studios). Seu "B&W house sound" é <strong>neutro mas com foco e presença controlada</strong> nos médios-agudos. O tweeter de diamante entrega resolução sem igual. Pico sutil em 1-3 kHz posiciona vozes e instrumentos com precisão cirúrgica. Referência para quem quer som técnico e envolvente ao mesmo tempo.',
+    hints:['Tweeter diamante','Midrange neutro +1dB 3kHz','Bass Æ3 profundo','Studio reference']
+  },
+  {
+    id: 'wilson-sasha',
+    brand: 'Wilson Audio',
+    model: 'Sasha V',
+    tag: 'American Precision',
+    color: '#8b5cf6',
+    curve: [2,2.5,3,4,4.5,4,3.5,2.5,1.5,0.5,0,-0.5,-0.5,0,0.5,1,0.5,0,-0.5,-1,-2,-3,-4,-5],
+    bass:'Graves explosivos e incrivelmente rápidos. Sistema duplo de woofers de 8" time-aligned. Define o ritmo musical com clareza.',
+    mids:'Médios absolutamente transparentes. Tecnologia DDC (Directed Driver Casting). Cada instrumento em seu lugar exato.',
+    highs:'Tweeter Convergent Synergy Carbon (CSC) com resposta até 30 kHz. Agudos naturais e sem fadiga auditiva.',
+    desc:'A <strong>Wilson Audio Sasha V</strong> é uma obra de engenharia americana de precisão. Usa materiais proprietários X-Material e V-Material nas câmaras de forma única. O time-alignment ajustável por módulo garante que todos os drivers cheguem aos seus ouvidos em sincronia perfeita — resultado: uma cena sonoro <strong>hiper-realista, dinâmica e com slam impressionante</strong> mesmo em volumes baixos. Graves que se sentem fisicamente, médios que revelam a alma da música.',
+    hints:['Time-alignment perfeito','Graves físicos +4dB 80Hz','Médios transparentes','Cena 3D holográfica']
+  },
+  {
+    id: 'sonus-nova5',
+    brand: 'Sonus Faber',
+    model: 'Olympica Nova V',
+    tag: 'Italian Musicality',
+    color: '#f97316',
+    curve: [2.5,3,3.5,4,4,3.5,3,2.5,2,1.5,1,0.5,0.5,0.5,0,0,0,-0.5,-1,-2,-2.5,-3,-4,-5],
+    bass:'Graves quentes, ricos e profundos. Sistema "Stealth Ultraflex" de porting que elimina o bloom típico. Grave macio mas articulado.',
+    mids:'O destaque da Nova V é o midrange em fibra natural (celulose, Kapok, Kenaf). Vozes soam incrivelmente orgânicas e reais.',
+    highs:'Agudos exuberantes e naturais, nunca agressivos. Leve roll-off acima de 10 kHz que torna o som "sedoso".',
+    desc:'A <strong>Sonus Faber Olympica Nova V</strong> carrega a filosofia italiana do "som natural" em uma forma única. Seu gabinete em madeira com almofadas de couro foi <strong>vozeado para soar como um instrumento musical</strong>, não uma máquina. Os médios em fibra natural entregam uma qualidade de vocalização que poucos igualam. É o equilíbrio perfeito entre emoção e precisão — para quem quer se emocionar com qualquer gênero musical.',
+    hints:['Warm bass +4dB 60Hz','Midrange natural fibra','Highs sedosos roll-off','Musicality italiana']
+  },
+  {
+    id: 'dynaudio-conf60',
+    brand: 'Dynaudio',
+    model: 'Confidence 60',
+    tag: 'Danish Precision',
+    color: '#14b8a6',
+    curve: [2,2.5,3,3.5,4,3.5,3,2,1,0,0,-0.5,-0.5,0,0.5,0.5,0,-0.5,-1,-1.5,-2,-2.5,-3.5,-4.5],
+    bass:'Graves densos e controlados com drivers NeoTec MSP de 9". Magnet neodímio de alta potência. Punch preciso e sem borrões.',
+    mids:'Tweeter Esotar3 (o melhor da Dynaudio) garante que os médios-agudos sejam extremamente claros sem qualquer dureza.',
+    highs:'Resposta até 22 kHz com roll-off educado. O "dark top" característico da Dynaudio — nunca cansa, nunca falta.',
+    desc:'A <strong>Dynaudio Confidence 60</strong> é a expressão máxima da filosofia Dynaudio desde a fundação: drivers perfeitos, fazendo crossover perfeitos. O som é <strong>rico, punch e analítico ao mesmo tempo</strong>. Graves poderosos mas perfeitamente laçados. Médios que revelam a textura de cada instrumento. Uma caixa que cresce conforme você sobe o volume, nunca comprimindo, nunca distorcendo.',
+    hints:['Punch bass +4dB 80Hz','Esotar3 tweeter','Dark top agradável','Alto volume sem distorção']
+  },
+  {
+    id: 'adam-s5v',
+    brand: 'Adam Audio',
+    model: 'S5V',
+    tag: 'Studio Master',
+    color: '#22c55e',
+    curve: [1,1.5,2,2.5,3,2.5,2,1,0,0,0,0,0,0,0.5,1,0.5,0,-0.5,-1,-1.5,-2,-3,-4],
+    bass:'Woofer de 12" HexaCone com extensão até 25 Hz. Graves profundos, lineares e sem coloração — o que está na gravação, você ouve.',
+    mids:'Driver de midrange dedicado DCH (Dome/Cone Hybrid) de 4" — separa o midrange do woofer para máxima resolução. Extraordinário.',
+    highs:'S-ART (Ribbon tweeter artesanal) — o ápice da tecnologia ADAM. Resposta até 50 kHz. Highs com detalhe cirúrgico.',
+    desc:'A <strong>Adam Audio S5V</strong> é a referência absoluta em estúdios de mastering profissional. Seu "house sound" é <strong>completamente transparente e neutro</strong> — cada dB está exatamente onde a gravação mandou. O ribbon tweeter S-ART entrega filigrana de detalhe nos agudos como nenhum driver convencional consegue. Use esta curva se quiser saber precisamente o que está na sua música, sem nenhum enfeite.',
+    hints:['Linear puro','Ribbon S-ART 50kHz','Midrange dedicado','Mastering reference']
+  },
+  {
+    id: 'kef-blade',
+    brand: 'KEF',
+    model: 'Blade One Meta',
+    tag: 'Point Source Master',
+    color: '#0ea5e9',
+    curve: [2,2.5,3,3.5,3.5,3,2.5,2,1,0.5,0,0,0,0,0,0,0,-0.5,-1,-1.5,-2,-2.5,-3.5,-4.5],
+    bass:'4× woofers de 9" force-canceling que se anulam mutuamente em vibração — bass puro, profundo e sem ressonância de gabinete.',
+    mids:'Uni-Q driver array com MAT (Metamaterial Absorption Technology) posiciona tweeter no centro do midrange. Ponto fonte perfeito.',
+    highs:'Tweeter NEO de alta definição com resposta a 45 kHz. Highs aéreos e completamente livres de distorção da câmara traseira.',
+    desc:'A <strong>KEF Blade One Meta</strong> é tecnologia de outro planeta. A filosofia "Single Apparent Source" faz com que toda a música pareça emergir de um único ponto no espaço — result: <strong>imagem estéreo surreal e coerência de fase absoluta</strong>. Os 4 woofers force-canceling eliminam quase toda vibração do gabinete. É o padrão-ouro moderno em precisão de resposta em frequência (variação de apenas ±1.2 dB).',
+    hints:['Single apparent source','Force-canceling bass','MAT technology','±1.2dB precisão']
+  },
+  {
+    id: 'monitor-gold300',
+    brand: 'Monitor Audio',
+    model: 'Gold 300 (7G)',
+    tag: 'Sua Referência Casa',
+    color: '#a78bfa',
+    curve: [2,2.5,3,3.5,3.5,3,2.5,1.5,0.5,0,-0.5,-0.5,0,0.5,1,1,0.5,0,-0.5,-1,-2,-2.5,-3.5,-5],
+    bass:'Woofers C-CAM (Ceramic-Coated Aluminium/Magnesium) com profundidade e precisão. Graves firmes com textura natural.',
+    mids:'Midrange C-CAM com crossover MPX otimizado. Médios limpos com presença controlada — o "MA house sound".',
+    highs:'Tweeter RDT III (Rigid Diaphragm Technology) com gold faceplate. Agudos detalhados e naturalmente estendidos.',
+    desc:'A <strong>Monitor Audio Gold 300 (7G)</strong> — representante da família Bronze/Gold da Monitor Audio — carrega o DNA da série acima (Platinum). O som da Monitor Audio tem personalidade própria: <strong>graves firmes e articulados, médios limpos, agudos brilhantes mas sem agressividade</strong>. É um som "relaxado mas presente" que funciona muito bem com rock, jazz, eletrônica e vozes. Essa é sua referência de casa — o alvo que você já conhece e aprecia.',
+    hints:['C-CAM drivers','RDT III tweeter','House sound Monitor Audio','Referência pessoal']
+  },
+  {
+    id: 'devialet-phantom',
+    brand: 'Devialet',
+    model: 'Phantom II (98 dB)',
+    tag: 'French Tech Marvel',
+    color: '#ec4899',
+    curve: [5,5.5,5,4.5,4,3.5,3,2,1,0.5,0,0,0.5,1,1,0.5,0,-0.5,-1,-2,-2.5,-3,-4,-5],
+    bass:'HBI (Heart Bass Implosion): woofers laterais de alta excursão em câmara selada. Bass físico, profundo até 18 Hz, sem distorção.',
+    mids:'SAM® (Speaker Active Matching) via DSP interno otimiza o driver full-range para resposta linear de 25 Hz–20 kHz ±1 dB.',
+    highs:'Driver central de alumínio com resposta até 21 kHz. Agudos claros e presentes, alguma brightness que pode ser ajustada via app.',
+    desc:'O <strong>Devialet Phantom II</strong> é uma revolução em embalagem mínima. Toda a tecnologia ADH® (Ampli híbrido analógico-digital) e SAM® DSP internas garantem que drivers de alumínio ultra-leves produzam uma das respostas em frequência mais planas do mercado (±1 dB de 25 Hz a 20 kHz). O bass físico de 18 Hz num objeto <3L é a sua principal magia. Use como inspiração para sub-graves impactantes no carro.',
+    hints:['Sub-bass 18Hz físico','SAM® DSP flat','HBI bass implosion','Design compacto máximo']
+  },
+  {
+    id: 'polk-legend800',
+    brand: 'Polk Audio',
+    model: 'Legend L800',
+    tag: 'American Bass King',
+    color: '#f43f5e',
+    curve: [4,5,5.5,5.5,5,4,3,2,1,0.5,0,0,0,0.5,1,1,0.5,0,-0.5,-1,-2,-3,-4,-5],
+    bass:'Dual woofers 10" long-throw com Enhanced Power Port. Bass monstruoso, profundo (32 Hz -3dB) e fisicamente presente.',
+    mids:'Médios equilibrados e neutros. Turbine Cone midrange isolado do woofer para clareza máxima em vozes e instrumentos.',
+    highs:'Pinnacle Ring Radiator tweeter com alta velocidade e detalhe. Agudos estendidos e aéreos até 38 kHz.',
+    desc:'A <strong>Polk Audio Legend L800</strong> é a arma secreta americana. Com tecnologia SDA-PRO (Stereo Dimensional Array) que cancela o crosstalk interaural, ela cria uma cena sonora <strong>maior que a barreira das caixas</strong>. Mas seu maior talento está nos graves: os dois woofers de 10" com Power Port Enhanced entregam bass que se sente no peito. Ideal como inspiração para quem quer graves físicos, profundos e controláveis.',
+    hints:['SDA-PRO soundstage','Dual 10" power bass','Bass 32Hz -3dB','Ring Radiator tweeter']
+  },
+  {
+    id: 'elac-adante',
+    brand: 'ELAC',
+    model: 'Adante AS-61 / Concentro S',
+    tag: 'German Precision',
+    color: '#84cc16',
+    curve: [2,2.5,3,3.5,3.5,3,2,1.5,0.5,0,0,-0.5,-0.5,0,0.5,1,0.5,0,-0.5,-1,-1.5,-2,-3,-4],
+    bass:'Bass concêntrico ELAC JET Air Motion. Woofer araldite com alta rigidez. Graves profundos, controlados e extremamente limpos.',
+    mids:'Driver JET Air Motion Transformer (AMT) único de ELAC — velocidade de resposta excepcional nos médios-agudos sem distorção.',
+    highs:'JET 5 tweeter: ribbon de quádrupla dobra. Resposta ultra-rápida e estendida com detail retrieval de classe mundial.',
+    desc:'A <strong>ELAC Adante / Concentro</strong> incorpora anos de pesquisa do Dr. Andrew Jones. A filosofia alemã de engenharia se manifesta: <strong>precisão técnica sem sacrificar musicalidade</strong>. O tweeter JET (Jet Effect Transducer) Air Motion Transformer é exclusivo da ELAC e opera com um mecanismo completamente diferente de tweeters convencionais — sua membrana em sanfona expele ar 4x mais rápido que se move, resultando em transientes de altíssima velocidade e naturalidade.',
+    hints:['JET AMT tweeter','German engineering','Graves limpos +3.5dB','Altíssima velocidade']
+  },
+  {
+    id: 'focal-utopia',
+    brand: 'Focal',
+    model: 'Utopia EVO',
+    tag: 'French Pinnacle',
+    color: '#fb923c',
+    curve: [1.5,2,2.5,3,3.5,3,2.5,1.5,0.5,0,0,0,0.5,1,1.5,2,1.5,1,0.5,0,-1,-2,-3,-4],
+    bass:'Woofer W-cone de 11" com dupla spider. Graves absolutamente controlados e velozes. A velocidade do woofer muda tudo.',
+    mids:'Midrange de Berílio puro — o mesmo material do tweeter para handoff perfeito. Nunca houve médios tão transparentes.',
+    highs:'Tweeter invertido de Berílio puro: 9× mais rígido que alumínio, 3× mais leve. Agudos que você ouve é a própria música.',
+    desc:'A <strong>Focal Utopia EVO</strong> é o topo da montanha francesa. Aqui, o Berílio (elemento extremamente raro) é usado tanto no tweeter quanto no midrange — uma decisão de engenharia que cria uma <strong>coerência sonora quase impossível de descrever</strong>. Cada nota é reproduzida com uma combinação de velocidade, presença e naturalidade que torna difícil distinguir a gravação do "ao vivo". Para usar como inspiração: mire em médios-agudos com mais "ar" e presença, mantendo graves controlados.',
+    hints:['Berílio tweeter + midrange','Coerência perfeita','Médios 1.5dB presença','Air e detail agudos']
+  },
+  {
+    id: 'wilson-alexx',
+    brand: 'Wilson Audio',
+    model: 'Alexx V',
+    tag: 'American Reference',
+    color: '#7c3aed',
+    curve: [3,3.5,4,5,5.5,5,4,3,2,1,0.5,0,0,0.5,1,1,0.5,0,-0.5,-1,-2,-3,-4,-5],
+    bass:'Woofers de 10.5" e 12.5" time-aligned. Pressuriza salas enormes com bass articulado e físico de 20 Hz. Referência absoluta.',
+    mids:'Câmara de midrange isolada em X-Material — o gabinete mais morto da indústria. Médios com SNR praticamente infinito.',
+    highs:'CSC tweeter com resposta a 32 kHz. Agudos aéreos, naturais e completamente livres de ressonâncias de gabinete.',
+    desc:'A <strong>Wilson Audio Alexx V</strong> opera em outra dimensão. Com woofers de 10½" e 12½" time-aligned via módulos ajustáveis, entrega bass que <strong>pressuriza fisicamente qualquer ambiente</strong> com articulação precisa de 20 Hz. É a caixa favorita de gravações de grandes orquestras e jazz ao vivo — consegue simultaneamente um contrabaixo com peso físico real e um violino com todo o seu harmônico de sala. Use como inspiração máxima para sub-graves profundos com controle total.',
+    hints:['Sub-bass 20Hz físico','Módulos time-aligned','X-Material dead cabinet','Slam máximo + controle']
+  },
+  {
+    id: 'sonos-era300',
+    brand: 'Sonos',
+    model: 'Era 300 (Spatial Audio)',
+    tag: 'Smart Spatial',
+    color: '#06b6d4',
+    curve: [2,2.5,3,3.5,3,2.5,2,1.5,0.5,0,0,-0.5,-0.5,0,0.5,1,1,0.5,0,-0.5,-1,-1.5,-2,-3],
+    bass:'Bass robusto via dois woofers defrontais + processamento Trueplay adaptativo. Graves calibrados automaticamente pela sala.',
+    mids:'Driver full-range central com DSP Atmos. Médios equilibrados e naturais, otimizados para conteúdo Dolby Atmos e Spatial.',
+    highs:'4 tweeters direcionados (frente, lados, cima) para imersão 360°. Agudos espalhados espacialmente para presença total.',
+    desc:'A <strong>Sonos Era 300</strong> representa a nova geração de alto-falantes inteligentes com Spatial Audio Dolby Atmos. Com 6 drivers direcionados em múltiplas direções e processamento TruePlay via microfone integrado, <strong>seu som é automaticamente calibrado para qualquer ambiente</strong>. No contexto de equalização do carro, a Era 300 inspira uma abordagem DSP-centric: bass controlado, médios equilibrados e presença tridimensional nos agudos — exatamente o que um bom processador de carro pode oferecer.',
+    hints:['Spatial Audio Atmos','TruePlay DSP','6 drivers direcionais','Bass DSP calibrado']
+  }
+];
+
+// ─── FREQUÊNCIAS DE REFERÊNCIA (X axis) ────────────────────────────────────
+const FREQS = [20,30,40,60,80,100,150,200,300,400,500,800,1000,1500,2000,3000,4000,5000,6000,8000,10000,12000,15000,20000];
+const FREQ_LABELS = ['20','30','40','60','80','100','150','200','300','400','500','800','1k','1.5k','2k','3k','4k','5k','6k','8k','10k','12k','15k','20k'];
+
+// ─── BUILD LEGEND ───────────────────────────────────────────────────────────
+const legendEl = document.getElementById('global-legend');
+SPEAKERS.forEach(s => {
+  const item = document.createElement('div');
+  item.className = 'legend-item';
+  item.innerHTML = `<div class="legend-line" style="background:${s.color}"></div><span>${s.model.split('(')[0].trim()}</span>`;
+  legendEl.appendChild(item);
+});
+
+// ─── BUILD CARDS ────────────────────────────────────────────────────────────
+const container = document.getElementById('cards-container');
+
+SPEAKERS.forEach((sp, idx) => {
+  const card = document.createElement('div');
+  card.className = 'card' + (sp.isHarman ? ' harman' : '');
+  card.id = `card-${sp.id}`;
+
+  card.innerHTML = `
+    <div class="card-header">
+      <div class="card-dot" style="background:${sp.color}; box-shadow:0 0 8px ${sp.color}88"></div>
+      <div>
+        <div class="card-brand">${sp.brand} &nbsp;›&nbsp; Nº ${idx+1}</div>
+        <div class="card-model">${sp.model}</div>
+      </div>
+      <div class="card-tag">${sp.tag}</div>
+    </div>
+    <div class="chart-wrap">
+      <canvas id="canvas-${sp.id}" height="220"></canvas>
+      <div class="axis-hz" id="axhz-${sp.id}"></div>
+    </div>
+    <div class="card-body">
+      <div class="desc-grid">
+        <div class="desc-item">
+          <h4>🔊 Graves (20–200 Hz)</h4>
+          <p>${sp.bass}</p>
+        </div>
+        <div class="desc-item">
+          <h4>🎙️ Médios (200 Hz–3 kHz)</h4>
+          <p>${sp.mids}</p>
+        </div>
+        <div class="desc-item">
+          <h4>✨ Agudos (3–20 kHz)</h4>
+          <p>${sp.highs}</p>
+        </div>
+      </div>
+      <div class="desc-main">${sp.desc}</div>
+      <div class="eq-hints">${sp.hints.map(h=>`<span class="eq-hint">⚡ ${h}</span>`).join('')}</div>
+    </div>
+  `;
+  container.appendChild(card);
+
+  // Axis labels
+  const axEl = document.getElementById(`axhz-${sp.id}`);
+  // Show only key labels
+  const showIdx = [0,3,5,7,9,12,14,16,18,20,23];
+  showIdx.forEach(i => {
+    const d = document.createElement('span');
+    d.textContent = FREQ_LABELS[i];
+    axEl.appendChild(d);
+  });
+
+  // Draw canvas after DOM ready
+  requestAnimationFrame(() => drawChart(sp));
+});
+
+// ─── DRAW CHART ─────────────────────────────────────────────────────────────
+function drawChart(sp) {
+  const canvas = document.getElementById(`canvas-${sp.id}`);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.parentElement.clientWidth;
+  const H = 220;
+  canvas.width = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.scale(dpr, dpr);
+
+  const PAD_LEFT = 38;
+  const PAD_RIGHT = 14;
+  const PAD_TOP = 14;
+  const PAD_BOT = 14;
+  const CW = W - PAD_LEFT - PAD_RIGHT;
+  const CH = H - PAD_TOP - PAD_BOT;
+
+  const DB_MIN = -8;
+  const DB_MAX = 8;
+  const DB_RANGE = DB_MAX - DB_MIN;
+
+  const yFromDB = db => PAD_TOP + CH * (1 - (db - DB_MIN) / DB_RANGE);
+  const xFromIdx = i => PAD_LEFT + (i / (FREQS.length - 1)) * CW;
+
+  // Background
+  ctx.fillStyle = '#0a0c12';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid horizontal (dB lines)
+  [-6,-4,-2,0,2,4,6].forEach(db => {
+    const y = yFromDB(db);
+    ctx.beginPath();
+    ctx.moveTo(PAD_LEFT, y);
+    ctx.lineTo(W - PAD_RIGHT, y);
+    ctx.strokeStyle = db === 0 ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.05)';
+    ctx.lineWidth = db === 0 ? 1 : 0.5;
+    ctx.stroke();
+
+    // dB label
+    ctx.fillStyle = db === 0 ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.15)';
+    ctx.font = `${9/dpr > 9 ? 9 : 9}px Inter`;
+    ctx.textAlign = 'right';
+    ctx.fillText((db > 0 ? '+' : '') + db, PAD_LEFT - 4, y + 3);
+  });
+
+  // Grid vertical (frequency bands)
+  [3,5,8,12,14,16,20,23].forEach(i => {
+    const x = xFromIdx(i);
+    ctx.beginPath();
+    ctx.moveTo(x, PAD_TOP);
+    ctx.lineTo(x, H - PAD_BOT);
+    ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  });
+
+  // Zone fills
+  const zones = [
+    { start: 0, end: 7, color: 'rgba(99,102,241,0.06)' },   // bass
+    { start: 7, end: 16, color: 'rgba(16,185,129,0.04)' },   // mids
+    { start: 16, end: 23, color: 'rgba(245,158,11,0.05)' },  // highs
+  ];
+  zones.forEach(z => {
+    ctx.fillStyle = z.color;
+    ctx.fillRect(xFromIdx(z.start), PAD_TOP, xFromIdx(z.end) - xFromIdx(z.start), CH);
+  });
+
+  // Draw Harman reference (if not Harman itself)
+  const harman = SPEAKERS[0];
+  if (sp.id !== 'harman') {
+    ctx.beginPath();
+    harman.curve.forEach((db, i) => {
+      const x = xFromIdx(i);
+      const y = yFromDB(db);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.strokeStyle = 'rgba(245,158,11,0.3)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // Draw THIS speaker curve with gradient fill
+  const grad = ctx.createLinearGradient(0, PAD_TOP, 0, H - PAD_BOT);
+  grad.addColorStop(0, sp.color + '55');
+  grad.addColorStop(1, sp.color + '00');
+
+  ctx.beginPath();
+  sp.curve.forEach((db, i) => {
+    const x = xFromIdx(i);
+    const y = yFromDB(db);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+
+  // Fill below
+  const lastX = xFromIdx(sp.curve.length - 1);
+  const zeroY = yFromDB(DB_MIN);
+  ctx.lineTo(lastX, zeroY);
+  ctx.lineTo(xFromIdx(0), zeroY);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // Stroke line
+  ctx.beginPath();
+  sp.curve.forEach((db, i) => {
+    const x = xFromIdx(i);
+    const y = yFromDB(db);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.strokeStyle = sp.color;
+  ctx.lineWidth = 2.5;
+  ctx.lineJoin = 'round';
+  ctx.shadowColor = sp.color;
+  ctx.shadowBlur = 8;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Dots at key frequencies
+  [0, 5, 7, 12, 16, 20, 23].forEach(i => {
+    const x = xFromIdx(i);
+    const y = yFromDB(sp.curve[i]);
+    ctx.beginPath();
+    ctx.arc(x, y, 3, 0, Math.PI * 2);
+    ctx.fillStyle = sp.color;
+    ctx.fill();
+    ctx.strokeStyle = '#0a0c12';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  });
+
+  // Zone labels
+  ctx.font = '9px Inter';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = 'rgba(255,255,255,0.25)';
+  ctx.fillText('SUB / BASS', xFromIdx(3), PAD_TOP + 10);
+  ctx.fillText('MIDS', xFromIdx(11), PAD_TOP + 10);
+  ctx.fillText('HIGHS', xFromIdx(19), PAD_TOP + 10);
+}
+
+// Redraw on resize
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => SPEAKERS.forEach(drawChart), 150);
+});
+</script>
+</body>
+</html>

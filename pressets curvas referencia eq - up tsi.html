@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presets de Curva EQ — VW Up! TSI · STX2448BT</title>
+<meta name="description" content="3 presets de curva de referência EQ para o sistema de som do VW Up TSI, inspirados nas assinaturas sonoras das melhores caixas HiFi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080b12;
+  --surface: #0e1220;
+  --card: #131826;
+  --card2: #161d2e;
+  --border: #1e2a42;
+  --text: #dde4f5;
+  --muted: #7888aa;
+  --faint: rgba(255,255,255,0.04);
+
+  /* Preset Colors */
+  --p1: #f97316;       /* Impacto Musical — orange */
+  --p1bg: rgba(249,115,22,0.08);
+  --p2: #a78bfa;       /* Audiófilo Quente — violet */
+  --p2bg: rgba(167,139,250,0.08);
+  --p3: #34d399;       /* HiFi Natural — emerald */
+  --p3bg: rgba(52,211,153,0.08);
+
+  --harman: #f59e0b;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── HEADER ────────────── */
+.hero {
+  background: linear-gradient(160deg, #080b12 0%, #0c1222 50%, #0f1730 100%);
+  text-align: center;
+  padding: 52px 20px 38px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% -10%, rgba(167,139,250,.12), transparent);
+  pointer-events: none;
+}
+.hero-eye {
+  display: inline-block;
+  font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 700;
+  color: var(--p2);
+  background: rgba(167,139,250,.1); border: 1px solid rgba(167,139,250,.3);
+  border-radius: 20px; padding: 5px 16px; margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(24px, 5vw, 48px);
+  font-weight: 700;
+  line-height: 1.15;
+  background: linear-gradient(135deg, #fff 20%, var(--p2) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  margin-bottom: 12px;
+}
+.hero-sub {
+  color: var(--muted); font-size: 14px; max-width: 620px;
+  margin: 0 auto 24px; line-height: 1.7;
+}
+.hero-chain {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 6px; font-size: 12px; color: var(--muted);
+}
+.hc-node {
+  background: rgba(255,255,255,.05); border: 1px solid var(--border);
+  border-radius: 8px; padding: 5px 12px;
+}
+.hc-arr { color: var(--p2); font-weight: 700; }
+
+/* ── LAYOUT ────────────── */
+.main { max-width: 1060px; margin: 0 auto; padding: 0 16px 70px; }
+
+/* ── SECTION HEADER ────── */
+.section-label {
+  font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase;
+  color: var(--muted); margin: 44px 0 6px;
+}
+.section-tagline { color: var(--muted); font-size: 14px; margin-bottom: 22px; line-height: 1.6; }
+
+/* ── PRESET CARD ──────── */
+.preset-card {
+  border-radius: 18px; overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 40px;
+  box-shadow: 0 6px 40px rgba(0,0,0,.55);
+  transition: box-shadow .3s;
+}
+.preset-card:hover { box-shadow: 0 10px 60px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.05); }
+
+/* Header strip */
+.pc-header {
+  padding: 20px 26px;
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+}
+.pc-num {
+  font-family: 'Space Grotesk', sans-serif; font-size: 36px; font-weight: 700;
+  line-height: 1; min-width: 44px; opacity: .45;
+}
+.pc-text { flex: 1; }
+.pc-name {
+  font-family: 'Space Grotesk', sans-serif; font-size: clamp(18px, 3vw, 24px);
+  font-weight: 700; margin-bottom: 2px;
+}
+.pc-tagline { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.pc-badge {
+  border-radius: 10px; padding: 5px 14px; font-size: 11px; font-weight: 700;
+  letter-spacing: .8px; text-transform: uppercase; margin-left: auto;
+}
+
+/* Canvas chart */
+.chart-area {
+  background: var(--bg); padding: 14px 12px 6px; position: relative;
+}
+canvas { display: block; width: 100% !important; }
+.axis-freqs {
+  display: flex; justify-content: space-between; padding: 4px 14px 8px;
+  font-size: 10px; color: var(--muted);
+}
+
+/* Info grid */
+.info-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 1px; background: var(--border);
+}
+.info-cell {
+  background: var(--card); padding: 16px 20px;
+}
+.info-cell h4 {
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 6px;
+}
+.info-cell p { font-size: 13px; line-height: 1.6; color: var(--text); }
+
+/* Description */
+.pc-body { padding: 22px 26px; background: var(--card2); }
+.pc-desc { font-size: 14px; line-height: 1.8; color: var(--muted); }
+.pc-desc strong { color: var(--text); }
+
+/* EQ Bands table */
+.eq-section { padding: 18px 26px; background: var(--card); border-top: 1px solid var(--border); }
+.eq-section h4 {
+  font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 14px;
+}
+.eq-bands {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px;
+}
+.eq-band-chip {
+  display: flex; flex-direction: column; align-items: center;
+  background: rgba(255,255,255,.04); border: 1px solid var(--border);
+  border-radius: 10px; padding: 8px 10px; min-width: 54px;
+}
+.band-val { font-size: 14px; font-weight: 700; font-family: 'Space Grotesk', sans-serif; }
+.band-freq { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+/* Refs row */
+.refs-row {
+  display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 26px 20px;
+  background: var(--card); border-top: 1px solid var(--border);
+}
+.ref-pill {
+  background: rgba(255,255,255,.05); border: 1px solid var(--border);
+  border-radius: 30px; padding: 4px 12px; font-size: 11px; color: var(--muted);
+}
+.ref-pill span { font-weight: 600; }
+
+/* Compare row */
+.compare-label {
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 8px;
+}
+
+/* Footer */
+footer {
+  text-align: center; padding: 28px 20px 40px;
+  font-size: 11px; color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+/* Responsive */
+@media(max-width:600px) {
+  .pc-header { gap: 8px; }
+  .pc-badge { margin-left: 0; }
+  .info-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-eye">🎛️ Presets de Curva EQ — VW Up! TSI</div>
+  <h1>3 Assinaturas Sonoras<br>Para o Seu Sistema</h1>
+  <p class="hero-sub">
+    Curvas compostas a partir das suas referências favoritas — Wilson Alexx V, Focal Sopra, Sonus Faber, B&W 800 e Monitor Audio.
+    Cada preset traduz um perfil de gosto em valores aplicáveis ao <strong style="color:#fff">STX2448BT</strong>.
+  </p>
+  <div class="hero-chain">
+    <div class="hc-node">📱 CASKA NAVPRO</div>
+    <span class="hc-arr">→</span>
+    <div class="hc-node">🎛️ STX2448BT</div>
+    <span class="hc-arr">→</span>
+    <div class="hc-node">⚡ SD 800.5 EVO 6</div>
+    <span class="hc-arr">→</span>
+    <div class="hc-node">🔊 Hertz DSK 165.3 + ES 200.5</div>
+  </div>
+</header>
+
+<div class="main">
+
+  <div class="section-label">Como Ler os Presets</div>
+  <div class="section-tagline">
+    A curva tracejada dourada é sempre a <strong style="color:#f59e0b">Harman Target</strong> — sua âncora de referência.
+    Os valores de EQ nas tabelas são para o processador <strong>STX2448BT</strong>, em dB relativos (0 = neutro).
+    A multimídia CASKA mantém sua correção acústica individual para a cabine do Up! — não altere.
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PRESET 1 — IMPACTO MUSICAL -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div class="preset-card" id="p1-card" style="border-color: rgba(249,115,22,.3);">
+    <div class="pc-header" style="background: rgba(249,115,22,.06);">
+      <div class="pc-num" style="color: var(--p1);">01</div>
+      <div class="pc-text">
+        <div class="pc-name" style="color: var(--p1);">Impacto Musical</div>
+        <div class="pc-tagline">Graves marcantes (+6 dB) · Médios presentes · Agudos sem fadiga</div>
+      </div>
+      <div class="pc-badge" style="background: rgba(249,115,22,.12); border: 1px solid rgba(249,115,22,.3); color: var(--p1);">
+        BASS POWER
+      </div>
+    </div>
+
+    <div class="chart-area">
+      <canvas id="canvas-p1" height="230"></canvas>
+      <div class="axis-freqs">
+        <span>20</span><span>40</span><span>80</span><span>150</span>
+        <span>300</span><span>600</span><span>1k</span><span>2k</span>
+        <span>4k</span><span>8k</span><span>12k</span><span>20k</span>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-cell">
+        <h4>🔊 Sub / Grave (20–200 Hz)</h4>
+        <p>Peak de <strong>+6 dB em 50–80 Hz</strong>. Inspirado no slam físico da Wilson Alexx V. Sub-grave rolando suave de 30 Hz até o pico, depois atenuando gradual ao cruzamento. Você sente em cada batida.</p>
+      </div>
+      <div class="info-cell">
+        <h4>🎙️ Médios (200 Hz–3 kHz)</h4>
+        <p>Presença firme de <strong>+1.5 dB de 500 Hz a 2 kHz</strong>, inspirado na expressividade da Sonus Faber Olympica e personalidade da ELAC. Vozes e instrumentos à frente, com dimensão e naturalidade.</p>
+      </div>
+      <div class="info-cell">
+        <h4>✨ Agudos (3–20 kHz)</h4>
+        <p>Roll-off suave e progressivo a partir de 4 kHz. Sem picos agressivos, sem sibilância. Inspirado no tweeter Berílio da Focal Sopra N°3 e no "dark top" educado da Dynaudio — detalhes sem cansar.</p>
+      </div>
+    </div>
+
+    <div class="pc-body">
+      <p class="pc-desc">
+        Esta curva traduz a energia das suas referências de bass favoritas num pacote coeso e controlado.
+        O <strong>grave profundo vem do Wilson Alexx V</strong> — aquele slam físico de 80 Hz que você sente no peito.
+        Os <strong>médios têm a presença expressiva da Sonus Faber Olympica Nova V</strong>, com balanço natural que não ofusca vozes.
+        Os <strong>agudos são do Focal Sopra N°3 com toque de Dynaudio</strong>: cristalinos, porém jamais fatigantes.
+        Ideal para rock, eletrônica, rap, funk — qualquer estilo que se beneficie de graves com peso real.
+        No STX2448BT, aplique o perfil de EQ abaixo e mantenha a multimídia CASKA com a compensação acústica já configurada.
+      </p>
+    </div>
+
+    <div class="eq-section">
+      <h4>📐 EQ STX2448BT — Valores Sugeridos (10 Bandas)</h4>
+      <div class="eq-bands" id="eq1-bands"></div>
+      <p style="font-size:12px;color:var(--muted)">
+        ⚠️ Estes valores já consideram que a multimídia CASKA tem a compensação acústica da cabine ativa.
+        Crossover HPF Front 80 Hz · LPF Sub 80 Hz · LR48 dB/oct mantidos.
+      </p>
+    </div>
+
+    <div class="refs-row">
+      <span style="font-size:11px;color:var(--muted);align-self:center;">Referências base: </span>
+      <div class="ref-pill">🔊 Bass: <span>Wilson Alexx V (N14)</span></div>
+      <div class="ref-pill">🔊 Bass+: <span>Wilson Sasha V (N4)</span></div>
+      <div class="ref-pill">🎙️ Mids: <span>Sonus Faber OlympicaNova V (N5)</span></div>
+      <div class="ref-pill">🎙️ Mids+: <span>ELAC Adante (N12)</span></div>
+      <div class="ref-pill">✨ Highs: <span>Focal Sopra N°3 (N2)</span></div>
+      <div class="ref-pill">✨ Highs+: <span>Dynaudio Confidence 60 (N6)</span></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PRESET 2 — AUDIÓFILO QUENTE -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div class="preset-card" id="p2-card" style="border-color: rgba(167,139,250,.3);">
+    <div class="pc-header" style="background: rgba(167,139,250,.06);">
+      <div class="pc-num" style="color: var(--p2);">02</div>
+      <div class="pc-text">
+        <div class="pc-name" style="color: var(--p2);">Audiófilo Quente</div>
+        <div class="pc-tagline">Graves ricos e profundos (+4 dB) · Médios orgânicos e reais · Agudos transparentes</div>
+      </div>
+      <div class="pc-badge" style="background: rgba(167,139,250,.12); border: 1px solid rgba(167,139,250,.3); color: var(--p2);">
+        WARM HIFI
+      </div>
+    </div>
+
+    <div class="chart-area">
+      <canvas id="canvas-p2" height="230"></canvas>
+      <div class="axis-freqs">
+        <span>20</span><span>40</span><span>80</span><span>150</span>
+        <span>300</span><span>600</span><span>1k</span><span>2k</span>
+        <span>4k</span><span>8k</span><span>12k</span><span>20k</span>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-cell">
+        <h4>🔊 Sub / Grave (20–200 Hz)</h4>
+        <p>Bass shelf quente de <strong>+4 dB centrado em 60–80 Hz</strong>, com curva suave inspirada na Sonus Faber Olympica — grave rico, encorpado e profundo, sem perder a firmeza da B&W 800 D4.  Não é slam, é presença.</p>
+      </div>
+      <div class="info-cell">
+        <h4>🎙️ Médios (200 Hz–3 kHz)</h4>
+        <p>Midrange <strong>orgânico e estável de +0.5 dB</strong> de 300 Hz a 2 kHz, inspirado na fibra natural da Sonus Faber + extensão da Sonos Era 300 + qualidade vocal da Focal Sopra. Cada instrumento tem textura e corpo.</p>
+      </div>
+      <div class="info-cell">
+        <h4>✨ Agudos (3–20 kHz)</h4>
+        <p>Highs <strong>transparentes e naturais</strong> sem qualquer pico artificial. Roll-off educado a partir de 6 kHz. Inspirado no Berílio da Focal Sopra N°3 (ar cristalino) e no tweeter da Wilson Sasha V (sem fadiga jamais).</p>
+      </div>
+    </div>
+
+    <div class="pc-body">
+      <p class="pc-desc">
+        Esta é a curva para <strong>ouvintes que amam a música acima de tudo</strong>.
+        O grave quente e rico lembra a diferença de sentar na frente de um amplificador valvulado (warm amp) com uma Sonus Faber.
+        Não é sobre "quanto de bass" — é sobre <strong>qualidade do grave</strong>: profundidade, textura, corpo.
+        Os médios orgânicos da Focal Sopra N°3 são o coração desta curva: <strong>vozes que arrepiam</strong>, instrumentos que respiram.
+        Os agudos da Wilson Sasha V completam: presentes o suficiente para você ouvir cada harmônico,
+        mas nunca agressivos para cansar seus ouvidos em longas viagens.
+        Perfeita para MPB, jazz, soul, música clássica, rock melódico e qualquer coisa vocal.
+      </p>
+    </div>
+
+    <div class="eq-section">
+      <h4>📐 EQ STX2448BT — Valores Sugeridos (10 Bandas)</h4>
+      <div class="eq-bands" id="eq2-bands"></div>
+      <p style="font-size:12px;color:var(--muted)">
+        ⚠️ Bass shelf mais gentil. Ideal para audição longa e repertório variado.
+        Crossover HPF Front 80 Hz · LPF Sub 80 Hz · LR48 mantidos.
+      </p>
+    </div>
+
+    <div class="refs-row">
+      <span style="font-size:11px;color:var(--muted);align-self:center;">Referências base: </span>
+      <div class="ref-pill">🔊 Bass: <span>Sonus Faber Olympica Nova V (N5)</span></div>
+      <div class="ref-pill">🔊 Bass+: <span>B&W 800 D4 (N3)</span></div>
+      <div class="ref-pill">🎙️ Mids: <span>Focal Sopra N°3 (N2)</span></div>
+      <div class="ref-pill">🎙️ Mids+: <span>Sonos Era 300 (N15)</span></div>
+      <div class="ref-pill">✨ Highs: <span>Wilson Sasha V (N4)</span></div>
+      <div class="ref-pill">✨ Highs+: <span>Sonus Faber (N5)</span></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PRESET 3 — HiFi NATURAL -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div class="preset-card" id="p3-card" style="border-color: rgba(52,211,153,.3);">
+    <div class="pc-header" style="background: rgba(52,211,153,.05);">
+      <div class="pc-num" style="color: var(--p3);">03</div>
+      <div class="pc-text">
+        <div class="pc-name" style="color: var(--p3);">HiFi Natural</div>
+        <div class="pc-tagline">Graves gentis (+2 dB) · Médios e vozes de classe máxima · Agudos naturais e aéreos</div>
+      </div>
+      <div class="pc-badge" style="background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.3); color: var(--p3);">
+        REFERENCE
+      </div>
+    </div>
+
+    <div class="chart-area">
+      <canvas id="canvas-p3" height="230"></canvas>
+      <div class="axis-freqs">
+        <span>20</span><span>40</span><span>80</span><span>150</span>
+        <span>300</span><span>600</span><span>1k</span><span>2k</span>
+        <span>4k</span><span>8k</span><span>12k</span><span>20k</span>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-cell">
+        <h4>🔊 Sub / Grave (20–200 Hz)</h4>
+        <p>Bass shelf delicado de <strong>+2 dB máximo</strong>, inspirado na Harman Target e refinado com a precisão da Monitor Audio Gold 300 (sua referência de casa). Grave honesto, presente mas que nunca roubar a cena dos médios.</p>
+      </div>
+      <div class="info-cell">
+        <h4>🎙️ Médios (200 Hz–3 kHz)</h4>
+        <p>Este é o <strong>coração da curva HiFi</strong>: presença natural de +1 a +1.5 dB entre 800 Hz e 3 kHz — a zona da voz humana. Inspirado nos médios neutros e de alta resolução da B&W 800 D4 e da Monitor Audio. Qualidade máxima vocal.</p>
+      </div>
+      <div class="info-cell">
+        <h4>✨ Agudos (3–20 kHz)</h4>
+        <p>Agudos <strong>aéreos, naturais e detalhados</strong> sem nenhuma ênfase artificial. Inspirado no detalhamento e naturalidade da Monitor Audio Gold 300 (N9) e no tweeter da Wilson Sasha V. Roll-off suave a partir de 10 kHz.</p>
+      </div>
+    </div>
+
+    <div class="pc-body">
+      <p class="pc-desc">
+        Esta curva é para os momentos em que você quer <strong>sentir a música como ela realmente é</strong>.
+        Próxima ao alvo Harman mas com a personalidade da Monitor Audio Gold 300 — sua referência de casa —
+        e com a presença vocal refinada da B&W 800 D4.
+        Os <strong>médios são os protagonistas absolutos</strong>: essa faixa 800 Hz–3 kHz é onde vivem as vozes,
+        os harmônicos de violão, o sopro de um saxofone, o toque de piano.
+        O grave gentil apoia sem dominar. Os agudos completam o quadro com naturalidade.
+        Use quando quiser ouvir gravações de alta qualidade, <strong>avaliar a mixagem de um álbum</strong>,
+        ou simplesmente relaxar num volume médio numa viagem longa sem fadiga alguma.
+      </p>
+    </div>
+
+    <div class="eq-section">
+      <h4>📐 EQ STX2448BT — Valores Sugeridos (10 Bandas)</h4>
+      <div class="eq-bands" id="eq3-bands"></div>
+      <p style="font-size:12px;color:var(--muted)">
+        ✅ Curva mais próxima do flat de referência. Máxima fidelidade, mínima coloração.
+        Crossover HPF Front 80 Hz · LPF Sub 80 Hz · LR48 mantidos.
+      </p>
+    </div>
+
+    <div class="refs-row">
+      <span style="font-size:11px;color:var(--muted);align-self:center;">Referências base: </span>
+      <div class="ref-pill">🔊 Bass: <span>Harman Target (N1)</span></div>
+      <div class="ref-pill">🔊 Bass+: <span>Monitor Audio Gold 300 (N9)</span></div>
+      <div class="ref-pill">🎙️ Mids: <span>B&W 800 D4 (N3)</span></div>
+      <div class="ref-pill">🎙️ Mids+: <span>Focal Sopra N°3 (N2)</span></div>
+      <div class="ref-pill">✨ Highs: <span>Monitor Audio Gold 300 (N9)</span></div>
+      <div class="ref-pill">✨ Highs+: <span>Wilson Sasha V (N4)</span></div>
+    </div>
+  </div>
+
+  <!-- Nota final -->
+  <div style="background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 26px;margin-top:10px;">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">💡 Dica de Uso</div>
+    <p style="font-size:13px;line-height:1.8;color:var(--muted)">
+      Comece pelo <strong style="color:var(--p3)">Preset 3 (HiFi Natural)</strong> — ele resolve 80% da qualidade sem risco de distorção.
+      Depois evolua para o <strong style="color:var(--p2)">Preset 2 (Audiófilo Quente)</strong> para sessões musicais intensas.
+      Reserve o <strong style="color:var(--p1)">Preset 1 (Impacto Musical)</strong> para músicas de alta dinâmica e momentos de puro prazer.
+      Todos os presets assumem: ganho de subwoofer no SD 800.5 EVO 6 calibrado para combinação com a curva do LPF 80 Hz.
+    </p>
+  </div>
+
+</div><!-- /main -->
+
+<footer>
+  Sistema: VW Up! TSI · NAVPRO CASKA A100 PRO+ → STX2448BT → SD 800.5 EVO 6 → Hertz DSK 165.3 + ES 200.5<br>
+  Curvas compostas a partir de referências: Wilson Alexx V, Focal Sopra N°3, Sonus Faber Olympica Nova V,
+  B&amp;W 800 D4, ELAC Adante, Dynaudio Confidence 60, Monitor Audio Gold 300, Wilson Sasha V
+</footer>
+
+<script>
+// ── CURVE DATA ──────────────────────────────────────────────────────────────
+// 24 pontos de 20 Hz a 20 kHz (escala log)
+// 0 = referência neutra
+const HARMAN = [4, 4.5, 5, 5.5, 5.5, 5, 4.5, 3.5, 2, 1, 0.5, 0, 0, 0, -0.5, -0.5, 0, 0.5, 0.5, -1, -2, -3, -4, -5];
+
+// P1 — Impacto Musical (peak +6, mids presentes, highs sem fadiga)
+const P1 = [
+  3.5, 4.5, 6.0, 6.0, 5.5, 4.5, 3.5, 2.5,   // sub-bass roll up to peak 40–80Hz
+  1.5, 1.0, 0.5,                               // low-mids suave
+  1.5, 1.5, 1.5, 1.5,                         // mids presença 500Hz–2kHz
+  1.0, 0.5,                                   // baixo-agudo
+  0, -0.5, -1.5, -2.5, -3.5, -4.5, -6.0     // roll-off educado
+];
+
+// P2 — Audiófilo Quente (peak +4, warm bass, mids orgânicos, highs transparentes)
+const P2 = [
+  2.5, 3.0, 4.0, 4.5, 4.5, 4.0, 3.0, 2.0,   // warm bass shelf
+  1.2, 0.8, 0.5,                               // low-mids
+  0.5, 0.5, 0.7, 0.7,                         // mids orgânicos e estáveis
+  0.3, 0.0,                                   // baixo-agudo neutro
+  -0.5, -1.0, -1.8, -2.5, -3.2, -4.0, -5.0  // transparente sem excesso
+];
+
+// P3 — HiFi Natural (peak +2, presença vocal alta, agudos naturais)
+const P3 = [
+  1.0, 1.5, 2.0, 2.5, 2.5, 2.0, 1.5, 1.0,   // gentle bass shelf
+  0.5, 0.3, 0.3,                               // low-mids clean
+  0.5, 1.0, 1.5, 1.5,                         // presença vocal 800Hz–2kHz
+  1.0, 0.5,                                   // ar nos highs
+  0, -0.5, -1.2, -2.0, -3.0, -4.0, -5.0     // natural roll-off
+];
+
+// DSP 10-band EQ values (bands: 31, 63, 125, 250, 500, 1k, 2k, 4k, 8k, 16k Hz)
+const DSP_PRESETS = {
+  p1: { vals: [4, 6, 3, 1, 1, 1.5, 1, 0, -1, -2],  label: 'Impacto Musical' },
+  p2: { vals: [2, 4, 2, 1, 0.5, 0.5, 0.5, 0, -1, -1.5], label: 'Audiófilo Quente' },
+  p3: { vals: [1, 2, 1, 0, 0, 1, 1.5, 0.5, 0, -1],  label: 'HiFi Natural'  }
+};
+
+const PRESET_COLORS = ['#f97316', '#a78bfa', '#34d399'];
+
+// ── CHART DRAWING ───────────────────────────────────────────────────────────
+const DB_MIN = -8, DB_MAX = 8;
+
+function drawPreset(canvasId, curve, color) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.parentElement.clientWidth;
+  const H = 230;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const PL = 42, PR = 14, PT = 14, PB = 18;
+  const CW = W - PL - PR;
+  const CH = H - PT - PB;
+
+  const yOf = db => PT + CH * (1 - (db - DB_MIN) / (DB_MAX - DB_MIN));
+  const xOf = i  => PL + (i / (curve.length - 1)) * CW;
+
+  // BG
+  ctx.fillStyle = '#080b12';
+  ctx.fillRect(0, 0, W, H);
+
+  // Zone tints
+  const zones = [
+    { s: 0, e: 7,  c: 'rgba(99,102,241,0.05)' },   // bass
+    { s: 7, e: 16, c: 'rgba(16,185,129,0.03)' },   // mids
+    { s: 16, e: 23, c: 'rgba(245,158,11,0.04)' },  // highs
+  ];
+  zones.forEach(z => {
+    ctx.fillStyle = z.c;
+    ctx.fillRect(xOf(z.s), PT, xOf(z.e) - xOf(z.s), CH);
+  });
+
+  // dB grid
+  [-6, -4, -2, 0, 2, 4, 6].forEach(db => {
+    const y = yOf(db);
+    ctx.beginPath(); ctx.moveTo(PL, y); ctx.lineTo(W - PR, y);
+    ctx.strokeStyle = db === 0 ? 'rgba(255,255,255,.18)' : 'rgba(255,255,255,.06)';
+    ctx.lineWidth = db === 0 ? 1.5 : 0.7;
+    ctx.stroke();
+
+    ctx.fillStyle = db === 0 ? 'rgba(255,255,255,.35)' : 'rgba(255,255,255,.17)';
+    ctx.font = '9px Inter'; ctx.textAlign = 'right';
+    ctx.fillText((db > 0 ? '+' : '') + db, PL - 5, y + 3.5);
+  });
+
+  // Vertical freq guides
+  [3, 5, 7, 9, 11, 14, 16, 18, 20, 23].forEach(i => {
+    const x = xOf(i);
+    ctx.beginPath(); ctx.moveTo(x, PT); ctx.lineTo(x, H - PB);
+    ctx.strokeStyle = 'rgba(255,255,255,.04)';
+    ctx.lineWidth = 0.5; ctx.stroke();
+  });
+
+  // Zone labels
+  ctx.font = '9px Inter'; ctx.textAlign = 'center';
+  ctx.fillStyle = 'rgba(255,255,255,.2)';
+  ctx.fillText('SUB / BASS', xOf(3), PT + 11);
+  ctx.fillText('MIDS', xOf(11.5), PT + 11);
+  ctx.fillText('HIGHS', xOf(19.5), PT + 11);
+
+  // Harman reference (dashed gold)
+  ctx.beginPath();
+  HARMAN.forEach((db, i) => {
+    const x = xOf(i), y = yOf(db);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.strokeStyle = 'rgba(245,158,11,0.35)';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([5, 5]); ctx.stroke(); ctx.setLineDash([]);
+
+  // Curve fill
+  const grd = ctx.createLinearGradient(0, PT, 0, H - PB);
+  grd.addColorStop(0, color + '44');
+  grd.addColorStop(1, color + '04');
+
+  ctx.beginPath();
+  curve.forEach((db, i) => {
+    const x = xOf(i), y = yOf(db);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.lineTo(xOf(curve.length - 1), yOf(DB_MIN));
+  ctx.lineTo(xOf(0), yOf(DB_MIN));
+  ctx.closePath();
+  ctx.fillStyle = grd;
+  ctx.fill();
+
+  // Curve stroke
+  ctx.beginPath();
+  curve.forEach((db, i) => {
+    const x = xOf(i), y = yOf(db);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2.8;
+  ctx.lineJoin = 'round';
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 10;
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  // Key dots
+  [0, 4, 7, 11, 14, 17, 20, 23].forEach(i => {
+    if (i >= curve.length) return;
+    const x = xOf(i), y = yOf(curve[i]);
+    ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.strokeStyle = '#080b12'; ctx.lineWidth = 1.5;
+    ctx.fill(); ctx.stroke();
+  });
+
+  // Harman dot legend
+  ctx.fillStyle = 'rgba(245,158,11,.8)';
+  ctx.font = '9px Inter'; ctx.textAlign = 'left';
+  ctx.fillText('— — Harman Target', PL + 6, PT + 24);
+}
+
+// ── DSP EQ BAND CHIPS ────────────────────────────────────────────────────────
+const DSP_FREQS = ['31 Hz','63 Hz','125 Hz','250 Hz','500 Hz','1 kHz','2 kHz','4 kHz','8 kHz','16 kHz'];
+const DSP_COLORS = { p1: '#f97316', p2: '#a78bfa', p3: '#34d399' };
+
+function buildEqBands(containerId, presetKey) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  const preset = DSP_PRESETS[presetKey];
+  const color  = DSP_COLORS[presetKey];
+
+  preset.vals.forEach((v, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'eq-band-chip';
+
+    const sign  = v > 0 ? '+' : '';
+    const valColor = v > 0 ? color : v < 0 ? '#ef4444' : '#64748b';
+
+    chip.innerHTML = `
+      <span class="band-val" style="color:${valColor}">${sign}${v} dB</span>
+      <span class="band-freq">${DSP_FREQS[i]}</span>
+    `;
+    container.appendChild(chip);
+  });
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+function init() {
+  drawPreset('canvas-p1', P1, '#f97316');
+  drawPreset('canvas-p2', P2, '#a78bfa');
+  drawPreset('canvas-p3', P3, '#34d399');
+
+  buildEqBands('eq1-bands', 'p1');
+  buildEqBands('eq2-bands', 'p2');
+  buildEqBands('eq3-bands', 'p3');
+}
+
+window.addEventListener('load', init);
+
+let _resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(_resizeTimer);
+  _resizeTimer = setTimeout(init, 150);
+});
+</script>
+</body>
+</html>

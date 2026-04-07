@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referências de EQ Automotivo - Gráficos Garantidos</title>
+    <style>
+        body { font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; color: #1e293b; padding: 20px; text-align: center; }
+        .card { background-color: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin: 30px auto; padding: 30px; max-width: 800px; text-align: left; border-left: 6px solid; }
+        h1 { color: #0f172a; font-size: 2.2rem; margin-bottom: 5px; }
+        h2 { margin-top: 0; color: #334155; }
+        p { color: #475569; font-size: 1.1rem; line-height: 1.5; }
+        .subtitle { font-size: 1.2em; color: #64748b; margin-bottom: 40px;}
+        img.chart { width: 100%; max-width: 600px; height: auto; display: block; margin: 20px auto; border-radius: 8px; border: 1px solid #e2e8f0; }
+        @media print {
+            body { background: white; }
+            .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; margin-bottom: 20px; }
+            img.chart { max-width: 500px; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Referências de Gráficos de EQ</h1>
+    <p class="subtitle">Imagens reais mapeadas (Sem dependência de HTML Canvas). Aperte <b>Ctrl+P</b> para salvar no formato <b>PDF</b>.</p>
+
+    <!-- Harman -->
+    <div class="card" style="border-left-color: rgb(139, 92, 246);">
+        <h2>1. Curva Alvo Harman (Automotivo)</h2>
+        <p>A Referência de Ouro. O Bass Shelf levanta forte as regiões sub.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(139,92,246)',backgroundColor:'rgba(139,92,246,0.1)',borderWidth:4,pointRadius:6,pointBackgroundColor:'rgb(139,92,246)',fill:true,tension:0.4,data:[8.0,9.0,6.0,2.0,0,0,0,-1.0,-2.0,-4.0,-6.0]}]},options:{title:{display:false},legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5},scaleLabel:{display:true,labelString:'Gain (dB)'}}]}}}" alt="Gráfico de Curva de Harman"/>
+    </div>
+
+    <!-- Monitor Audio -->
+    <div class="card" style="border-left-color: rgb(245, 158, 11);">
+        <h2>2. Monitor Audio Bronze (Sua Casa)</h2>
+        <p>Caixas com enorme ataque ("punch") e detalhamento sem ofuscar as vozes.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(245,158,11)',backgroundColor:'rgba(245,158,11,0.1)',borderWidth:4,pointRadius:6,pointBackgroundColor:'rgb(245,158,11)',fill:true,tension:0.4,data:[5.0,7.0,6.0,2.0,0.5,-0.5,0,1.0,2.0,4.0,3.0]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico da Monitor Audio"/>
+    </div>
+
+    <!-- B&W 801 D4 -->
+    <div class="card" style="border-left-color: rgb(59, 130, 246);">
+        <h2>3. Bowers & Wilkins 801 D4</h2>
+        <p>Imersivo palco de estúdios. Retira um pouco de energia da faixa de presença (2.5k).</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(59,130,246)',backgroundColor:'rgba(59,130,246,0.1)',borderWidth:4,pointRadius:6,fill:true,tension:0.4,data:[4.0,6.0,4.0,1.0,0,0,0,-2.0,1.0,4.0,5.0]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico BW"/>
+    </div>
+
+    <!-- Focal Grande Utopia EM -->
+    <div class="card" style="border-left-color: rgb(236, 72, 153);">
+        <h2>4. Focal Grande Utopia EM</h2>
+        <p>Excelência francesa. Respostas ultra amplas e rápidas sem nunca ofuscar a beleza da voz.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(236,72,153)',backgroundColor:'rgba(236,72,153,0.1)',borderWidth:4,pointRadius:6,fill:true,tension:0.4,data:[6.0,6.0,5.0,1.0,0,0.5,0.5,1.0,1.5,2.0,2.5]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico Focal"/>
+    </div>
+
+    <!-- Wilson Audio Sasha DAW -->
+    <div class="card" style="border-left-color: rgb(16, 185, 129);">
+        <h2>5. Wilson Audio Sasha DAW</h2>
+        <p>Som de peso monumental (o melhor grave real) com vozes grossas muito orgânicas.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(16,185,129)',backgroundColor:'rgba(16,185,129,0.1)',borderWidth:4,pointRadius:6,fill:true,tension:0.4,data:[6.0,7.0,6.0,2.0,0.5,-0.5,-0.5,-1.5,1.0,2.5,2.0]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico Wilson"/>
+    </div>
+
+    <!-- Devialet Phantom I -->
+    <div class="card" style="border-left-color: rgb(217, 70, 239);">
+        <h2>6. Devialet Phantom I 108 dB</h2>
+        <p>Foco brutal no V-Shape com sub-grave na casa do além (via DSP) e agudos que marcam pratos.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(217,70,239)',backgroundColor:'rgba(217,70,239,0.1)',borderWidth:4,pointRadius:6,fill:true,tension:0.4,data:[12.0,8.0,4.0,1.0,0,0,0,1.0,2.0,3.0,4.0]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico Devialet"/>
+    </div>
+
+    <!-- Adam Audio S3V -->
+    <div class="card" style="border-left-color: rgb(251, 191, 36);">
+        <h2>7. Adam Audio S3V</h2>
+        <p>A referência analítica de estúdio. Sem graves babando, som puramente flat na casa da voz.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(251,191,36)',backgroundColor:'rgba(251,191,36,0.1)',borderWidth:4,pointRadius:6,fill:true,tension:0.4,data:[2.0,4.0,2.0,0,0,0,0,0.5,1.0,3.0,4.0]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico Adam"/>
+    </div>
+
+    <!-- Sonus Faber Aida -->
+    <div class="card" style="border-left-color: rgb(56, 189, 248);">
+        <h2>8. Sonus Faber Aida</h2>
+        <p>Romântica. Zero fadiga e médios ricos (homens heróicos) perfeitos para dirigir horas.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(56,189,248)',backgroundColor:'rgba(56,189,248,0.1)',borderWidth:4,pointRadius:6,fill:true,tension:0.4,data:[4.0,6.0,5.0,3.0,2.0,1.0,0,-1.0,-2.0,-3.0,-4.0]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico Sonus"/>
+    </div>
+
+    <!-- Dynaudio Confidence 60 -->
+    <div class="card" style="border-left-color: rgb(132, 204, 22);">
+        <h2>9. Dynaudio Confidence 60</h2>
+        <p>Velocidade estúpida. Punch tão forte e rápido (bumbo a 80hz) que mantêm graciosidade no grave.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(132,204,22)',backgroundColor:'rgba(132,204,22,0.1)',borderWidth:4,pointRadius:6,fill:true,tension:0.4,data:[3.0,5.0,4.0,1.5,0.5,0,0,-0.5,0,1.0,1.0]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico Dynaudio"/>
+    </div>
+
+    <!-- ELAC Concentro -->
+    <div class="card" style="border-left-color: rgb(168, 85, 247);">
+        <h2>10. ELAC Concentro / Vela</h2>
+        <p>Tweeter estendendo as reverberações. Ótima para se ter muitos echos e suspiros das respirações.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(168,85,247)',backgroundColor:'rgba(168,85,247,0.1)',borderWidth:4,pointRadius:6,fill:true,tension:0.4,data:[4.0,5.0,3.0,1.0,0,0,0,0.5,2.0,3.5,4.0]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico ELAC"/>
+    </div>
+
+    <!-- Sonos Five -->
+    <div class="card" style="border-left-color: rgb(232, 121, 249);">
+        <h2>11. Sonos Five</h2>
+        <p>Volume Big-Room forjado via DSP para inflar o grave como se houvesse múltiplos subs grandes.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(232,121,249)',backgroundColor:'rgba(232,121,249,0.1)',borderWidth:4,pointRadius:6,fill:true,tension:0.4,data:[7.0,8.0,5.0,1.0,0,-1.0,0,2.0,3.0,2.0,1.0]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico Sonos"/>
+    </div>
+
+    <!-- Polk Audio -->
+    <div class="card" style="border-left-color: rgb(251, 113, 133);">
+        <h2>12. Polk Audio Legend L800</h2>
+        <p>Som projetado. Vozes lançadas e calor de show lotado empurrando muito ar sem finezas exageradas.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(251,113,133)',backgroundColor:'rgba(251,113,133,0.1)',borderWidth:4,pointRadius:6,fill:true,tension:0.4,data:[6.0,8.0,6.0,2.5,1.0,0.5,0,1.5,2.0,1.0,0.5]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico Polk"/>
+    </div>
+
+    <!-- KEF Blade -->
+    <div class="card" style="border-left-color: rgb(186, 230, 253);">
+        <h2>13. KEF Blade One</h2>
+        <p>Som perfeitamente linear e coaxial. Zero picos extras. Útil para Masterização analítica extrema.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(186,230,253)',backgroundColor:'rgba(186,230,253,0.1)',borderWidth:4,pointRadius:6,fill:true,tension:0.4,data:[4.0,5.0,3.0,1.0,0,0,0,0,-0.5,0,1.0]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico KEF"/>
+    </div>
+
+    <!-- Klipsch Heritage -->
+    <div class="card" style="border-left-color: rgb(234, 88, 12);">
+        <h2>14. Klipsch Heritage Cornwall</h2>
+        <p>Uma buzina na cara! Assinatura bruta PA, agressividade direta nas cordas de guitarra no topo.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(234,88,12)',backgroundColor:'rgba(234,88,12,0.1)',borderWidth:4,pointRadius:6,fill:true,tension:0.4,data:[4.0,6.0,8.0,6.0,4.0,3.0,2.0,4.0,5.0,4.0,2.0]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico Klipsch"/>
+    </div>
+
+    <!-- Burmester -->
+    <div class="card" style="border-left-color: rgb(148, 163, 184);">
+        <h2>15. Burmester High-End 3D</h2>
+        <p>Refinamento hiper analítico. Sub controladíssimo e a extensão dos agudos criam o ambiente de luxo.</p>
+        <img class="chart" src="https://quickchart.io/chart?w=600&h=300&bkg=white&c={type:'line',data:{labels:['20','40','80','160','300','600','1k','2.5k','5k','10k','20k'],datasets:[{label:'Ganhos em dB',borderColor:'rgb(148,163,184)',backgroundColor:'rgba(148,163,184,0.1)',borderWidth:4,pointRadius:6,fill:true,tension:0.4,data:[5.0,6.0,4.0,1.0,0,0,0,1.0,2.0,3.5,5.0]}]},options:{legend:{display:false},scales:{yAxes:[{ticks:{min:-10,max:15,stepSize:5}}]}}}" alt="Gráfico Burmester"/>
+    </div>
+
+</body>
+</html>
